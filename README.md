@@ -1,2 +1,3 @@
-# up-fullstack-be
-Backend del Proyecto Integrador de la asignatura Fullstack Web Development en la carrera Licenciatura en Tecnologías de la Información de la Universidad de Palermo.
+# Proyecto Integrador - Fullstack Web Development - Backend
+
+> Ver la [consigna](./consigna.md) del Trabajo Práctico Integrador
