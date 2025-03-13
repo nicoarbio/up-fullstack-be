@@ -1,0 +1,20 @@
+{
+  "name": "up-fullstack-be",
+  "version": "1.0.0",
+  "description": "Backend Proyecto Integrador",
+  "homepage": "https://github.com/nicoarbio/up-fullstack-be#readme",
+  "bugs": {
+    "url": "https://github.com/nicoarbio/up-fullstack-be/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicoarbio/up-fullstack-be.git"
+  },
+  "license": "MIT",
+  "author": "Nicolás G. Arbio",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
