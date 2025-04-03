@@ -1,6 +1,5 @@
 import app from "./app/app.js";
-
-const PORT = process.env.PORT || 8081;
+import { PORT } from "./app/config/config.js"
 
 app.listen(PORT, function () {
     console.log(`Application initialized in port: ${PORT}`)
