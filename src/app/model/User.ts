@@ -8,4 +8,8 @@ export default class User {
         this.password = "";
     }
 
+    public getEmail(): string {
+        return this.email;
+    }
+
 }
