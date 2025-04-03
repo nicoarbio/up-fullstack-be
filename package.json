@@ -13,12 +13,13 @@
   "license": "MIT",
   "author": "Nicolás G. Arbio",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "body-parser": "^2.2.0",
     "express": "^4.21.2",
     "luxon": "^3.5.0"
   }
