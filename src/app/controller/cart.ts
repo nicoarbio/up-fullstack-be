@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
 /**
  * @swagger
@@ -15,7 +15,7 @@ export default express.Router()
     .post("/cart/services", addItems)
     .delete("/cart/service", deleteItem);
 
-function getCart(req, res) {
+function getCart(req: Request, res: Response) {
     res.send({
         id: "cartID#1",
         items: [
@@ -35,14 +35,14 @@ function getCart(req, res) {
     });
 }
 
-function cleanCart(req, res) {
+function cleanCart(req: Request, res: Response) {
 
 }
 
-function addItems(req, res) {
+function addItems(req: Request, res: Response) {
 
 }
 
-function deleteItem(req, res) {
+function deleteItem(req: Request, res: Response) {
 
 }

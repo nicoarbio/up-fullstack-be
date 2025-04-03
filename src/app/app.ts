@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Express } from "express";
 import bodyParser from "body-parser";
 
-import { API_BASE_URL } from "./config/config.js"
+import { API_BASE_URL } from "./config/config.js";
 
 import authenticationRouter from "./controller/authentication.js";
 import bookingsRouter from "./controller/bookings.js";
@@ -12,7 +12,7 @@ import servicesRouter from "./controller/services.js";
 
 import setupSwagger from "./swagger.js";
 
-const app = express();
+const app: Express = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
