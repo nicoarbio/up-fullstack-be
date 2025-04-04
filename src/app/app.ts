@@ -10,7 +10,7 @@ import paymentRouter from "./controller/payment.js";
 import profileRouter from "./controller/profile.js";
 import servicesRouter from "./controller/services.js";
 
-import setupSwagger from "./swagger.js";
+import setupSwagger from "./config/swagger/swagger.js";
 
 const app: Express = express();
 

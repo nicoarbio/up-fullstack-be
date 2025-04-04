@@ -11,6 +11,7 @@ const options = {
             version: '1.0.0',
         },
     },
+    failOnErrors: true,
     apis: ['./src/**/*.js'], // Path to the API docs
 };
 
