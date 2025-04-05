@@ -1,0 +1,14 @@
+/api/v1/cart:
+  get:
+    tags: [ Cart ]
+    summary: Obtener el carrito del usuario actual
+    parameters:
+      - $ref: '#components/parameters/limit'
+      - $ref: '#components/parameters/offset'
+    responses:
+      200:
+        description: El carrito
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Cart'

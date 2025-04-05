@@ -1,0 +1,16 @@
+/users:
+  get:
+    tags: [ Users ]
+    summary: Get all users
+    parameters:
+      - $ref: '#components/parameters/limit'
+      - $ref: '#components/parameters/offset'
+    responses:
+      200:
+        description: List of users
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#components/schemas/User'

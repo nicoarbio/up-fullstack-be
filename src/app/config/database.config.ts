@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import { DB_CONFIG } from "../config.properties.js";
+import { DB_CONFIG } from "./config.properties.js";
 
 export default async function connectDB(): Promise<void> {
     const uri = DB_CONFIG.getConnectionString();

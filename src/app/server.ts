@@ -1,6 +1,6 @@
 import app from "./app.js";
 import { PORT } from "./config/config.properties.js";
-import connectDB from "./config/database/database.config.js";
+import connectDB from "./config/database.config.js";
 
 try {
     await connectDB();

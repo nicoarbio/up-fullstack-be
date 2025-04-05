@@ -1,7 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import path from 'path';
-import { getDirname } from "../../utils/pathHelper.js";
+import { getDirname } from "../utils/pathHelper.js";
 import { Express } from "express";
 
 const dir = getDirname(import.meta.url);
@@ -16,7 +16,9 @@ const options = {
         },
     },
     failOnErrors: true,
-    apis: ['./src/**/*.js'], // Path to the API docs
+    apis: [
+        path.join(dir, "./../../../docs/swagger/**/*.yaml")
+    ]
 };
 
 const specs = swaggerJsdoc(options);
