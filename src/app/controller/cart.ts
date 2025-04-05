@@ -1,14 +1,5 @@
 import express, { Request, Response } from "express";
 
-/**
- * @swagger
- * /api/v1/cart:
- *   get:
- *     summary: Obtener el carrito del usuario actual
- *     responses:
- *       200:
- *         description: El carrito
- */
 export default express.Router()
     .get("/cart", getCart)
     .delete("/cart", cleanCart)

@@ -1,6 +1,10 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
+import { getDirname } from "../../utils/pathHelper.js";
 import { Express } from "express";
+
+const dir = getDirname(import.meta.url);
 
 const options = {
     definition: {

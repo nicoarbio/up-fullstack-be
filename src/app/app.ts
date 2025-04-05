@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 
-import { API_BASE_URL } from "./config/config.js";
+import { API_BASE_URL } from "./config/config.properties.js";
 
 import authenticationRouter from "./controller/authentication.js";
 import bookingsRouter from "./controller/bookings.js";
@@ -10,7 +10,7 @@ import paymentRouter from "./controller/payment.js";
 import profileRouter from "./controller/profile.js";
 import servicesRouter from "./controller/services.js";
 
-import setupSwagger from "./config/swagger/swagger.js";
+import setupSwagger from "./config/swagger/swagger.config.js";
 
 const app: Express = express();
 
