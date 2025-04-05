@@ -17,6 +17,15 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get("/hc", (req, res) => {
+    const status = {
+        status: "UP",
+        timestamp: new Date().toISOString(),
+    }
+    console.log("Health check ping", status.timestamp)
+    res.status(200).json(status);
+})
+
 app.use(`${API_BASE_URL}`, authenticationRouter);
 app.use(`${API_BASE_URL}`, bookingsRouter);
 app.use(`${API_BASE_URL}`, cartRouter);
