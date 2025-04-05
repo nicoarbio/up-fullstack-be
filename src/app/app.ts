@@ -3,12 +3,12 @@ import bodyParser from "body-parser";
 
 import { API_BASE_URL } from "./config/config.properties.js";
 
-import authenticationRouter from "./controller/authentication.js";
-import bookingsRouter from "./controller/bookings.js";
-import cartRouter from "./controller/cart.js";
-import paymentRouter from "./controller/payment.js";
-import profileRouter from "./controller/profile.js";
-import servicesRouter from "./controller/services.js";
+import authenticationRouter from "./routes/authentication.routes.js";
+import bookingsRouter from "./routes/bookings.routes.js";
+import cartRouter from "./routes/cart.routes.js";
+import paymentRouter from "./routes/payment.routes.js";
+import profileRouter from "./routes/profile.routes.js";
+import servicesRouter from "./routes/services.routes.js";
 
 import setupSwagger from "./config/swagger.config.js";
 
