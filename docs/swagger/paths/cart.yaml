@@ -12,3 +12,43 @@
           application/json:
             schema:
               $ref: '#components/schemas/Cart'
+  delete:
+    tags: [ Cart ]
+    summary: Limpiar el carrito del usuario actual
+    responses:
+      200:
+        description: El carrito
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Cart'
+
+/api/v1/cart/services:
+    post:
+        tags: [ Cart ]
+        summary: Agregar servicios al carrito del usuario actual
+        requestBody:
+        required: true
+        content:
+            application/json:
+            schema:
+                $ref: '#components/schemas/Service'
+        responses:
+        200:
+            description: El carrito
+            content:
+            application/json:
+                schema:
+                $ref: '#components/schemas/Cart'
+    delete:
+        tags: [ Cart ]
+        summary: Eliminar un servicio del carrito del usuario actual
+        parameters:
+            - $ref: '#components/parameters/serviceId'
+        responses:
+        200:
+            description: El carrito
+            content:
+            application/json:
+                schema:
+                $ref: '#components/schemas/Cart'
