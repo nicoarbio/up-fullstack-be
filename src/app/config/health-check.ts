@@ -6,7 +6,6 @@ export default (app: Express) => {
             status: "UP",
             timestamp: new Date().toISOString(),
         }
-        console.log("Health check ping", status.timestamp)
         res.status(200).json(status);
     })
 }
