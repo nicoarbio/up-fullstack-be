@@ -2,6 +2,29 @@
 
 > Ver la [consigna](./consigna.md) del Trabajo Práctico Integrador
 
+## Características
+- API RESTful
+- Node.js
+- Express
+- Typescript
+- MongoDB
+- Mongoose
+- Swagger
+- Vitest
+
+> Servicio actualmente deployado en Render: https://up-fullstack-be.onrender.com/api-docs/
+
+## Como levantar la aplicación
+1. Clonar el repositorio
+2. Instalar las dependencias
+```bash
+npm install
+```
+3. Crear un archivo `.env` en la raíz del proyecto y agregar las variables de entorno necesarias (como `PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_HOST`, `DB_OPTIONS`).
+4. Utilizar el comando `npm run dev` para levantar el servidor en modo desarrollo. (Puede usarse `npm run dev:watch` para producción)
+
+> Para un entorno de producción se recomienda usar `npm run start`
+
 ### Preguntas
 1. Si el cliente compra 3 turnos consecutivos y quiere cancelar 1 hora antes, ¿Se le cancelan los 3 o puede elegir cancelar 1? ¿Qué pasa con el beneficio del 10%?
 2. Solo se menciona el pago en efectivo, se disponibiliza el pago con tarjetas débito/crédito y billeteras electrónicas?
