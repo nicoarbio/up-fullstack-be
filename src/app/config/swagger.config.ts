@@ -1,10 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import path from 'path';
-import { getDirname } from "../utils/pathHelper.js";
 import { Express } from "express";
-
-const dir = getDirname(import.meta.url);
+import { HOST } from "./config.properties.js";
 
 const options = {
     definition: {
@@ -17,7 +14,7 @@ const options = {
     },
     failOnErrors: true,
     apis: [
-        path.join(dir, "./../../../docs/swagger/**/*.yaml")
+        "docs/swagger/**/*.yaml"
     ]
 };
 
@@ -25,4 +22,5 @@ const specs = swaggerJsdoc(options);
 
 export default (app: Express) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    console.log(`Swagger docs available at ${HOST}/api-docs`);
 };

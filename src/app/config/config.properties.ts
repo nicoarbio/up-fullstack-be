@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const PORT = process.env.PORT || 8081;
+export const HOST = process.env.HOST || `http://localhost:${PORT}`;
 export const API_BASE_URL = `/api/v1`;
 export const DB_CONFIG = {
     PASSWORD: process.env.DB_PASSWORD,
