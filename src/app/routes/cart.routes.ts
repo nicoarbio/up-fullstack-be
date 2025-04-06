@@ -5,4 +5,4 @@ export default Router()
     .get("/cart", getCart)
     .delete("/cart", cleanCart)
     .post("/cart/services", addItems)
-    .delete("/cart/service", deleteItem);
+    .delete("/cart/services", deleteItem);

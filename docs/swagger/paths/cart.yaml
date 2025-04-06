@@ -29,10 +29,10 @@
         summary: Agregar servicios al carrito del usuario actual
         requestBody:
         required: true
-        content:
-            application/json:
-            schema:
-                $ref: '#components/schemas/Service'
+#        content:
+#            application/json:
+#            schema:
+#                $ref: '#components/schemas/Service'
         responses:
         200:
             description: El carrito
@@ -43,8 +43,8 @@
     delete:
         tags: [ Cart ]
         summary: Eliminar un servicio del carrito del usuario actual
-        parameters:
-            - $ref: '#components/parameters/serviceId'
+#        parameters:
+#            - $ref: '#components/parameters/serviceId'
         responses:
         200:
             description: El carrito
