@@ -17,20 +17,24 @@
   "scripts": {
     "start": "tsc && node dist/server.js",
     "dev": "node --experimental-loader ts-node/esm src/app/server.ts",
-    "dev:watch": "nodemon --watch 'src/**/*.ts' --exec 'node --experimental-loader ts-node/esm' src/app/server.ts",
+    "dev:watch": "nodemon",
     "clean": "rm -rf dist && rm -rf src/**/*.js",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "luxon": "^3.5.0",
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.14.0",
     "@types/swagger-jsdoc": "^6.0.4",

@@ -1,0 +1,7 @@
+/api/v1/services:
+  get:
+    tags: [ Servicios ]
+    summary: Obtener estado actual de stock de los servicios
+    responses:
+      200:
+        description: Servicios disponibles

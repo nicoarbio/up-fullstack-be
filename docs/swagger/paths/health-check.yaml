@@ -1,0 +1,19 @@
+/hc:
+  get:
+    tags: [ Health-Check ]
+    summary: Verificar el estado de la API
+    responses:
+      200:
+        description: La API está en funcionamiento
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "UP"
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: "2025-03-01T12:00:00Z"

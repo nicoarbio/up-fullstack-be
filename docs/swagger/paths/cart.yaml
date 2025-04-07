@@ -2,9 +2,11 @@
   get:
     tags: [ Cart ]
     summary: Obtener el carrito del usuario actual
-    parameters:
-      - $ref: '#components/parameters/limit'
-      - $ref: '#components/parameters/offset'
+#    parameters:
+#      - $ref: '#components/parameters/limit'
+#      - $ref: '#components/parameters/offset'
+    security:
+      - bearerAuth: [ ]
     responses:
       200:
         description: El carrito
@@ -12,9 +14,13 @@
           application/json:
             schema:
               $ref: '#components/schemas/Cart'
+      401:
+        description: Credenciales inválidas
   delete:
     tags: [ Cart ]
     summary: Limpiar el carrito del usuario actual
+    security:
+      - bearerAuth: [ ]
     responses:
       200:
         description: El carrito
@@ -22,33 +28,37 @@
           application/json:
             schema:
               $ref: '#components/schemas/Cart'
+      401:
+        description: Credenciales inválidas
 
 /api/v1/cart/services:
     post:
-        tags: [ Cart ]
-        summary: Agregar servicios al carrito del usuario actual
-        requestBody:
-        required: true
-#        content:
-#            application/json:
-#            schema:
-#                $ref: '#components/schemas/Service'
-        responses:
+      tags: [ Cart ]
+      summary: Agregar servicios al carrito del usuario actual
+      security:
+        - bearerAuth: [ ]
+      responses:
         200:
-            description: El carrito
-            content:
-            application/json:
-                schema:
-                $ref: '#components/schemas/Cart'
+          description: El carrito
+          content:
+          application/json:
+            schema:
+            $ref: '#components/schemas/Cart'
+        400:
+          description: Error de validación
+        401:
+          description: Credenciales inválidas
     delete:
-        tags: [ Cart ]
-        summary: Eliminar un servicio del carrito del usuario actual
-#        parameters:
-#            - $ref: '#components/parameters/serviceId'
-        responses:
+      tags: [ Cart ]
+      summary: Eliminar un servicio del carrito del usuario actual
+      security:
+        - bearerAuth: [ ]
+      responses:
         200:
-            description: El carrito
-            content:
-            application/json:
-                schema:
-                $ref: '#components/schemas/Cart'
+          description: El carrito
+          content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Cart'
+        401:
+          description: Credenciales inválidas

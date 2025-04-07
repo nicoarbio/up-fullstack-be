@@ -1,0 +1,23 @@
+/api/v1/login:
+  post:
+    tags: [ Autenticación ]
+    summary: Iniciar sesión
+    responses:
+      200:
+        description: El carrito
+      401:
+        description: Credenciales inválidas
+      403:
+        description: Usuario bloqueado
+
+/api/v1/signup:
+  post:
+    tags: [ Autenticación ]
+    summary: Crear un nuevo usuario
+    responses:
+      201:
+        description: Usuario creado
+      400:
+        description: Datos inválidos
+      409:
+        description: El correo electrónico ya está en uso

@@ -1,0 +1,5 @@
+{
+  "watch": ["src", "docs", ".env", "tsconfig.json"],
+  "ext": "ts,json,yml,yaml",
+  "exec": "npm run dev"
+}
