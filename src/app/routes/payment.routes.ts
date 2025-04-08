@@ -3,5 +3,5 @@ import { processPayment, processRefund, updatePaymentStatus } from "../controlle
 
 export default Router()
     .post("/payment", processPayment)
-    .patch("/payment/status", updatePaymentStatus)
+    .put("/payment/status", updatePaymentStatus)
     .post("/payment/refund", processRefund);

@@ -9,7 +9,7 @@
         description: Perfil del usuario actual
       401:
         description: Credenciales inválidas
-  patch:
+  put:
     tags: [ Perfil de usuario ]
     summary: Actualizar el perfil del usuario actual
     security:

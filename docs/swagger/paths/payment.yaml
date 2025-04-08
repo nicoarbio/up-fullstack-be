@@ -13,7 +13,7 @@
         description: Credenciales inválidas
 
 /api/v1/payment/status:
-  patch:
+  put:
     tags: [ Pagos ]
     summary: Actualiza el estado del pago
     security:

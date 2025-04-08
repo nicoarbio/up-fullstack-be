@@ -3,4 +3,4 @@ import { editUserProfile, getUserProfile } from "../controller/profile.controlle
 
 export default Router()
     .get("/profile", getUserProfile)
-    .patch("/profile", editUserProfile);
+    .put("/profile", editUserProfile);
