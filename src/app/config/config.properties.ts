@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const IS_PROD = process.env.NODE_ENV === 'prod';
+export const IS_PROD = process.env.NODE_ENV === 'production';
 export const PORT = process.env.PORT || 8081;
 export const HOST = process.env.HOST || `http://localhost:${PORT}`;
 export const API_BASE_URL = `/api/v1`;
