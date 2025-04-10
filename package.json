@@ -14,7 +14,6 @@
   "author": "Nicolás G. Arbio",
   "main": "server.js",
   "scripts": {
-    "tsc": "tsc",
     "build": "npm install && npm test && rm -rf dist &&tsc",
     "start": "node dist/server.js",
     "dev": "ts-node src/app/server.ts",
