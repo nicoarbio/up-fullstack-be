@@ -1,0 +1,73 @@
+components:
+  schemas:
+    RuleType:
+        enum:
+          - fixed
+          - percentage
+    BusinessRules:
+      type: object
+      required:
+        - openHour
+        - closeHour
+        - slotDuration
+        - slotStep
+      properties:
+        openHour:
+          type: string
+        closeHour:
+          type: string
+        slotDuration:
+          type: integer
+        slotStep:
+          type: integer
+        pricing:
+          type: object
+          properties:
+            products:
+              type: object
+              additionalProperties:
+                type: number
+            accessories:
+              type: object
+              additionalProperties:
+                type: number
+            extras:
+              type: object
+              additionalProperties:
+                type: number
+        penalties:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                $ref: '#/components/schemas/RuleType'
+              value:
+                type: number
+                required: true
+        discounts:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                $ref: '#/components/schemas/RuleType'
+              value:
+                type: number
+                required: true
+        refundPolicies:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                $ref: '#/components/schemas/RuleType'
+              value:
+                type: number
+                required: true

@@ -1,0 +1,19 @@
+components:
+  schemas:
+    AvailabilityResponse:
+      type: object
+      additionalProperties:
+        type: object
+        additionalProperties:
+          type: object
+          properties:
+            available:
+              type: integer
+              example: 3
+            accessories:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  type: integer
+                  example: 2

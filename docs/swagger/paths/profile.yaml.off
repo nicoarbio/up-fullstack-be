@@ -21,3 +21,15 @@
         description: Error de validación
       401:
         description: Credenciales inválidas
+
+/api/v1/user/all:
+  get:
+    tags: [ a. Tests ]
+    summary: Obtener todos los usuarios
+    responses:
+      200:
+        description: Los users
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/User'

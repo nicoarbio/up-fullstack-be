@@ -1,0 +1,35 @@
+components:
+  schemas:
+    Refund:
+      type: object
+      required:
+        - userId
+        - paymentId
+        - orderId
+        - amount
+      properties:
+        userId:
+          type: string
+        paymentId:
+          type: string
+        orderId:
+          type: string
+        bookingIds:
+            type: array
+            items:
+                type: string
+        amount:
+          type: number
+        reason:
+            type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - processed
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

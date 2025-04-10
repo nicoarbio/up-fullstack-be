@@ -1,0 +1,67 @@
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        userId:
+          type: string
+        orderId:
+          type: string
+        product:
+          type: object
+          properties:
+            type:
+              type: string
+            stockId:
+              type: string
+        passengers:
+          type: array
+          items:
+            type: object
+            properties:
+              fullName:
+                type: string
+              birthdate:
+                type: string
+                format: date
+              accessories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    stockId:
+                      type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        price:
+          type: number
+        discount:
+          type: number
+        finalPrice:
+          type: number
+        status:
+          type: string
+          enum:
+          - active
+          - cancelled
+          - completed
+        refundStatus:
+          type: string
+          enum:
+          - none
+          - requested
+          - refunded
+        refundAmount:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

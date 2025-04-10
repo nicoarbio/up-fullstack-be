@@ -1,0 +1,27 @@
+components:
+  schemas:
+    Product:
+      type: string
+      enum:
+        - jet_sky
+        - quad
+        - diving_gear
+        - surfboard_kid
+        - surfboard_adult
+    Accessory:
+      type: string
+      enum:
+        - terrain_helmet
+        - aqua_helmet
+        - life_jacket
+    StockType:
+      type: string
+      enum:
+        - jet_sky
+        - quad
+        - diving_gear
+        - surfboard_kid
+        - surfboard_adult
+        - terrain_helmet
+        - aqua_helmet
+        - life_jacket

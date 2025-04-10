@@ -1,0 +1,47 @@
+components:
+  schemas:
+    Order:
+      type: object
+      required:
+        - userId
+        - totalPrice
+        - totalDiscount
+        - finalPrice
+      properties:
+        userId:
+          $ref: '#/components/schemas/User'
+        bookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+        extras:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - storm_insurance
+              price:
+                type: number
+        totalPrice:
+          type: number
+        totalDiscount:
+          type: number
+        finalPrice:
+          type: number
+        status:
+          type: string
+          enum:
+          - pending
+          - paid
+          - cancelled
+        paymentId:
+          $ref: '#/components/schemas/Payment'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

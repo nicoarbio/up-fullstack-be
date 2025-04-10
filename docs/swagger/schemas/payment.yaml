@@ -1,0 +1,39 @@
+components:
+  schemas:
+    Payment:
+      type: object
+      required:
+        - userId
+        - orderId
+        - amount
+        - method
+        - status
+      properties:
+        userId:
+          $ref: '#/components/schemas/User'
+        orderId:
+          $ref: '#/components/schemas/Order'
+        amount:
+          type: number
+        method:
+          type: string
+          enum:
+            - cash
+            - mercado_pago
+        status:
+          type: string
+          enum:
+            - completed
+            - in_progress
+            - failed
+        reference:
+          type: string
+        paidAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

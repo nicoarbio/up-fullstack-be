@@ -1,0 +1,17 @@
+components:
+  schemas:
+    ProductRules:
+      type: object
+      required:
+        - product
+        - maxPeople
+        - accessories
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        maxPeople:
+          type: integer
+        accessories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Accessory'

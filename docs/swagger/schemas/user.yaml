@@ -1,0 +1,47 @@
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - lastname
+        - email
+      properties:
+        name:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+          format: email
+        emailVerified:
+          type: boolean
+        passwordHash:
+          type: string
+        googleId:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+        phoneNumber:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+        lastLogin:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+

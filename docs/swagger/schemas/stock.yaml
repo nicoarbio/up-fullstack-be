@@ -1,0 +1,20 @@
+components:
+  schemas:
+    Stock:
+      type: object
+      required:
+        - serialId
+        - type
+        - category
+      properties:
+        serialId:
+          type: string
+        type:
+          $ref: '#/components/schemas/StockType'
+        category:
+          type: string
+          enum:
+            - product
+            - accessory
+        active:
+          type: boolean
