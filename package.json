@@ -12,7 +12,6 @@
   },
   "license": "MIT",
   "author": "Nicolás G. Arbio",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "tsc": "tsc",
