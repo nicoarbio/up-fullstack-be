@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { DateTime } from 'luxon';
-import { Product } from "../model/enum/booking.enum.js";
-import { Stock } from "../model/stock.model.js";
-import { Booking } from "../model/booking.model.js";
-import { getProductRules } from "../service/product-rules.service.js";
-import { getBusinessRules } from "../service/business-rules.service.js";
+import { Product } from "../model/enum/booking.enum";
+import { Stock } from "../model/stock.model";
+import { Booking } from "../model/booking.model";
+import { getProductRules } from "../service/product-rules.service";
+import { getBusinessRules } from "../service/business-rules.service";
 
 export async function getServicesAvailability(req: Request, res: Response) {
     const errors = validationResult(req);

@@ -1,6 +1,6 @@
-import app from "./app.js";
-import { HOST, PORT } from "./config/config.properties.js";
-import { connectDB, disconnectDB } from "./config/db.config.js";
+import app from "@app";
+import { HOST, PORT } from "@config/config.properties";
+import { connectDB, disconnectDB } from "@config/db.config";
 
 let dbConnected = false;
 

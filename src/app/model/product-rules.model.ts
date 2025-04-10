@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Accessory, Product } from "./enum/booking.enum.js";
-import { DbModelName } from "./enum/db-model-name.enum.js";
+import { Accessory, Product } from "@enum/booking.enum";
+import { DbModelName } from "@enum/db-model-name.enum";
 
 const productRulesSchema = new mongoose.Schema({
     product: { type: String, enum: Object.values(Product), required: true, unique: true },

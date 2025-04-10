@@ -1,17 +1,16 @@
 import fs from "fs";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { mongoClientOptions } from "../db.config.js";
+import { mongoClientOptions } from "../db.config";
 
-import { User } from "../../model/user.model.js";
-import { Booking } from "../../model/booking.model.js";
-import { Order } from "../../model/order.model.js";
-import { Payment } from "../../model/payment.model.js";
-import { Refund } from "../../model/refund.model.js";
-import { Stock } from "../../model/stock.model.js";
-import { BusinessRules } from "../../model/business-rules.model.js";
-import {ProductRules} from "../../model/product-rules.model.js";
-import express from "express";
+import { User } from "../../model/user.model";
+import { Booking } from "../../model/booking.model";
+import { Order } from "../../model/order.model";
+import { Payment } from "../../model/payment.model";
+import { Refund } from "../../model/refund.model";
+import { Stock } from "../../model/stock.model";
+import { BusinessRules } from "../../model/business-rules.model";
+import { ProductRules } from "../../model/product-rules.model";
 
 export default async function connectToInMemoryMongoDB() {
     const mongoServer = await MongoMemoryServer.create({
@@ -34,8 +33,8 @@ export default async function connectToInMemoryMongoDB() {
 
 async function seedDatabase() {
     const dir = (file: string) => `inMemoryDBmockedData/${file}`;
-
     console.log("Seeding in-memory database...");
+    // WARNING: ORDER OF SEEDING MATTERS
     const seedsFiles = [
         { schema: BusinessRules, file: 'businessRules.json' },
         { schema: Stock, file: 'stocks.json' },

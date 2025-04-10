@@ -1,7 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { Express } from "express";
-import { HOST } from "./config.properties.js";
+import { HOST } from "@config/config.properties";
 
 const options = {
     definition: {

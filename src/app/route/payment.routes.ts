@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { processPayment, processRefund, updatePaymentStatus } from "../controller/payment.controller.js";
+import { processPayment, processRefund, updatePaymentStatus } from "../controller/payment.controller";
 
 export default Router()
     .post("/payment", processPayment)

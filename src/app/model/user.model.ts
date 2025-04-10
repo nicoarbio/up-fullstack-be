@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { DbModelName } from "./enum/db-model-name.enum.js";
+import { DbModelName } from "@enum/db-model-name.enum";
 
 export enum UserRoles {
     ADMIN = 'admin',

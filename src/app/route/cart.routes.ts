@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCart, cleanCart, addItems, deleteItem } from "../controller/cart.controller.js";
+import { getCart, cleanCart, addItems, deleteItem } from "../controller/cart.controller";
 
 export default Router()
     .get("/cart", getCart)

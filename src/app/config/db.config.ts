@@ -1,7 +1,7 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import { IS_PROD, DB_CONFIG } from "./config.properties.js";
-import connectToInMemoryMongoDB from "./mongodb/inmemory.connection.js";
-import connectToAtlasMongoDB from "./mongodb/atlas.connection.js";
+import { IS_PROD, DB_CONFIG } from "@config/config.properties";
+import connectToInMemoryMongoDB from "@config/mongodb/inmemory.connection";
+import connectToAtlasMongoDB from "@config/mongodb/atlas.connection";
 
 export const mongoClientOptions: ConnectOptions = {
     dbName: DB_CONFIG.DB_NAME,

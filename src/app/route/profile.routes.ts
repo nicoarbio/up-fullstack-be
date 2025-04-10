@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { editUserProfile, getUserProfile } from "../controller/profile.controller.js";
+import { editUserProfile, getUserProfile } from "@controller/profile.controller";
 
 export default Router()
     .get("/profile", getUserProfile)
@@ -7,7 +7,7 @@ export default Router()
     .get("/user/all", getAllUsers); // TODO: delete
 
 import { Request, Response } from "express";
-import { User } from "../model/user.model.js";
+import { User } from "@model/user.model";
 async function getAllUsers(req: Request, res: Response) {
     try {
         const users = await User.find();

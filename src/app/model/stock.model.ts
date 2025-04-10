@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { StockCategory } from "./enum/stock.enum.js";
-import { Accessory, Product } from "./enum/booking.enum.js";
+import { StockCategory } from "@enum/stock.enum";
+import { Accessory, Product } from "@enum/booking.enum";
 
 const stockSchema = new mongoose.Schema({
     _id:      { type: String, default: 'default' },

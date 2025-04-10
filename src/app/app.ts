@@ -1,17 +1,17 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 
-import { API_BASE_URL } from "./config/config.properties.js";
+import { API_BASE_URL } from "@config/config.properties";
 
-import authenticationRouter from "./routes/authentication.routes.js";
-import bookingsRouter from "./routes/bookings.routes.js";
-import cartRouter from "./routes/cart.routes.js";
-import paymentRouter from "./routes/payment.routes.js";
-import profileRouter from "./routes/profile.routes.js";
-import servicesRouter from "./routes/services.routes.js";
+import authenticationRouter from "@route/authentication.routes";
+import bookingsRouter from "@route/bookings.routes";
+import cartRouter from "@route/cart.routes";
+import paymentRouter from "@route/payment.routes";
+import profileRouter from "@route/profile.routes";
+import servicesRouter from "@route/services.routes";
 
-import setupSwagger from "./config/swagger.config.js";
-import setupHealthCheck from "./config/health-check.js";
+import setupSwagger from "@config/swagger.config";
+import setupHealthCheck from "@config/health-check";
 
 const app: Express = express();
 

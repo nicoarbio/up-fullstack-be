@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { DbModelName } from "./enum/db-model-name.enum.js";
-import { ExtraType, OrderStatus } from "./enum/order.enum.js";
+import { DbModelName } from "@enum/db-model-name.enum";
+import { ExtraType, OrderStatus } from "@enum/order.enum";
 
 const { ObjectId } = mongoose.Schema.Types;
 
