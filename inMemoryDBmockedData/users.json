@@ -1,0 +1,53 @@
+[
+  {
+    "_id": "6612f1f3e13c4f04b8fa0a01",
+    "name": "Nicolás",
+    "lastname": "Arbio",
+    "email": "nicolasarbio@outlook.com",
+    "passwordHash": "$2b$10$Vh4LC0Yxk7yUv7GNE6pOBOrTczcW0r9Gz0AIwPiWcVGoFtx/oYt.u",
+    "googleId": null,
+    "imageUrl": "https://avatars.githubusercontent.com/u/25025508?v=4",
+    "createdAt": "2025-04-07T14:45:00.000Z",
+    "updatedAt": "2025-04-07T14:45:00.000Z"
+  },
+  {
+    "name": "Lucía",
+    "lastname": "Martínez",
+    "email": "lucia.martinez@example.com",
+    "passwordHash": "$2b$10$zFcmwHZZi8ZdX4c8Yz6MQOLP3MiPzDQ13UX8Zz1fFQz7wJ2eX.VF2",
+    "googleId": null,
+    "imageUrl": "https://randomuser.me/api/portraits/women/45.jpg",
+    "createdAt": "2025-04-06T10:15:00.000Z",
+    "updatedAt": "2025-04-06T10:15:00.000Z"
+  },
+  {
+    "name": "Carlos",
+    "lastname": "Ramírez",
+    "email": "carlos.ramirez@example.com",
+    "passwordHash": "$2b$10$KUnlVDzE5GpAywnJ5hJoW.XTSk2wPoDiIb5N0Mgqx6PIvN1z8Z7zu",
+    "googleId": null,
+    "imageUrl": "https://randomuser.me/api/portraits/men/22.jpg",
+    "createdAt": "2025-04-05T08:00:00.000Z",
+    "updatedAt": "2025-04-05T08:00:00.000Z"
+  },
+  {
+    "name": "Valentina",
+    "lastname": "Gómez",
+    "email": "valentina.gomez@example.com",
+    "passwordHash": "$2b$10$XHg0a0ZAwfElUsIYXUQQ1u7I9RLlNjU9nFJ3Id8lBLJbi1zZpRPNy",
+    "googleId": null,
+    "imageUrl": "https://randomuser.me/api/portraits/women/88.jpg",
+    "createdAt": "2025-04-04T16:30:00.000Z",
+    "updatedAt": "2025-04-04T16:30:00.000Z"
+  },
+  {
+    "name": "Diego",
+    "lastname": "Fernández",
+    "email": "diego.fernandez@example.com",
+    "passwordHash": "$2b$10$q5HkW1wLDYjU8Y6p7gRkpe9OQ4qOEJrH8QutX4X8XtTrSz5Ncfu5W",
+    "googleId": null,
+    "imageUrl": "https://randomuser.me/api/portraits/men/57.jpg",
+    "createdAt": "2025-04-03T11:20:00.000Z",
+    "updatedAt": "2025-04-03T11:20:00.000Z"
+  }
+]

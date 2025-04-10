@@ -1,0 +1,47 @@
+{
+  "_id": "default",
+  "openHour": "08:00",
+  "closeHour": "18:00",
+  "slotDuration": 30,
+  "slotStep": 15,
+  "pricing": {
+    "products": {
+      "jet_sky": 20000,
+      "atv": 15000,
+      "diving_gear": 15000,
+      "surfboard_kid": 5000,
+      "surfboard_adult": 7000
+    },
+    "accessories": {
+      "aqua_helmet": 2300,
+      "terrain_helmet": 2700,
+      "life_jacket": 3500
+    },
+    "extras": {
+      "storm_insurance": 1500
+    }
+  },
+  "penalties": [
+    {
+      "name": "late_cancellation",
+      "type": "percentage",
+      "value": 50
+    }
+  ],
+  "discounts": [
+    {
+      "name": "multi_booking",
+      "type": "percentage",
+      "value": 10
+    }
+  ],
+  "refundPolicies": [
+    {
+      "type": "percentage",
+      "value": 50,
+      "name": "storm_with_insurance"
+    }
+  ],
+  "createdAt": "2025-04-10T12:00:00.000Z",
+  "updatedAt": "2025-04-10T12:00:00.000Z"
+}

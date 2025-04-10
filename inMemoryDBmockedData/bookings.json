@@ -1,0 +1,51 @@
+[
+  {
+    "_id": "67f766f5c45576b02c813261",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "orderId": "67f766127e00f01e1f19d192",
+    "product": {
+      "type": "jet_sky",
+      "stockId": "stk-js-001"
+    },
+    "passengers": [
+      {
+        "fullName": "Nicolás Arbio",
+        "birthdate": "1990-05-20",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-001"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-001"
+          }
+        ]
+      },
+      {
+        "fullName": "Mariana Lopez",
+        "birthdate": "1992-11-02",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-002"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-002"
+          }
+        ]
+      }
+    ],
+    "startTime": "2025-04-10T10:00:00.000Z",
+    "endTime": "2025-04-10T10:30:00.000Z",
+    "price": 20000,
+    "discount": 2000,
+    "finalPrice": 18000,
+    "status": "active",
+    "refundStatus": "refunded",
+    "refundAmount": 18000,
+    "createdAt": "2025-04-08T10:00:00.000Z",
+    "updatedAt": "2025-04-08T10:00:00.000Z"
+  }
+]

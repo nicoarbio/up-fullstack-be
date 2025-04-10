@@ -1,27 +1,24 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import { DB_CONFIG } from "./config.properties.js";
+import { IS_PROD, DB_CONFIG } from "./config.properties.js";
+import connectToInMemoryMongoDB from "./mongodb/inmemory.connection.js";
+import connectToAtlasMongoDB from "./mongodb/atlas.connection.js";
 
-export default async function connectDB(): Promise<void> {
-    const uri = DB_CONFIG.getConnectionString();
+export const mongoClientOptions: ConnectOptions = {
+    dbName: DB_CONFIG.DB_NAME,
+    serverApi: {
+        version: '1',
+        strict: true,
+        deprecationErrors: true
+    }
+};
 
-    const clientOptions: ConnectOptions = {
-        serverApi: {
-            version: '1',
-            strict: true,
-            deprecationErrors: true
-        }
-    };
+export async function connectDB() {
+    console.log("Connecting to MongoDB...");
+    if (IS_PROD) return await connectToAtlasMongoDB();
+    return await connectToInMemoryMongoDB();
+}
 
-    //async function run() {
-        try {
-            // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-            await mongoose.connect(uri, clientOptions);
-            // await mongoose.connection.db.admin().command({ ping: 1 });
-            console.log("Pinged your deployment. You successfully connected to MongoDB!");
-        } finally {
-            // Ensures that the client will close when you finish/error
-            await mongoose.disconnect();
-        }
-    //}
-    //run().catch(console.dir);
+export async function disconnectDB() {
+    console.log("Disconnecting from MongoDB...");
+    return mongoose.disconnect();
 }

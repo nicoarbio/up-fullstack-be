@@ -1,0 +1,32 @@
+[
+  {
+    "product": "jet_sky",
+    "maxPeople": 2,
+    "accessories": [
+      "aqua_helmet",
+      "life_jacket"
+    ]
+  },
+  {
+    "product": "quad",
+    "maxPeople": 2,
+    "accessories": [
+      "terrain_helmet"
+    ]
+  },
+  {
+    "product": "diving_gear",
+    "maxPeople": 1,
+    "accessories": []
+  },
+  {
+    "product": "surfboard_kid",
+    "maxPeople": 1,
+    "accessories": []
+  },
+  {
+    "product": "surfboard_adult",
+    "maxPeople": 1,
+    "accessories": []
+  }
+]

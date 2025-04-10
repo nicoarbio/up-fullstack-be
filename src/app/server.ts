@@ -1,12 +1,20 @@
 import app from "./app.js";
 import { HOST, PORT } from "./config/config.properties.js";
-import connectDB from "./config/db.config.js";
+import { connectDB, disconnectDB } from "./config/db.config.js";
+
+let dbConnected = false;
 
 try {
     await connectDB();
-    app.listen(PORT, function () {
-        console.log(`Application initialized at: ${HOST}`)
-    })
+    dbConnected = true;
+    app.listen(PORT, () => console.log(`🚀 Application initialized at: ${HOST}`));
 } catch (e) {
-    console.error("Error initializing application", e);
+    if (dbConnected) await disconnectDB();
+    console.error("❌ Error initializing application", e);
 }
+
+process.on('SIGINT', async () => {
+    console.log('Gracefully shutting down...');
+    if (dbConnected) await disconnectDB();
+    process.exit(0);
+});
