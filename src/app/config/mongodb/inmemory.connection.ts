@@ -1,7 +1,7 @@
 import fs from "fs";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { mongoClientOptions } from "../db.config";
+import { mongoClientOptions } from "@config/db.config";
 
 import { User } from "@model/user.model";
 import { Booking } from "@model/booking.model";
