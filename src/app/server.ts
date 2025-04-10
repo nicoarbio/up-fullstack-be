@@ -4,13 +4,15 @@ import { connectDB, disconnectDB } from "./config/db.config.js";
 
 let dbConnected = false;
 
-try {
-    await connectDB();
-    dbConnected = true;
-    app.listen(PORT, () => console.log(`🚀 Application initialized at: ${HOST}`));
-} catch (e) {
-    if (dbConnected) await disconnectDB();
-    console.error("❌ Error initializing application", e);
+async function startServer() {
+    try {
+        await connectDB();
+        dbConnected = true;
+        app.listen(PORT, () => console.log(`🚀 Application initialized at: ${HOST}`));
+    } catch (e) {
+        if (dbConnected) await disconnectDB();
+        console.error("❌ Error initializing application", e);
+    }
 }
 
 process.on('SIGINT', async () => {
@@ -18,3 +20,5 @@ process.on('SIGINT', async () => {
     if (dbConnected) await disconnectDB();
     process.exit(0);
 });
+
+startServer();

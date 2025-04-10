@@ -16,9 +16,9 @@
   "main": "server.js",
   "scripts": {
     "tsc": "tsc",
-    "build": "npm install && npm test && tsc",
+    "build": "npm install && npm test && rm -rf dist &&tsc",
     "start": "node dist/server.js",
-    "dev": "node --experimental-loader ts-node/esm src/app/server.ts",
+    "dev": "ts-node src/app/server.ts",
     "dev:watch": "nodemon",
     "clean": "rm -rf dist && rm -rf src/**/*.js",
     "test": "vitest run",
