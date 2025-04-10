@@ -1,5 +1,5 @@
-import { ProductRules } from "../model/product-rules.model";
-import { Product, Accessory } from "../model/enum/booking.enum";
+import { ProductRules } from "@model/product-rules.model";
+import { Product, Accessory } from "@enum/booking.enum";
 
 export interface IProductRule {
     maxPeople: number;

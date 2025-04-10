@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { query } from "express-validator";
 import { DateTime } from "luxon";
-import { getServicesAvailability } from "../controller/services.controller";
-import { Product } from "../model/enum/booking.enum";
+import { getServicesAvailability } from "@controller/services.controller";
+import { Product } from "@enum/booking.enum";
 
 const servicesAvailabilityValidation= [
     query('date')

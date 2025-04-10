@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { mongoClientOptions } from "../db.config";
 
-import { User } from "../../model/user.model";
-import { Booking } from "../../model/booking.model";
-import { Order } from "../../model/order.model";
-import { Payment } from "../../model/payment.model";
-import { Refund } from "../../model/refund.model";
-import { Stock } from "../../model/stock.model";
-import { BusinessRules } from "../../model/business-rules.model";
-import { ProductRules } from "../../model/product-rules.model";
+import { User } from "@model/user.model";
+import { Booking } from "@model/booking.model";
+import { Order } from "@model/order.model";
+import { Payment } from "@model/payment.model";
+import { Refund } from "@model/refund.model";
+import { Stock } from "@model/stock.model";
+import { BusinessRules } from "@model/business-rules.model";
+import { ProductRules } from "@model/product-rules.model";
 
 export default async function connectToInMemoryMongoDB() {
     const mongoServer = await MongoMemoryServer.create({

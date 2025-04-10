@@ -1,4 +1,4 @@
-import { BusinessRules } from "../model/business-rules.model";
+import { BusinessRules } from "@model/business-rules.model";
 
 let cachedRules: InstanceType<typeof BusinessRules> | null = null;
 let cachedUpdatedAt: string | null = null;

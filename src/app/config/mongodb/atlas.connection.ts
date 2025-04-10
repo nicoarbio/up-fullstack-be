@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { DB_CONFIG } from "../config.properties";
-import { mongoClientOptions } from "../db.config";
+import { DB_CONFIG } from "@config/config.properties";
+import { mongoClientOptions } from "@config/db.config";
 
 export default async function connectToAtlasMongoDB()  {
     const uri = DB_CONFIG.getConnectionString();
