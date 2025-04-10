@@ -1,5 +1,20 @@
 import { build } from 'esbuild'
 import path from 'path'
+import fs from 'fs'
+import { parse } from 'jsonc-parser'
+
+const tsconfig = parse(fs.readFileSync('tsconfig.json', 'utf-8'));
+const tsPaths = tsconfig.compilerOptions.paths || {};
+
+const aliases = {};
+
+for (const alias in tsPaths) {
+  const cleanAlias = alias.replace('/*', '')
+  const target = tsPaths[alias][0]
+      .replace(/^src\//, '') // sacamos src/ para que empiece en app/...
+      .replace('/*', '');
+  aliases[cleanAlias] = path.resolve('src', target);
+}
 
 await build({
   entryPoints: ['src/app/server.ts'],
@@ -9,13 +24,5 @@ await build({
   target: 'node20',
   sourcemap: true,
   tsconfig: 'tsconfig.json',
-  alias: {
-  '@app': path.resolve('src', 'app/app.ts'),
-  '@model': path.resolve('src', 'app/model'),
-  '@enum': path.resolve('src', 'app/model/enum'),
-  '@service': path.resolve('src', 'app/service'),
-  '@controller': path.resolve('src', 'app/controller'),
-  '@route': path.resolve('src', 'app/route'),
-  '@config': path.resolve('src', 'app/config')
-  }
-})
+  alias: aliases
+});
