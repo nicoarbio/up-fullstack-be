@@ -6,14 +6,29 @@ import { Product } from "@enum/booking.enum";
 
 const servicesAvailabilityValidation= [
     query('date')
-        .isISO8601()
-        .withMessage('La fecha debe estar en formato YYYY-MM-DD'),
-    query('date')
-        .isBefore(DateTime.now().plus({ days: 2 }).toISODate())
-        .withMessage('La fecha no puede ser mayor a 2 días'),
-    query('date')
-        .isAfter(DateTime.now().toISODate())
-        .withMessage('La fecha no puede ser menor a la fecha actual'),
+        .custom(value => {
+            const inputDate = DateTime.fromISO(value);
+            if (!inputDate.isValid) {
+                throw new Error('La fecha debe estar en formato ISO válido con hora');
+            }
+
+            const now = DateTime.now();
+            const in48Hours = DateTime.now().plus({ hours: 48 });
+
+            if (!inputDate.isValid) {
+                throw new Error('La fecha no es válida');
+            }
+
+            if (inputDate < now) {
+                throw new Error('La fecha no puede ser menor a la fecha y hora actual');
+            }
+
+            if (inputDate > in48Hours) {
+                throw new Error('La fecha no puede ser mayor a 48 horas desde ahora');
+            }
+
+            return true;
+        }),
     query('products')
         .notEmpty()
         .customSanitizer(value => Array.isArray(value) ? value : [value])

@@ -5,6 +5,5 @@ export enum DbModelName {
     ORDER = 'Order',
     REFUND = 'Refund',
     STOCK = 'Stock',
-    BUSINESS_RULES = 'BusinessRules',
-    PRODUCT_RULES = 'ProductRules',
+    BUSINESS_RULES = 'BusinessRules'
 }

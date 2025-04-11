@@ -7,6 +7,13 @@
     "active": true
   },
   {
+    "_id": "stk-js-002",
+    "type": "jet_sky",
+    "category": "product",
+    "serialId": "JS-002",
+    "active": true
+  },
+  {
     "_id": "stk-h-001",
     "type": "aqua_helmet",
     "category": "accessory",

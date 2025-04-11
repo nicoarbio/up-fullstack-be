@@ -9,7 +9,8 @@
         schema:
           type: string
           format: date
-        description: Fecha para consultar (YYYY-MM-DD)
+          example: '2025-04-10T15:00:00.268-03:00'
+        description: Fecha para consultar (si es hoy, que sea con hora)
       - name: products
         in: query
         required: true
