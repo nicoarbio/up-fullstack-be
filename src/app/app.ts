@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 
-import { API_BASE_URL } from "@config/config.properties";
+import { API_BASE_URL, IS_PROD } from "@config/config.properties";
 
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
@@ -29,6 +29,7 @@ app.use(`${API_BASE_URL}`, profileRouter);
 app.use(`${API_BASE_URL}`, servicesRouter);
 
 setupHealthCheck(app);
+//if (!IS_PROD) setupSwagger(app);
 setupSwagger(app);
 
 export default app;
