@@ -24,5 +24,6 @@ await build({
   target: 'node20',
   sourcemap: true,
   tsconfig: 'tsconfig.json',
-  alias: aliases
+  alias: aliases,
+  external: ['swagger-ui-express'],
 });

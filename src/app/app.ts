@@ -13,6 +13,8 @@ import servicesRouter from "@route/services.routes";
 import setupSwagger from "@config/swagger.config";
 import setupHealthCheck from "@config/health-check";
 
+import "@config/luxon.config";
+
 const app: Express = express();
 
 app.use(bodyParser.json());

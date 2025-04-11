@@ -11,9 +11,13 @@ const servicesAvailabilityValidation= [
     query('date')
         .isBefore(DateTime.now().plus({ days: 2 }).toISODate())
         .withMessage('La fecha no puede ser mayor a 2 días'),
+    query('date')
+        .isAfter(DateTime.now().toISODate())
+        .withMessage('La fecha no puede ser menor a la fecha actual'),
     query('products')
-        .customSanitizer((value) => Array.isArray(value) ? value : [value])
-        .custom((products) => {
+        .notEmpty()
+        .customSanitizer(value => Array.isArray(value) ? value : [value])
+        .custom(products => {
             const allowed = Object.values(Product).map(String);
             return products.every((p: string) => allowed.includes(p));
         })

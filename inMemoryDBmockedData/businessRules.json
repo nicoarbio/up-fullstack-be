@@ -4,21 +4,52 @@
   "closeHour": "18:00",
   "slotDuration": 30,
   "slotStep": 15,
-  "pricing": {
-    "products": {
-      "jet_sky": 20000,
-      "atv": 15000,
-      "diving_gear": 15000,
-      "surfboard_kid": 5000,
-      "surfboard_adult": 7000
+  "products": {
+    "jet_sky": {
+      "price": 20000,
+      "maxPeople": 2,
+      "accessories": [
+        "aqua_helmet",
+        "life_jacket"
+      ]
     },
-    "accessories": {
-      "aqua_helmet": 2300,
-      "terrain_helmet": 2700,
-      "life_jacket": 3500
+    "quad": {
+      "price": 12000,
+      "maxPeople": 2,
+      "accessories": [
+          "terrain_helmet"
+      ]
     },
-    "extras": {
-      "storm_insurance": 1500
+    "diving_gear": {
+      "price": 15000,
+      "maxPeople": 1,
+      "accessories": []
+    },
+    "surfboard_kid": {
+      "price": 5000,
+      "maxPeople": 1,
+      "accessories": []
+    },
+    "surfboard_adult": {
+      "price": 7000,
+      "maxPeople": 1,
+      "accessories": []
+    }
+  },
+  "accessories": {
+    "aqua_helmet": {
+      "price": 2300
+    },
+    "terrain_helmet": {
+      "price": 2700
+    },
+    "life_jacket": {
+      "price": 3500
+    }
+  },
+  "extras": {
+    "storm_insurance": {
+      "price": 1500
     }
   },
   "penalties": [

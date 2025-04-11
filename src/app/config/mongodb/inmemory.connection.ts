@@ -10,7 +10,6 @@ import { Payment } from "@model/payment.model";
 import { Refund } from "@model/refund.model";
 import { Stock } from "@model/stock.model";
 import { BusinessRules } from "@model/business-rules.model";
-import { ProductRules } from "@model/product-rules.model";
 
 export default async function connectToInMemoryMongoDB() {
     const mongoServer = await MongoMemoryServer.create({
@@ -31,14 +30,13 @@ export default async function connectToInMemoryMongoDB() {
     );
 }
 
-async function seedDatabase() {
+export async function seedDatabase() {
     const dir = (file: string) => `inMemoryDBmockedData/${file}`;
     console.log("Seeding in-memory database...");
     // WARNING: ORDER OF SEEDING MATTERS
     const seedsFiles = [
         { schema: BusinessRules, file: 'businessRules.json' },
         { schema: Stock, file: 'stocks.json' },
-        { schema: ProductRules, file: 'productRules.json' },
         { schema: User, file: 'users.json' },
         { schema: Order, file : 'orders.json' },
         { schema: Booking, file: 'bookings.json' },

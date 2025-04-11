@@ -3,7 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import { Express } from "express";
 import { HOST } from "@config/config.properties";
 
-const options = {
+const swaggerSpec = swaggerJsdoc({
     definition: {
         openapi: '3.0.0',
         info: {
@@ -16,11 +16,9 @@ const options = {
     apis: [
         "docs/swagger/**/*.yaml"
     ]
-};
-
-const specs = swaggerJsdoc(options);
+});
 
 export default (app: Express) => {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     console.log(`Swagger docs available at ${HOST}/api-docs`);
 };

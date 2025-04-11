@@ -14,8 +14,7 @@ export enum Accessory {
 
 export enum BookingStatus {
     ACTIVE = 'active',
-    CANCELLED = 'cancelled',
-    COMPLETED = 'completed'
+    CANCELLED = 'cancelled'
 }
 
 export enum RefundStatus {
