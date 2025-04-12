@@ -5,17 +5,15 @@
     "bookings": [
       "67f766f5c45576b02c813261"
     ],
-    "extras": [
-      {
-        "type": "storm_insurance",
-        "price": 1500
-      }
-    ],
+    "extras": [{
+      "type": "storm_insurance",
+      "price": 1500
+    }],
     "totalPrice": 21500,
     "totalDiscount": 2000,
     "finalPrice": 18000,
     "status": "paid",
-    "createdAt": "2025-04-08T10:00:00.000Z",
-    "updatedAt": "2025-04-08T10:00:00.000Z"
+    "createdAt": "2025-04-08T10:00:00-03:00",
+    "updatedAt": "2025-04-08T10:00:00-03:00"
   }
 ]

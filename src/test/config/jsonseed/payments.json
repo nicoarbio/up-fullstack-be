@@ -6,7 +6,7 @@
     "amount": 18000,
     "method": "cash",
     "status": "completed",
-    "createdAt": "2025-04-08T10:00:00.000Z",
-    "updatedAt": "2025-04-08T10:00:00.000Z"
+    "createdAt": "2025-04-08T10:00:00-03:00",
+    "updatedAt": "2025-04-08T10:00:00-03:00"
   }
 ]

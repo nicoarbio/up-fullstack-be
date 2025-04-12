@@ -17,7 +17,7 @@
       "price": 12000,
       "maxPeople": 2,
       "accessories": [
-          "terrain_helmet"
+        "terrain_helmet"
       ]
     },
     "diving_gear": {
@@ -73,6 +73,6 @@
       "name": "storm_with_insurance"
     }
   ],
-  "createdAt": "2025-04-10T12:00:00.000Z",
-  "updatedAt": "2025-04-10T12:00:00.000Z"
+  "createdAt": "2025-04-10T12:00:00-03:00",
+  "updatedAt": "2025-04-10T12:00:00-03:00"
 }
