@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "67f7674e9f5b861fa08383a1",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "orderId": "67f766127e00f01e1f19d192",
+    "amount": 18000,
+    "method": "cash",
+    "status": "completed",
+    "createdAt": "2025-04-08T10:00:00.000Z",
+    "updatedAt": "2025-04-08T10:00:00.000Z"
+  }
+]

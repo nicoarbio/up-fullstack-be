@@ -11,9 +11,8 @@ const servicesAvailabilityValidation = [
             if (!inputDate.isValid) {
                 throw new Error('La fecha debe estar en formato ISO válido con hora');
             }
-
-            const now = DateTime.now();
-            const in48Hours = DateTime.now().plus({ hours: 48 });
+            const now = DateTime.now().minus( { seconds: 5 } );
+            const in48Hours = now.plus({ hours: 48 });
 
             if (!inputDate.isValid) {
                 throw new Error('La fecha no es válida');

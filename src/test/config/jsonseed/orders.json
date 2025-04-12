@@ -1,0 +1,19 @@
+[
+  {
+    "_id": "67f766127e00f01e1f19d192",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "bookings": [
+      "67f766f5c45576b02c813261"
+    ],
+    "extras": [{
+      "type": "storm_insurance",
+      "price": 1500
+    }],
+    "totalPrice": 21500,
+    "totalDiscount": 2000,
+    "finalPrice":  18000,
+    "status": "paid",
+    "createdAt": "2025-04-08T10:00:00.000Z",
+    "updatedAt": "2025-04-08T10:00:00.000Z"
+  }
+]
