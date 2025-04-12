@@ -12,7 +12,8 @@ async function startServer() {
         app.listen(PORT, () => console.log(`🚀 Application initialized at: ${ HOST }`));
     } catch (e) {
         if (dbConnected) await disconnectDB();
-        console.error("❌ Error initializing application", e);
+        console.error("❌ Error initializing application");
+        throw e;
     }
 }
 
