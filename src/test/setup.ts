@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: '.env.test' });
-
 import { connectToInMemoryMongoDB, shutdownInMemoryMongoDB } from "../app/config/mongodb/inmemory.connection";
-import { beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach } from 'vitest';
+
+dotenv.config({ path: '.env.test' });
 
 beforeEach(async () => {
     await connectToInMemoryMongoDB();

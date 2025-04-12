@@ -36,9 +36,9 @@ const businessRulesSchema = new mongoose.Schema({
     products:     { type: Map, of: productSchema, required: true },
     accessories:  { type: Map, of: accessorySchema, required: true },
     extras:       { type: Map, of: extraSchema, required: true },
-    penalties:      [ruleItemSchema],
-    discounts:      [ruleItemSchema],
-    refundPolicies: [ruleItemSchema]
+    penalties:      [ ruleItemSchema ],
+    discounts:      [ ruleItemSchema ],
+    refundPolicies: [ ruleItemSchema ]
 }, { timestamps: true });
 
 export const BusinessRules = mongoose.model(DbModelName.BUSINESS_RULES, businessRulesSchema);

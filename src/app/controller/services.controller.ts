@@ -13,7 +13,7 @@ export async function getServicesAvailability(req: Request, res: Response) {
         return;
     }
     const date = DateTime.fromISO(req.query.date as string);
-    const products = (Array.isArray(req.query.products) ? req.query.products : [req.query.products]) as Product[];
+    const products = (Array.isArray(req.query.products) ? req.query.products : [ req.query.products ]) as Product[];
 
     try {
         const availability = await getAvailabilityForDate(date, products);
@@ -88,13 +88,13 @@ async function getAvailabilityForDate(date: DateTime, products: Product[]) {
             const conflictingBookings = await Booking.find({
                 'product.stockId': { $in: productStockIds },
                 status: { $ne: 'cancelled' },
-                $or: [{
+                $or: [ {
                     startTime: { $lte: slotStart },
                     endTime: { $gt: slotStart }
                 }, {
                     startTime: { $lt: slotEnd },
                     endTime: { $gte: slotEnd }
-                }]
+                } ]
             }).select('product.stockId');
 
             const occupiedProductIds = conflictingBookings.map(b => b.product?.stockId.toString());
@@ -127,13 +127,13 @@ async function getAvailabilityForDate(date: DateTime, products: Product[]) {
                 const accBooked = await Booking.find({
                     'passengers.accessories.stockId': { $in: accStockIds },
                     status: { $ne: 'cancelled' },
-                    $or: [{
+                    $or: [ {
                         startTime: { $lte: slotStart },
                         endTime: { $gt: slotStart }
                     }, {
                         startTime: { $lt: slotEnd },
                         endTime: { $gte: slotEnd }
-                    }]
+                    } ]
                 });
 
                 const usedIds = new Set(

@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { getServicesAvailability } from "@controller/services.controller";
 import { Product } from "@enum/booking.enum";
 
-const servicesAvailabilityValidation= [
+const servicesAvailabilityValidation = [
     query('date')
         .custom(value => {
             const inputDate = DateTime.fromISO(value);
@@ -31,13 +31,13 @@ const servicesAvailabilityValidation= [
         }),
     query('products')
         .notEmpty()
-        .customSanitizer(value => Array.isArray(value) ? value : [value])
+        .customSanitizer(value => Array.isArray(value) ? value : [ value ])
         .custom(products => {
             const allowed = Object.values(Product).map(String);
             return products.every((p: string) => allowed.includes(p));
         })
         .withMessage('Uno o más productos no son válidos')
-    ]
+]
 
 export default Router()
     .get("/services/availability", servicesAvailabilityValidation, getServicesAvailability);

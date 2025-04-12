@@ -1,10 +1,10 @@
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default {
-    plugins: [tsconfigPaths()],
+    plugins: [ tsconfigPaths() ],
     test: {
         globals: true,
         environment: 'node',
-        setupFiles: ['src/test/setup.ts'],
+        setupFiles: [ 'src/test/setup.ts' ],
     },
 };
