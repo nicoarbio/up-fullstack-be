@@ -23,15 +23,18 @@
     "test:coverage": "vitest run --silent --coverage"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "jsonc-parser": "^3.3.1",
+    "jsonwebtoken": "^9.0.2",
     "luxon": "^3.5.0",
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
