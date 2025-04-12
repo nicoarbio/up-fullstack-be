@@ -15,13 +15,13 @@ components:
         orderId:
           type: string
         bookingIds:
-            type: array
-            items:
-                type: string
+          type: array
+          items:
+            type: string
         amount:
           type: number
         reason:
-            type: string
+          type: string
         status:
           type: string
           enum:

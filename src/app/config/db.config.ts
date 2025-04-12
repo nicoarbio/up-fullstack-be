@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import { IS_PROD, DB_CONFIG } from "@config/config.properties";
+import { DB_CONFIG, IS_PROD } from "@config/config.properties";
 import { connectToInMemoryMongoDB, shutdownInMemoryMongoDB } from "@config/mongodb/inmemory.connection";
 import { connectToAtlasMongoDB } from "@config/mongodb/atlas.connection";
 

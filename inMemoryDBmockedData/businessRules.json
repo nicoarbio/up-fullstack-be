@@ -17,7 +17,7 @@
       "price": 12000,
       "maxPeople": 2,
       "accessories": [
-          "terrain_helmet"
+        "terrain_helmet"
       ]
     },
     "diving_gear": {
