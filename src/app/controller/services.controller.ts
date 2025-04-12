@@ -40,15 +40,24 @@ export type AvailabilityResponseDto = {
         };
     };
 };
-// TODO: NO FUNCIONA BIEN, REVISAR CON EJEMPLO DE STOCK EN JSON
-async function getAvailabilityForDate(date: DateTime, products: Product[]) {
-    const config = await getBusinessRules();
+
+export async function getAvailabilityForDate(date: DateTime, products: Product[]) {
+    const businessRules = await getBusinessRules();
+    const config = {
+        openHour: businessRules?.openHour as string,
+        closeHour: businessRules?.closeHour as string,
+        slotStep: businessRules?.slotStep as number,
+        slotDuration: businessRules?.slotDuration as number,
+        products: businessRules?.products
+    };
 
     const [ startHour, startMin ] = config?.openHour?.split(':').map(Number) || [];
     const [ endHour, endMin ] = config?.closeHour?.split(':').map(Number) || [];
 
-    const start = date.set({ hour: startHour, minute: startMin });
-    const end= date.set({ hour: endHour, minute: endMin });
+    const start = date
+        .plus({ minutes: (config.slotStep - (date.minute % config.slotStep)) })
+        .set({ second: 0, millisecond: 0 });
+    const end = date.set({ hour: endHour, minute: endMin });
 
     const slots: DateTime[] = [];
 
@@ -56,6 +65,8 @@ async function getAvailabilityForDate(date: DateTime, products: Product[]) {
         slots.push(t);
     }
     const result = {} as AvailabilityResponseDto;
+
+    if (!slots.length) return result;
 
     result.firstSlot = slots[0];
     result.lastSlot = slots[slots.length - 1];

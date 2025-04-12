@@ -1,17 +1,29 @@
-import { expect, test } from 'vitest'
-import request from 'supertest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { DateTime } from 'luxon';
-import app from "../../app/app";
+import { Product } from "../../app/model/enum/booking.enum";
+import { AvailabilityResponseDto, getAvailabilityForDate } from "../../app/controller/services.controller";
+import { shutdownDbAfter, startDbBefore } from "../setup";
 
-test('GET /api/v1/services/availability con query', async () => {
-    const date = DateTime.now().toISO();
+describe('services.controller.ts # getAvailabilityForDate', () => {
+    beforeAll(startDbBefore);
+    afterAll(shutdownDbAfter);
 
-    const res = await request(app)
-        .get('/api/v1/services/availability')
-        .query({ date, products: ['jet_sky', 'quad'] });
+    const products = [ Product.jet_sky, Product.quad ];
+    let res: AvailabilityResponseDto;
 
-    console.log(JSON.stringify(res.body, null, 2));
+    test('happy path', async () => {
+        const date = DateTime.fromISO('2025-04-08T17:13:58.000Z');
+        res = await getAvailabilityForDate(date, products);
+        expect(res.products.jet_sky).toHaveProperty('17:15');
+    });
 
-    expect(res.status, JSON.stringify(res.body)).toBe(200);
-    expect(res.body).toHaveProperty('products');
-});
+    test('no time available', async () => {
+        const date = DateTime.fromISO('2025-04-08T18:13:58.000Z');
+        res = await getAvailabilityForDate(date, products);
+        expect(res.firstSlot).eq(undefined);
+        expect(res.lastSlot).eq(undefined);
+        expect(res.products).eq(undefined);
+    });
+
+} )
+
