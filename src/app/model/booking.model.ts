@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
 import { Accessory, BookingStatus, Product, RefundStatus } from "@enum/booking.enum";
+import { fromLuxonDateTime, toLuxonDateTime } from "@config/luxon.config";
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -13,12 +14,14 @@ const bookingSchema = new mongoose.Schema({
     },
     passengers: [ {
         fullName:    { type: String, required: true },
-        birthdate:   { type: Date, required: true },
+        birthdate:   { type: Date, required: true, get: toLuxonDateTime, set: fromLuxonDateTime},
         accessories: [ {
             type:    { type: String, enum: Object.values(Accessory), required: true },
             stockId: { type: String, ref: DbModelName.STOCK, required: true }
         } ]
     } ],
+    startTime:       { type: Date, required: true, get: toLuxonDateTime, set: fromLuxonDateTime},
+    endTime:         { type: Date, required: true, get: toLuxonDateTime, set: fromLuxonDateTime },
     price:           { type: Number, required: true },
     discount:        { type: Number, default: 0 },
     finalPrice:      { type: Number, required: true },
