@@ -1,10 +1,10 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { IS_PROD, DB_CONFIG } from "@config/config.properties";
-import connectToInMemoryMongoDB from "@config/mongodb/inmemory.connection";
-import connectToAtlasMongoDB from "@config/mongodb/atlas.connection";
+import { connectToInMemoryMongoDB, shutdownInMemoryMongoDB } from "@config/mongodb/inmemory.connection";
+import { connectToAtlasMongoDB } from "@config/mongodb/atlas.connection";
 
 export const mongoClientOptions: ConnectOptions = {
-    dbName: DB_CONFIG.DB_NAME,
+    dbName: DB_CONFIG.NAME,
     serverApi: {
         version: '1',
         strict: true,
@@ -20,5 +20,6 @@ export async function connectDB() {
 
 export async function disconnectDB() {
     console.log("Disconnecting from MongoDB...");
+    if (!IS_PROD) await shutdownInMemoryMongoDB();
     return mongoose.disconnect();
 }
