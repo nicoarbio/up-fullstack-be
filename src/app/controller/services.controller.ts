@@ -105,6 +105,9 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
                 }, {
                     startTime: { $lt: slotEnd },
                     endTime: { $gte: slotEnd }
+                }, {
+                    startTime: { $gte: slotStart },
+                    endTime: { $lte: slotEnd }
                 } ]
             }).select('product.stockId');
 
@@ -144,6 +147,9 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
                     }, {
                         startTime: { $lt: slotEnd },
                         endTime: { $gte: slotEnd }
+                    }, {
+                        startTime: { $gte: slotStart },
+                        endTime: { $lte: slotEnd }
                     } ]
                 });
 
