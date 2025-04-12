@@ -48,15 +48,15 @@ components:
         status:
           type: string
           enum:
-          - active
-          - cancelled
-          - completed
+            - active
+            - cancelled
+            - completed
         refundStatus:
           type: string
           enum:
-          - none
-          - requested
-          - refunded
+            - none
+            - requested
+            - refunded
         refundAmount:
           type: number
         createdAt:

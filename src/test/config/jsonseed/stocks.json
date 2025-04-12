@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "stk-js-001",
+    "type": "jet_sky",
+    "category": "product",
+    "serialId": "JS-001",
+    "active": true
+  },
+  {
+    "_id": "stk-js-002",
+    "type": "jet_sky",
+    "category": "product",
+    "serialId": "JS-002",
+    "active": true
+  },
+  {
+    "_id": "stk-h-001",
+    "type": "aqua_helmet",
+    "category": "accessory",
+    "serialId": "AH-001",
+    "active": true
+  },
+  {
+    "_id": "stk-h-002",
+    "type": "aqua_helmet",
+    "category": "accessory",
+    "serialId": "AH-002",
+    "active": true
+  },
+  {
+    "_id": "stk-lj-001",
+    "type": "life_jacket",
+    "category": "accessory",
+    "serialId": "LJ-001",
+    "active": true
+  },
+  {
+    "_id": "stk-lj-002",
+    "type": "life_jacket",
+    "category": "accessory",
+    "serialId": "LJ-002",
+    "active": true
+  }
+]

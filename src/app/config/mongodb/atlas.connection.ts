@@ -3,7 +3,7 @@ import { DB_CONFIG } from "@config/config.properties";
 import { mongoClientOptions } from "@config/db.config";
 import { seedDatabase } from "@config/mongodb/inmemory.connection";
 
-export default async function connectToAtlasMongoDB()  {
+export async function connectToAtlasMongoDB() {
     const uri = DB_CONFIG.getConnectionString();
 
     return mongoose.connect(uri, mongoClientOptions).then(

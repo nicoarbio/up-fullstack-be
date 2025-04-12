@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
+import { fromLuxonDateTime, toLuxonDateTime } from "@config/luxon.config";
 
 export enum UserRoles {
     ADMIN = 'admin',
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema({
     imageUrl:         { type: String,  default: null },
     role:             { type: String,  enum: Object.values(UserRoles), default: UserRoles.USER },
     status:           { type: String,  enum: Object.values(UserStatus), default: UserStatus.ACTIVE },
-    lastLogin:        { type: Date,    default: null }
+    lastLogin:        { type: Date,    default: null, get: toLuxonDateTime, set: fromLuxonDateTime }
 } , { timestamps: true });
 
 export const User = mongoose.model(DbModelName.USER, userSchema);

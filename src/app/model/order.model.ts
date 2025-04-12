@@ -6,10 +6,11 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const orderSchema = new mongoose.Schema({
     userId:        { type: ObjectId, ref: DbModelName.USER, required: true },
-    bookings:     [{ type: ObjectId, ref: DbModelName.BOOKING }],
-    extras: [{ type:  { type: String, enum: Object.values(ExtraType), required: true },
-               price: { type: Number, required: true }
-    }],
+    bookings:    [ { type: ObjectId, ref: DbModelName.BOOKING } ],
+    extras: [ {
+        type:  { type: String, enum: Object.values(ExtraType), required: true },
+        price: { type: Number, required: true }
+    } ],
     totalPrice:    { type: Number, required: true },
     totalDiscount: { type: Number, required: true },
     finalPrice:    { type: Number, required: true },

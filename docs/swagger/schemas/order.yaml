@@ -22,7 +22,7 @@ components:
               type:
                 type: string
                 enum:
-                - storm_insurance
+                  - storm_insurance
               price:
                 type: number
         totalPrice:
@@ -34,9 +34,9 @@ components:
         status:
           type: string
           enum:
-          - pending
-          - paid
-          - cancelled
+            - pending
+            - paid
+            - cancelled
         paymentId:
           $ref: '#/components/schemas/Payment'
         createdAt:

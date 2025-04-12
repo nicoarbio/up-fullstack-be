@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 
-import { API_BASE_URL, IS_PROD } from "@config/config.properties";
+import { API_BASE_URL } from "@config/config.properties";
 
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
@@ -21,12 +21,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use(`${API_BASE_URL}`, authenticationRouter);
-app.use(`${API_BASE_URL}`, bookingsRouter);
-app.use(`${API_BASE_URL}`, cartRouter);
-app.use(`${API_BASE_URL}`, paymentRouter);
-app.use(`${API_BASE_URL}`, profileRouter);
-app.use(`${API_BASE_URL}`, servicesRouter);
+app.use(`${ API_BASE_URL }`, authenticationRouter);
+app.use(`${ API_BASE_URL }`, bookingsRouter);
+app.use(`${ API_BASE_URL }`, cartRouter);
+app.use(`${ API_BASE_URL }`, paymentRouter);
+app.use(`${ API_BASE_URL }`, profileRouter);
+app.use(`${ API_BASE_URL }`, servicesRouter);
 
 setupHealthCheck(app);
 //if (!IS_PROD) setupSwagger(app);

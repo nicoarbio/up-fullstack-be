@@ -1,9 +1,9 @@
 components:
   schemas:
     RuleType:
-        enum:
-          - fixed
-          - percentage
+      enum:
+        - fixed
+        - percentage
     BusinessRules:
       type: object
       required:

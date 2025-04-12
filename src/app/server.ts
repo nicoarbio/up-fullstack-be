@@ -1,18 +1,19 @@
 import app from "@app";
-import { HOST, PORT, IS_PROD } from "@config/config.properties";
+import { HOST, IS_PROD, PORT } from "@config/config.properties";
 import { connectDB, disconnectDB } from "@config/db.config";
 
 let dbConnected = false;
 
 async function startServer() {
-    console.log(`🚀 Environment: ${IS_PROD ? 'Production' : 'Development'}`);
+    console.log(`🚀 Environment: ${ IS_PROD ? 'Production' : 'Development' }`);
     try {
         await connectDB();
         dbConnected = true;
-        app.listen(PORT, () => console.log(`🚀 Application initialized at: ${HOST}`));
+        app.listen(PORT, () => console.log(`🚀 Application initialized at: ${ HOST }`));
     } catch (e) {
         if (dbConnected) await disconnectDB();
-        console.error("❌ Error initializing application", e);
+        console.error("❌ Error initializing application");
+        throw e;
     }
 }
 

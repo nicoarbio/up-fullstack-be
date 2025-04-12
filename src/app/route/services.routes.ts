@@ -4,16 +4,15 @@ import { DateTime } from "luxon";
 import { getServicesAvailability } from "@controller/services.controller";
 import { Product } from "@enum/booking.enum";
 
-const servicesAvailabilityValidation= [
+const servicesAvailabilityValidation = [
     query('date')
         .custom(value => {
             const inputDate = DateTime.fromISO(value);
             if (!inputDate.isValid) {
                 throw new Error('La fecha debe estar en formato ISO válido con hora');
             }
-
-            const now = DateTime.now();
-            const in48Hours = DateTime.now().plus({ hours: 48 });
+            const now = DateTime.now().minus( { seconds: 5 } );
+            const in48Hours = now.plus({ hours: 48 });
 
             if (!inputDate.isValid) {
                 throw new Error('La fecha no es válida');
@@ -31,13 +30,13 @@ const servicesAvailabilityValidation= [
         }),
     query('products')
         .notEmpty()
-        .customSanitizer(value => Array.isArray(value) ? value : [value])
+        .customSanitizer(value => Array.isArray(value) ? value : [ value ])
         .custom(products => {
             const allowed = Object.values(Product).map(String);
             return products.every((p: string) => allowed.includes(p));
         })
         .withMessage('Uno o más productos no son válidos')
-    ]
+]
 
 export default Router()
     .get("/services/availability", servicesAvailabilityValidation, getServicesAvailability);
