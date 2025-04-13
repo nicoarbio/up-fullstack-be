@@ -18,3 +18,10 @@ export const DB_CONFIG = {
     LOCAL_PORT: Number(process.env.DB_LOCAL_PORT),
     SEED_PATH: process.env.DB_SEED_PATH || 'inMemoryDBmockedData'
 }
+export const JWT_CONFIG = {
+        SECRET_ACCESS: process.env.JWT_SECRET_ACCESS as string,
+        SECRET_REFRESH: process.env.JWT_SECRET_REFRESH as string,
+        EXPIRES_IN: process.env.JWT_EXPIRES_IN as any,
+        REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as any
+}
+export const BCRYPT_SALT_ROUNDS = 10;
