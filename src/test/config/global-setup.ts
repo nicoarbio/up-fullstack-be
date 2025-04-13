@@ -5,11 +5,11 @@ import fs from 'fs';
 import path from 'path';
 import mongoose from "mongoose";
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { mongoDbInMemoryConnection, seedDatabase } from "../../app/config/mongodb/inmemory.connection";
+import { getMongoDbInMemoryConfig, seedDatabase } from "../../app/config/mongodb/inmemory.connection";
 const mongoPath = path.resolve('.jest-test-mongo-uri');
 
 export default async () => {
-    const mongoServer = await MongoMemoryServer.create(mongoDbInMemoryConnection);
+    const mongoServer = await MongoMemoryServer.create(getMongoDbInMemoryConfig());
     const uri = mongoServer.getUri();
 
     await mongoose.connect(uri);

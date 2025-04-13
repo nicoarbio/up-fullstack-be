@@ -14,15 +14,17 @@ import { DB_CONFIG } from "@config/config.properties";
 
 let mongoDbInMemory: MongoMemoryServer;
 
-export const mongoDbInMemoryConnection = {
-    instance: {
-        dbName: mongoClientOptions.dbName,
-        port: DB_CONFIG.LOCAL_PORT
+export const getMongoDbInMemoryConfig = () => {
+    return {
+        instance: {
+            dbName: mongoClientOptions.dbName,
+            port: DB_CONFIG.LOCAL_PORT
+        }
     }
 }
 
 export async function connectToInMemoryMongoDB() {
-    mongoDbInMemory = await MongoMemoryServer.create(mongoDbInMemoryConnection);
+    mongoDbInMemory = await MongoMemoryServer.create(getMongoDbInMemoryConfig());
     const uri = mongoDbInMemory.getUri();
     console.log("In-Memory MongoDB URI: ", uri);
     return mongoose.connect(uri, mongoClientOptions).then(
