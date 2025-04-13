@@ -6,12 +6,17 @@ export async function connectToAtlasMongoDB() {
     const uri = DB_CONFIG.getConnectionString();
 
     return mongoose.connect(uri, mongoClientOptions).then(
-        () => {
+        async () => {
             console.log('MongoDB Atlas successfully connected');
         },
-        (err) => {
+        async (err) => {
             console.error('Error connecting to MongoDB Atlas', err);
             throw err;
         }
     );
+}
+
+export async function disconnectAtlasMongoDB() {
+    console.log("Disconnecting MongoDB Atlas...");
+    await mongoose.disconnect();
 }
