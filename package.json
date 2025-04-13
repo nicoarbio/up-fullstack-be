@@ -14,7 +14,7 @@
   "author": "Nicolás G. Arbio",
   "main": "dist/server.js",
   "scripts": {
-    "build": "npm run clean && npm i && npm run test:coverage && node build.mjs",
+    "build": "npm run clean && npm i && npm run test && node build.mjs",
     "start": "node dist/server.js",
     "dev": "ts-node src/app/server.ts",
     "dev:watch": "nodemon",
