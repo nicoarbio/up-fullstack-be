@@ -39,7 +39,9 @@ const response200ok = (req: Request, res: Response) => {
 export default Router()
     .get("/auth/encrypt/rsa", encryptRsa)
     .get("/auth/decrypt/rsa", decryptRsa)
+
     .get("/auth/encrypt/bcrypt", encryptBcrypt)
+
     .get("/auth", authenticate, response200ok)
     .get("/auth/admin", authenticateAdmin, response200ok)
     .get("/auth/user", authenticateUser, response200ok);

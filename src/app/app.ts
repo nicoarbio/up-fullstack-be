@@ -3,6 +3,9 @@ import bodyParser from "body-parser";
 
 import { API_BASE_URL } from "@config/config.properties";
 
+import { extractAuthorizationHeader } from "@middleware/authentication.middleware";
+import { validateRequest } from "@middleware/validateRequest.middleware";
+
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
 import cartRouter from "@route/cart.routes";
@@ -21,6 +24,7 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(extractAuthorizationHeader);
 
 app.use(`${ API_BASE_URL }`, authenticationRouter);
 app.use(`${ API_BASE_URL }`, bookingsRouter);
@@ -29,6 +33,8 @@ app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);
 app.use(`${ API_BASE_URL }/debug`, debugRouter);
+
+app.use(validateRequest);
 
 setupHealthCheck(app);
 //if (!IS_PROD) setupSwagger(app);
