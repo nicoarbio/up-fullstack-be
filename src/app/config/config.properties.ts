@@ -48,5 +48,3 @@ export const PASSWORD_ENCRYPTION = {
     getPrivateKey: () => fs.readFileSync(RSA_KEYS_LOCATION.private, 'utf-8'),
     getPublicKey: () => fs.readFileSync(RSA_KEYS_LOCATION.public, 'utf-8')
 }
-console.log(PASSWORD_ENCRYPTION.getPrivateKey())
-console.log(PASSWORD_ENCRYPTION.getPublicKey())
