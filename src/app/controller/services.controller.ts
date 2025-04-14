@@ -16,10 +16,11 @@ export async function getServicesAvailability(req: Request, res: Response) {
     try {
         const availability = await getAvailabilityForDate(date, products);
         res.status(200).json(availability);
+        console.log(`User '${req.user?.email || 'NO_CREDENTIALS_FOUND'}' checked availability for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(availability)}]`);
         return;
-    } catch (err) {
-        console.error('Error checking availability:', err);
-        res.status(500).json({ error: 'Internal server error' });
+    } catch (error) {
+        console.error('Error checking availability:', error);
+        res.status(500).json({ error: 'Internal server error', details: error });
         return;
     }
 }

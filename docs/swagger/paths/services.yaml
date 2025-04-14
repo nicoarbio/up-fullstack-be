@@ -2,6 +2,8 @@
   get:
     tags: [ Disponibilidad ]
     summary: Obtener disponibilidad de productos por fecha
+    security:
+      - bearerAuth: [ ]
     parameters:
       - name: date
         in: query

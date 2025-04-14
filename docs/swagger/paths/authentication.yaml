@@ -119,8 +119,10 @@
         application/json:
           schema:
             type: object
+            required:
+              - googleJWT
             properties:
-              googleJwt:
+              googleJWT:
                 type: string
                 required: true
     responses:
@@ -136,4 +138,4 @@
                 refreshToken:
                   type: string
       401:
-        description: Google JWT erroneo
+        description: Google JWT erróneo

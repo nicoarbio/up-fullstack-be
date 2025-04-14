@@ -7,11 +7,17 @@ if (!SECRET_ACCESS || !SECRET_REFRESH) {
     throw new Error('Missing JWT secrets in environment variables');
 }
 
-export const signAccessToken = (payload: object): string => {
+export type JwtPayload = {
+    id: any;
+    email: string;
+    role: string;
+}
+
+export const signAccessToken = (payload: JwtPayload): string => {
     return jwt.sign(payload, SECRET_ACCESS, { expiresIn: EXPIRES_IN });
 }
 
-export const signRefreshToken = (payload: object): string => {
+export const signRefreshToken = (payload: JwtPayload): string => {
     return jwt.sign(payload, SECRET_REFRESH, { expiresIn: REFRESH_EXPIRES_IN });
 }
 

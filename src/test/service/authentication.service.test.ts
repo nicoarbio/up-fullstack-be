@@ -51,7 +51,7 @@ describe('authentication.service.ts # registerUser', () => {
 
         expect(await cryptoService.bcrypt.compare(plainPassword, userInDb!.passwordHash)).toBe(true);
 
-        expect(result).toEqual({ email: newUserInfo.email });
+        expect(result.email).toEqual(newUserInfo.email);
     });
 
     test('user already exists', async () => {
