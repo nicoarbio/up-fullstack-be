@@ -28,9 +28,22 @@ export const JWT_CONFIG = {
 }
 export const BCRYPT_SALT_ROUNDS = 10;
 
+const getPath = (key: string) => {
+    if (!IS_PROD) {
+        if (fs.existsSync(`${key}.pem`)) {
+            return `${key}.pem`
+        } else {
+            throw new Error(`NODE_ENV=${process.env.NODE_ENV}. Falta generar los archivos 'private.pem' y 'public.pem' en la raiz del proyecto!`);
+        }
+    } else if (!fs.existsSync(`/etc/secrets/${key}.pem`)) {
+        throw new Error(`NODE_ENV=${process.env.NODE_ENV}. Key configuration files missing!`);
+    }
+    return `/etc/secrets/${key}.pem`;
+}
+
 const RSA_KEYS_LOCATION = {
-    private: fs.existsSync('private.pem') ? 'private.pem' : '/etc/secrets/private.pem',
-    public: fs.existsSync('public.pem') ? 'public.pem' : '/etc/secrets/public.pem',
+    private: getPath(`private`),
+    public: getPath(`public`)
 }
 export const PASSWORD_ENCRYPTION = {
     getPrivateKey: () => fs.readFileSync('private.pem', 'utf-8'),
