@@ -4,6 +4,7 @@
     summary: Obtener el perfil del usuario actual
     security:
       - bearerAuth: [ ]
+      - googleOAuth: [openid, email, profile]
     responses:
       200:
         description: Perfil del usuario actual

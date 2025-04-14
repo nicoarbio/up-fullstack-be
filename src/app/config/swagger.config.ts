@@ -1,5 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUi, { SwaggerUiOptions } from 'swagger-ui-express';
 import { Express } from "express";
 import { HOST } from "@config/config.properties";
 
@@ -18,7 +18,21 @@ const swaggerSpec = swaggerJsdoc({
     ]
 });
 
+
+const options: SwaggerUiOptions = {
+    swaggerOptions: {
+        validatorUrl : null,
+        oauth: {
+            clientId: "",
+            clientSecret: "",
+            appName: "TropicalHub",
+            scopeSeparator: ",",
+            additionalQueryStringParams: {}
+        }
+    }
+};
+
 export default (app: Express) => {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, options));
     console.log(`Swagger docs available at ${ HOST }/api-docs`);
 };
