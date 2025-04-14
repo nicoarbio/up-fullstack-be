@@ -25,5 +25,5 @@ await build({
     sourcemap: true,
     tsconfig: 'tsconfig.json',
     alias: aliases,
-    external: [ 'swagger-ui-express' ],
+    external: [ 'swagger-ui-express', 'bcrypt' ],
 });
