@@ -1,0 +1,163 @@
+/api/v1/debug/auth/encrypt/bcrypt:
+  get:
+    tags: [ Debug ]
+    summary: Encriptar texto plano con bcrypt
+    parameters:
+      - in: query
+        name: text
+        required: true
+        schema:
+          type: string
+          example: "123456"
+    responses:
+      200:
+        description: bcrypt hash
+        content:
+          text/plain:
+            type: string
+
+/api/v1/debug/auth/encrypt/rsa:
+  get:
+    tags: [ Debug ]
+    summary: Encriptar texto plano con rsa
+    parameters:
+      - in: query
+        name: text
+        required: true
+        schema:
+          type: string
+          example: "123456"
+    responses:
+      200:
+        description: RSA hash
+        content:
+          text/plain:
+            type: string
+
+/api/v1/debug/auth/decrypt/rsa:
+  get:
+    tags: [ Debug ]
+    summary: Desencriptar el rsa
+    parameters:
+      - in: query
+        name: hash
+        required: true
+        schema:
+          type: string
+          required: true
+    responses:
+      200:
+        description: Texto plano
+        content:
+          text/plain:
+            type: string
+
+/api/v1/debug/auth:
+  get:
+    tags: [ Debug ]
+    summary: Test de autenticación
+    security:
+      - bearerAuth: [ ]
+    responses:
+      200:
+        description: Autenticación exitosa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Autenticación exitosa"
+      401:
+        description: Credenciales inválidas
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Credenciales erroneas, inicie sesión"
+
+/api/v1/debug/auth/admin:
+  get:
+    tags: [ Debug ]
+    summary: Test de autenticación ['admin' only]
+    security:
+      - bearerAuth: [ ]
+    responses:
+      200:
+        description: Autenticación exitosa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Autenticación exitosa"
+      401:
+        description: Credenciales inválidas
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Credenciales erroneas, inicie sesión"
+      403:
+        description: No autorizado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "No tiene permisos para acceder a este recurso"
+                role:
+                  type: string
+                  example: "user"
+
+/api/v1/debug/auth/user:
+  get:
+    tags: [ Debug ]
+    summary: Test de autenticación ['user' only]
+    security:
+      - bearerAuth: [ ]
+    responses:
+      200:
+        description: Autenticación exitosa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Autenticación exitosa"
+      401:
+        description: Credenciales inválidas
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Credenciales erroneas, inicie sesión"
+      403:
+        description: No autorizado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "No tiene permisos para acceder a este recurso"
+                role:
+                  type: string
+                  example: "user"

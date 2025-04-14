@@ -3,9 +3,20 @@
     "_id": "6612f1f3e13c4f04b8fa0a01",
     "name": "Nicolás",
     "lastname": "Arbio",
-    "email": "nicolasarbio@outlook.com",
-    "passwordHash": "$2b$10$Vh4LC0Yxk7yUv7GNE6pOBOrTczcW0r9Gz0AIwPiWcVGoFtx/oYt.u",
+    "email": "nico@outlook.com",
+    "passwordHash": "$2b$10$YvMdmvlQ3QXJFhZyuh60W.s2fyOoW81TAqLfce8N/lZouiE.O2DlK",
     "googleId": null,
+    "imageUrl": "https://avatars.githubusercontent.com/u/25025508?v=4",
+    "createdAt": "2025-04-07T14:45:00.000-03:00",
+    "updatedAt": "2025-04-07T14:45:00.000-03:00"
+  },
+  {
+    "_id": "6612f1f3e13c4f04b8fa0a02",
+    "name": "Nicolás",
+    "lastname": "Arbio",
+    "email": "nico@tropicalhub.com",
+    "passwordHash": "$2b$10$YvMdmvlQ3QXJFhZyuh60W.s2fyOoW81TAqLfce8N/lZouiE.O2DlK",
+    "role": "admin",
     "imageUrl": "https://avatars.githubusercontent.com/u/25025508?v=4",
     "createdAt": "2025-04-07T14:45:00.000-03:00",
     "updatedAt": "2025-04-07T14:45:00.000-03:00"

@@ -36,3 +36,19 @@
 > Para un entorno de producción se recomienda usar:
 > Build command: `npm run build`
 > Start command: `npm run start`
+
+### Configuraciones varias
+
+### JWT
+Los diversos secrets se generaron mediante el comando:
+```bash
+openssl rand -hex 16
+```
+
+### Encriptar el texto plano de la password
+Para no enviar el texto plano de la password del front al back y no poderla ver en el log de las devtools, se espera que la password venga encriptada utilziando una clave pública RSA. En el backend (previo al uso de bcrypt para la DB), se utiliza la clave privada para desencriptar el texto. Para ello, se generaron las claves pública y privada mediante el siguiente comando:
+
+```bash
+openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in private.pem -out public.pem
+```

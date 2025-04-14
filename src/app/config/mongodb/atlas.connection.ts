@@ -11,9 +11,14 @@ export async function connectToAtlasMongoDB() {
             console.log('MongoDB Atlas successfully connected');
             await seedDatabase();
         },
-        (err) => {
+        async (err) => {
             console.error('Error connecting to MongoDB Atlas', err);
             throw err;
         }
     );
+}
+
+export async function disconnectAtlasMongoDB() {
+    console.log("Disconnecting MongoDB Atlas...");
+    await mongoose.disconnect();
 }
