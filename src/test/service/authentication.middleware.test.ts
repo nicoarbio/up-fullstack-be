@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate, authenticateAdmin, authenticateUser } from "../../app/middleware/authentication.middleware";
+import { authenticate, authenticateAdmin, authenticateUser, extractAuthorizationHeader } from "../../app/middleware/authentication.middleware";
 import { setupUser } from "../utils/authentication.utils";
 import cryptoService from "../../app/service/crypto.service";
 
@@ -39,6 +39,7 @@ describe('authentication.middleware.test.ts', () => {
         [users.user.req, 200],
         [users.admin.req, 200]
     ])('happy path # authenticate', (req, expectedStatus) => {
+        extractAuthorizationHeader(req, res, emptyFallback);
         authenticate(req, res, emptyFallback);
         expect(res.statusCode).toBe(expectedStatus);
     });
@@ -47,6 +48,7 @@ describe('authentication.middleware.test.ts', () => {
         [users.user.req, 200],
         [users.admin.req, 403]
     ])('happy path # authenticateUser', (req, expectedStatus) => {
+        extractAuthorizationHeader(req, res, emptyFallback);
         authenticateUser(req, res, emptyFallback);
         expect(res.statusCode).toBe(expectedStatus);
     });
@@ -55,6 +57,7 @@ describe('authentication.middleware.test.ts', () => {
         [users.user.req, 403],
         [users.admin.req, 200]
     ])('happy path # authenticateAdmin', (req, expectedStatus) => {
+        extractAuthorizationHeader(req, res, emptyFallback);
         authenticateAdmin(req, res, emptyFallback);
         expect(res.statusCode).toBe(expectedStatus);
     });

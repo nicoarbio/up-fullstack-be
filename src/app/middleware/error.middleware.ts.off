@@ -1,0 +1,30 @@
+// src/app/middleware/error.middleware.ts
+import { Request, Response, NextFunction } from 'express';
+import {IS_PROD} from "@config/config.properties";
+
+interface ApiError extends Error {
+    detail?: string;
+    status?: number;
+}
+
+export function errorHandler(err: ApiError, req: Request, res: Response, _next: NextFunction) {
+    const statusCode = err.status || 500;
+    const response = {
+        message: err.message || 'Ocurrió un error inesperado',
+        detail: err.detail
+    };
+
+    if (!IS_PROD) {
+        Object.assign(response, { stack: err.stack });
+    }
+
+    res.status(statusCode).json(response);
+}
+
+// Para lanzar errores tipados desde tu lógica:
+export function createError(message: string, options?: { status?: number; detail?: string }): ApiError {
+    const error = new Error(message) as ApiError;
+    if (options?.status) error.status = options.status;
+    if (options?.detail) error.detail = options.detail;
+    return error;
+}

@@ -47,6 +47,14 @@ export const PASSWORD_ENCRYPTION = {
     getPublicKey: () => fs.readFileSync(getPath(`public`), 'utf-8')
 }
 
+export const OAUTH = {
+    GOOGLE: {
+        CLIENT_ID: process.env.OAUTH2_GOOGLE_CLIENT_ID,
+        CLIENT_SECRET: process.env.OAUTH2_GOOGLE_CLIENT_SECRET
+    }
+}
+
 const validationErrorMessage = `Missing configuration values. Please check out your .env file and src/app/config/config.properties.ts`;
 validateObject(JWT_CONFIG, validationErrorMessage);
 validateObject(DB_CONFIG, validationErrorMessage);
+validateObject(OAUTH, validationErrorMessage);
