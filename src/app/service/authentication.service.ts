@@ -1,5 +1,5 @@
 import { User } from "@model/user.model";
-import bcrypt from "@service/brypt.service";
+import cryptoService from "@service/crypto.service";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "@service/jwt-handler.service";
 import { DateTime } from "luxon";
 
@@ -11,7 +11,8 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
         throw error;
     }
 
-    const passwordMatch = await bcrypt.compare(encryptedPassword, user.passwordHash);
+    const plainPassword = cryptoService.password.decrypt(encryptedPassword);
+    const passwordMatch = await cryptoService.bcrypt.compare(plainPassword, user.passwordHash);
     if (!passwordMatch) {
         throw error;
     }
@@ -47,7 +48,8 @@ export async function registerUser(newUserInfo: { name: string, lastname: string
     const existing = await User.findOne({ email: newUserInfo.email });
     if (existing) throw userAlreadyExists;
 
-    const passwordHash = await bcrypt.hash(newUserInfo.encryptedPassword);
+    const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+    const passwordHash = await cryptoService.bcrypt.hash(plainPassword);
     const newUser = await User.create({ ...newUserInfo, passwordHash });
 
     return {

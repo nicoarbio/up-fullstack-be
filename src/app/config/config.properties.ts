@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+import path from "path";
+import fs from "fs";
 
 dotenv.config();
 
@@ -25,3 +27,12 @@ export const JWT_CONFIG = {
         REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as any
 }
 export const BCRYPT_SALT_ROUNDS = 10;
+
+const RSA_KEYS_LOCATION = {
+    private: fs.existsSync('private.pem') ? 'private.pem' : '/etc/secrets/private.pem',
+    public: fs.existsSync('public.pem') ? 'public.pem' : '/etc/secrets/public.pem',
+}
+export const PASSWORD_ENCRYPTION = {
+    getPrivateKey: () => fs.readFileSync('private.pem', 'utf-8'),
+    getPublicKey: () => fs.readFileSync('public.pem', 'utf-8')
+}

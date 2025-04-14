@@ -1,6 +1,6 @@
 // @ts-ignore
 import jwt from 'jsonwebtoken';
-import bcrypt from "../../app/service/brypt.service";
+import cryptoService from "../../app/service/crypto.service";
 import { JWT_CONFIG } from "../../app/config/config.properties";
 import { User } from "../../app/model/user.model";
 import { loginUserWithEmailPassword, refreshAccessToken, registerUser } from "../../app/service/authentication.service";
@@ -9,7 +9,7 @@ import { verifyAccessToken, verifyRefreshToken } from "../../app/service/jwt-han
 describe('authentication.service.ts # loginUserWithEmailPassword', () => {
 
     test('happy path', async () => {
-        const res = await loginUserWithEmailPassword('nico@outlook.com', '123456');
+        const res = await loginUserWithEmailPassword('nico@outlook.com', cryptoService.password.encrypt("123456"));
 
         expect(res).toBeDefined();
         expect(res.accessToken).toBeDefined();
@@ -25,14 +25,14 @@ describe('authentication.service.ts # registerUser', () => {
         name: "Nicolás",
         lastname: "Arbio",
         email: "nico@up.com",
-        encryptedPassword: "123456",
+        encryptedPassword: cryptoService.password.encrypt("123456"),
         phoneNumber: "+5491113245678"
     }
     const alredyExistUserInfo = {
         name: "Nicolás",
         lastname: "Arbio",
         email: "nico@outlook.com",
-        encryptedPassword: "123456",
+        encryptedPassword: cryptoService.password.encrypt("123456"),
         phoneNumber: "+5491113245678"
     }
 
@@ -46,7 +46,10 @@ describe('authentication.service.ts # registerUser', () => {
         const userInDb = await User.findOne({ email: newUserInfo.email });
         expect(userInDb).not.toBeNull();
         expect(userInDb?.passwordHash).not.toBe(newUserInfo.encryptedPassword);
-        expect(await bcrypt.compare(newUserInfo.encryptedPassword, userInDb!.passwordHash)).toBe(true);
+
+        const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+
+        expect(await cryptoService.bcrypt.compare(plainPassword, userInDb!.passwordHash)).toBe(true);
 
         expect(result).toEqual({ email: newUserInfo.email });
     });
@@ -60,7 +63,7 @@ describe('authentication.service.ts # registerUser', () => {
 describe('authentication.service.ts # refreshAccessToken', () => {
     const user = {
         email: "nico@outlook.com",
-        password: "123456"
+        password: cryptoService.password.encrypt("123456")
     };
     let refreshToken: string;
     let accessToken: string;

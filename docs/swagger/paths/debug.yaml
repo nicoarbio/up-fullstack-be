@@ -4,21 +4,53 @@
     summary: Encriptar texto plano con bcrypt
     parameters:
       - in: query
-        name: password
+        name: text
         required: true
         schema:
           type: string
           example: "123456"
     responses:
       200:
-        description: Password hash
+        description: bcrypt hash
         content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                passwordHash:
-                  type: string
+          text/plain:
+            type: string
+
+/api/v1/debug/auth/encrypt/rsa:
+  get:
+    tags: [ Debug ]
+    summary: Encriptar texto plano con rsa
+    parameters:
+      - in: query
+        name: text
+        required: true
+        schema:
+          type: string
+          example: "123456"
+    responses:
+      200:
+        description: RSA hash
+        content:
+          text/plain:
+            type: string
+
+/api/v1/debug/auth/decrypt/rsa:
+  get:
+    tags: [ Debug ]
+    summary: Desencriptar el rsa
+    parameters:
+      - in: query
+        name: hash
+        required: true
+        schema:
+          type: string
+          required: true
+    responses:
+      200:
+        description: Texto plano
+        content:
+          text/plain:
+            type: string
 
 /api/v1/debug/auth:
   get:

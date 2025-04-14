@@ -1,13 +1,34 @@
 import { Router, Request, Response } from "express";
-import bcrypt from "@service/brypt.service";
+import cryptoService from "@service/crypto.service";
 import { authenticate, authenticateAdmin, authenticateUser } from "@middleware/authentication.middleware";
 
-const encryptPassword = async (req: Request, res: Response) => {
-    const password = req.query.password as string;
-    if(!password) {
-        res.status(400).json({ message: "Password is required" });
+const encryptRsa = async (req: Request, res: Response) => {
+    const text = req.query.text as string;
+    if(!text) {
+        res.status(400).json({ message: "Text is required" });
     } else {
-        res.status(200).json({ passwordHash: await bcrypt.hash(password)})
+        const hash = cryptoService.password.encrypt(text);
+        res.status(200).send(hash);
+    }
+}
+
+const decryptRsa = async (req: Request, res: Response) => {
+    const hash = req.query.hash as string;
+    if(!hash) {
+        res.status(400).json({ message: "Text is required" });
+    } else {
+        const text = cryptoService.password.decrypt(hash);
+        res.status(200).send(text);
+    }
+}
+
+const encryptBcrypt = async (req: Request, res: Response) => {
+    const text = req.query.text as string;
+    if(!text) {
+        res.status(400).json({ message: "Text is required" });
+    } else {
+        const hash = await cryptoService.bcrypt.hash(text);
+        res.status(200).send(hash);
     }
 }
 
@@ -16,8 +37,9 @@ const response200ok = (req: Request, res: Response) => {
 }
 
 export default Router()
-    .get("/auth/encrypt/bcrypt", encryptPassword)
+    .get("/auth/encrypt/rsa", encryptRsa)
+    .get("/auth/decrypt/rsa", decryptRsa)
+    .get("/auth/encrypt/bcrypt", encryptBcrypt)
     .get("/auth", authenticate, response200ok)
     .get("/auth/admin", authenticateAdmin, response200ok)
-    .get("/auth/user", authenticateUser, response200ok)
-
+    .get("/auth/user", authenticateUser, response200ok);

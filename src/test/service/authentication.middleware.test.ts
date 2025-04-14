@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { authenticate, authenticateAdmin, authenticateUser } from "../../app/middleware/authentication.middleware";
 import { setupUser } from "../utils/authentication.utils";
+import cryptoService from "../../app/service/crypto.service";
 
 describe('authentication.middleware.test.ts', () => {
     const res = {
@@ -15,12 +16,12 @@ describe('authentication.middleware.test.ts', () => {
     const users = {
         user: {
             tokens: { },
-            loginData: { email: "nico@outlook.com", password: "123456" },
+            loginData: { email: "nico@outlook.com", password: cryptoService.password.encrypt("123456") },
             req: { headers: { } } as Request
         },
         admin: {
             tokens: { },
-            loginData: { email: "nico@tropicalhub.com",password: "123456" },
+            loginData: { email: "nico@tropicalhub.com", password: cryptoService.password.encrypt("123456") },
             req: { headers: { } } as Request
         }
     }
