@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import fs from "fs";
+import { validateObject } from "@utils/objects.utils";
 
 dotenv.config();
 
@@ -20,11 +21,12 @@ export const DB_CONFIG = {
     SEED_PATH: process.env.DB_SEED_PATH || 'inMemoryDBmockedData'
 }
 export const JWT_CONFIG = {
-        SECRET_ACCESS: process.env.JWT_SECRET_ACCESS as string,
-        SECRET_REFRESH: process.env.JWT_SECRET_REFRESH as string,
-        EXPIRES_IN: process.env.JWT_EXPIRES_IN as any,
-        REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as any
+    SECRET_ACCESS: process.env.JWT_SECRET_ACCESS as string,
+    SECRET_REFRESH: process.env.JWT_SECRET_REFRESH as string,
+    EXPIRES_IN: process.env.JWT_EXPIRES_IN as any,
+    REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as any
 }
+
 export const BCRYPT_SALT_ROUNDS = 10;
 
 const getPath = (key: string) => {
@@ -40,11 +42,11 @@ const getPath = (key: string) => {
     return `/etc/secrets/${key}.pem`;
 }
 
-const RSA_KEYS_LOCATION = {
-    private: getPath(`private`),
-    public: getPath(`public`)
-}
 export const PASSWORD_ENCRYPTION = {
-    getPrivateKey: () => fs.readFileSync(RSA_KEYS_LOCATION.private, 'utf-8'),
-    getPublicKey: () => fs.readFileSync(RSA_KEYS_LOCATION.public, 'utf-8')
+    getPrivateKey: () => fs.readFileSync(getPath(`private`), 'utf-8'),
+    getPublicKey: () => fs.readFileSync(getPath(`public`), 'utf-8')
 }
+
+const validationErrorMessage = `Missing configuration values. Please check out your .env file and src/app/config/config.properties.ts`;
+validateObject(JWT_CONFIG, validationErrorMessage);
+validateObject(DB_CONFIG, validationErrorMessage);
