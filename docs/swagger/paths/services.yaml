@@ -10,7 +10,7 @@
           type: string
           format: date
           example: '2025-04-10T15:00:00.268-03:00'
-        description: Fecha para consultar (si es hoy, que sea con hora)
+        description: Fecha para consultar
       - name: products
         in: query
         required: true
