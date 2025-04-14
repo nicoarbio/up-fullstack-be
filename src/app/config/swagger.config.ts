@@ -8,7 +8,9 @@ const swaggerSpec = swaggerJsdoc({
         openapi: '3.0.0',
         info: {
             title: 'Sistema de Gestión de Alquiler de Productos de Playa',
-            description: 'Para un parador en el caribe',
+            description: 'Para un parador en el caribe.\n\n' +
+                'Para obtener el googleJWT token necesario para iniciar sesión con Google utilizar: ' +
+                '<a target="_blank"  href="https://nicoarbio.github.io/get-googlejwt-from-clientid/?clientId=205278716679-sas68d5f4trinhumfutpc6i1jdu6ed7a.apps.googleusercontent.com">esta herramienta.</a>',
             version: '1.0.0',
         },
     },
@@ -18,17 +20,10 @@ const swaggerSpec = swaggerJsdoc({
     ]
 });
 
-
 const options: SwaggerUiOptions = {
+    customSiteTitle: "TropicalHub | Swagger API Docs",
     swaggerOptions: {
-        validatorUrl : null,
-        oauth: {
-            clientId: "",
-            clientSecret: "",
-            appName: "TropicalHub",
-            scopeSeparator: ",",
-            additionalQueryStringParams: {}
-        }
+        persistAuthorization: true
     }
 };
 
