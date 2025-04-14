@@ -29,5 +29,5 @@ const options: SwaggerUiOptions = {
 
 export default (app: Express) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, options));
-    console.log(`Swagger docs available at ${ HOST }/api-docs`);
+    console.log(`Swagger docs available at ${ HOST }api-docs`);
 };
