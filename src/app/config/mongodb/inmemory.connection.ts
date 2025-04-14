@@ -14,28 +14,35 @@ import { DB_CONFIG } from "@config/config.properties";
 
 let mongoDbInMemory: MongoMemoryServer;
 
-export async function connectToInMemoryMongoDB() {
-    mongoDbInMemory = await MongoMemoryServer.create({
-        instance: { dbName: mongoClientOptions.dbName, port: DB_CONFIG.LOCAL_PORT },
-    });
-    const uri = mongoDbInMemory.getUri();
-    console.log("MongoDB In-Memory URI: ", uri);
+export const getMongoDbInMemoryConfig = () => {
+    return {
+        instance: {
+            dbName: mongoClientOptions.dbName,
+            port: DB_CONFIG.LOCAL_PORT
+        }
+    }
+}
 
+export async function connectToInMemoryMongoDB() {
+    mongoDbInMemory = await MongoMemoryServer.create(getMongoDbInMemoryConfig());
+    const uri = mongoDbInMemory.getUri();
+    console.log("In-Memory MongoDB URI: ", uri);
     return mongoose.connect(uri, mongoClientOptions).then(
         async () => {
             console.log('MongoDB In-Memory successfully connected');
             await seedDatabase();
         },
-        (err) => {
+        async (err) => {
             console.error('Error connecting to MongoDB In-Memory', err);
             throw err;
         }
     );
 }
 
-export async function shutdownInMemoryMongoDB() {
-    console.log("Shutting down In-Memory MongoDB...");
-    return await mongoose.disconnect();
+export async function disconnectAndShutdownInMemoryMongoDB() {
+    console.log("Disconnecting mongoose and shutting down In-Memory MongoDB...");
+    await mongoose.disconnect();
+    if(mongoDbInMemory) await mongoDbInMemory.stop();
 }
 
 export async function seedDatabase() {

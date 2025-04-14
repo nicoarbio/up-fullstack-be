@@ -16,6 +16,8 @@ for (const alias in tsPaths) {
     aliases[cleanAlias] = path.resolve('src', target);
 }
 
+console.log("🛠️🚧 Build is starting... 🚧🛠️");
+
 await build({
     entryPoints: [ 'src/app/server.ts' ],
     outfile: 'dist/server.js',
@@ -25,5 +27,7 @@ await build({
     sourcemap: true,
     tsconfig: 'tsconfig.json',
     alias: aliases,
-    external: [ 'swagger-ui-express' ],
+    external: [ 'swagger-ui-express', 'bcrypt' ],
 });
+
+console.log("✅  Build finished ✅ ");

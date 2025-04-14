@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { login, signup } from "@controller/authentication.controller";
+import { login, refreshToken, signup } from "@controller/authentication.controller";
 
 export default Router()
-    .post("/login", login)
-    .post("/signup", signup);
+    .post("/auth/login", login)
+    .post("/auth/refresh", refreshToken)
+    .post("/auth/signup", signup);

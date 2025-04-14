@@ -3,6 +3,7 @@ import { query } from "express-validator";
 import { DateTime } from "luxon";
 import { getServicesAvailability } from "@controller/services.controller";
 import { Product } from "@enum/booking.enum";
+import { validateRequest } from "@middleware/validateRequest.middleware";
 
 const servicesAvailabilityValidation = [
     query('date')
@@ -39,4 +40,4 @@ const servicesAvailabilityValidation = [
 ]
 
 export default Router()
-    .get("/services/availability", servicesAvailabilityValidation, getServicesAvailability);
+    .get("/services/availability", servicesAvailabilityValidation, validateRequest, getServicesAvailability);
