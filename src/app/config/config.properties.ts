@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import path from "path";
 import fs from "fs";
 
 dotenv.config();
@@ -46,6 +45,6 @@ const RSA_KEYS_LOCATION = {
     public: getPath(`public`)
 }
 export const PASSWORD_ENCRYPTION = {
-    getPrivateKey: () => fs.readFileSync('private.pem', 'utf-8'),
-    getPublicKey: () => fs.readFileSync('public.pem', 'utf-8')
+    getPrivateKey: () => RSA_KEYS_LOCATION.private,
+    getPublicKey: () => RSA_KEYS_LOCATION.public
 }
