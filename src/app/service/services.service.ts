@@ -134,6 +134,8 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
         }
     }
 
+    console.log(`Service availability checked for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(result)}]`);
+
     return result;
 }
 

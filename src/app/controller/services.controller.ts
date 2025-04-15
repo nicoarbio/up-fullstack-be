@@ -16,7 +16,6 @@ export async function getServicesAvailability(req: Request, res: Response) {
     try {
         const availability = await getAvailabilityForDate(date, products);
         res.status(200).json(availability);
-        console.log(`User '${req.user?.email || 'NO_CREDENTIALS_FOUND'}' checked availability for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(availability)}]`);
         return;
     } catch (error) {
         console.error('Error checking availability:', error);

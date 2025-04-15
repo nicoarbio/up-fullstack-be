@@ -1,7 +1,23 @@
 import * as log4js from 'log4js';
 import { createNamespace } from 'cls-hooked';
 
-export const requestNamespace = createNamespace('log-context');
+const requestNamespace = createNamespace('log-context');
+
+export enum MDCKeys {
+    USER_ID = 'userId'
+}
+
+export const MDC = {
+    run: (fn: () => void) => {
+        requestNamespace.run(fn);
+    },
+    set: (key: MDCKeys, value: any) => {
+        requestNamespace.set(key, value);
+    },
+    get: (key: string) => {
+        return requestNamespace.get(key);
+    }
+};
 
 log4js.configure({
     appenders: {
@@ -36,7 +52,3 @@ console.log = info.bind(logger);
 console.error = error.bind(logger);
 console.warn = warn.bind(logger);
 console.debug = debug.bind(logger);
-
-export const MDC = {
-    userId: (val: string) => logger.addContext('userId', val)
-};

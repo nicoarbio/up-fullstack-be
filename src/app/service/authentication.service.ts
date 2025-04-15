@@ -5,8 +5,10 @@ import cryptoService from "@service/crypto.service";
 import { JwtPayload, signAccessToken, signRefreshToken, verifyRefreshToken } from "@service/jwt-handler.service";
 import { User } from "@model/user.model";
 import { DateTime } from "luxon";
+import { MDC, MDCKeys } from "@config/log4js.config";
 
 export const loginUserWithEmailPassword = async (email: string, encryptedPassword: string) => {
+    MDC.set(MDCKeys.USER_ID, email);
     const error = new Error('Credenciales inválidas');
 
     const user = await User.findOne({ email });
@@ -27,7 +29,7 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
 
     await User.updateOne({ email }, { lastLogin: DateTime.now() });
 
-    console.log(`User '${email}' logged in using password. accessToken and refreshToken sent in response.`);
+    console.log(`User logged in using password. accessToken and refreshToken sent in response.`);
 
     return { accessToken, refreshToken };
 }
@@ -41,14 +43,16 @@ export async function refreshAccessToken(refreshToken: string) {
     } catch (error) {
         throw tokenInvalido(error);
     }
+    MDC.set(MDCKeys.USER_ID, jtwPayload.email);
     const user = await User.findById(jtwPayload.id);
     if (!user) throw tokenInvalido();
 
-    console.log(`User '${user.email}' refreshed access token using refresh token.`);
+    console.log(`User refreshed access token using refresh token.`);
     return signAccessToken({ id: user._id, email: user.email, role: user.role });
 }
 
 export async function registerUser(newUserInfo: { name: string, lastname: string, email: string, encryptedPassword: string, phoneNumber: string }) {
+    MDC.set(MDCKeys.USER_ID, newUserInfo.email);
     const userAlreadyExists = new Error('El usuario ya existe');
 
     const existing = await User.findOne({ email: newUserInfo.email });
@@ -57,7 +61,7 @@ export async function registerUser(newUserInfo: { name: string, lastname: string
     const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
     const passwordHash = await cryptoService.bcrypt.hash(plainPassword);
     const newUser = await User.create({ ...newUserInfo, passwordHash }).then((user) => {
-        console.log(`User '${user.email}' registered successfully. [${JSON.stringify(user)}]`);
+        console.log(`User registered successfully. [${JSON.stringify(user)}]`);
         return user;
     });
 
@@ -82,6 +86,7 @@ export async function authenticateGoogleUser(googleJWT: string) {
 
     const googlePayload = ticket.getPayload();
     if (!googlePayload) throw error;
+    MDC.set(MDCKeys.USER_ID, googlePayload.email);
 
     let dbUser = await User.findOne({ email: googlePayload.email, googleId: googlePayload.sub }).lean();
 
@@ -101,12 +106,13 @@ async function registerGoogleUser(googlePayload: TokenPayload) {
         googleId: googlePayload.sub,
         imageUrl: googlePayload.picture,
     }).then((user) => {
-        console.log(`User '${user.email}' registered successfully. [${JSON.stringify(user)}]`);
+        console.log(`User registered successfully. [${JSON.stringify(user)}]`);
         return user;
     });
 }
 
 async function loginGoogleUser(googlePayload: TokenPayload, jwtPayloadRequiredData: JwtPayload) {
+    MDC.set(MDCKeys.USER_ID, googlePayload.email);
     if (googlePayload.email !== jwtPayloadRequiredData.email)  throw new Error("Unexpected error. Emails do not match.");
 
     const accessToken = signAccessToken(jwtPayloadRequiredData);
@@ -114,7 +120,7 @@ async function loginGoogleUser(googlePayload: TokenPayload, jwtPayloadRequiredDa
 
     await User.updateOne({ email: googlePayload.email, googleId: googlePayload.sub }, { lastLogin: DateTime.now(), imageUrl: googlePayload.picture });
 
-    console.log(`User '${jwtPayloadRequiredData.email}' logged in using Google OAuth. accessToken and refreshToken sent in response.`);
+    console.log(`User logged in using Google OAuth. accessToken and refreshToken sent in response.`);
 
     return { userEmail: jwtPayloadRequiredData.email, tokens: { accessToken, refreshToken } };
 }
