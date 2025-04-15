@@ -1,6 +1,7 @@
 import app from "@app";
 import { HOST, IS_PROD, PORT } from "@config/config.properties";
 import { connectDB, disconnectDB } from "@config/db.config";
+import * as log4js from "log4js";
 
 let dbConnected = false;
 
@@ -19,6 +20,7 @@ async function startServer() {
 
 process.on('SIGINT', async () => {
     console.log('Gracefully shutting down...');
+    log4js.shutdown()
     if (dbConnected) await disconnectDB();
     process.exit(0);
 });

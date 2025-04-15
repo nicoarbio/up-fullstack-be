@@ -1,9 +1,13 @@
 import express, { Express } from "express";
+
+import "@config/log4js.config";
+
 import bodyParser from "body-parser";
 
 import { API_BASE_URL } from "@config/config.properties";
 
 import { extractAuthorizationHeader } from "@middleware/authentication.middleware";
+import { withRequestContext } from "@middleware/request-context.middleware";
 import { validateRequest } from "@middleware/validateRequest.middleware";
 
 import authenticationRouter from "@route/authentication.routes";
@@ -25,6 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(extractAuthorizationHeader);
+app.use(withRequestContext);
 
 app.use(`${ API_BASE_URL }`, authenticationRouter);
 app.use(`${ API_BASE_URL }`, bookingsRouter);
