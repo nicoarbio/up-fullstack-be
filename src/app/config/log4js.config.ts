@@ -12,10 +12,10 @@ export const MDC = {
         requestNamespace.run(fn);
     },
     set: (key: MDCKeys, value: any) => {
-        requestNamespace.set(key, value);
+        requestNamespace.active && requestNamespace.set(key, value);
     },
     get: (key: string) => {
-        return requestNamespace.get(key);
+        return requestNamespace.active ? requestNamespace.get(key) : '';
     }
 };
 
