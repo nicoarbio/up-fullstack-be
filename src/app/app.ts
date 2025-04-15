@@ -12,7 +12,6 @@ import { validateRequest } from "@middleware/validateRequest.middleware";
 
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
-import cartRouter from "@route/cart.routes";
 import paymentRouter from "@route/payment.routes";
 import profileRouter from "@route/profile.routes";
 import servicesRouter from "@route/services.routes";
@@ -33,7 +32,6 @@ app.use(withRequestContext);
 
 app.use(`${ API_BASE_URL }`, authenticationRouter);
 app.use(`${ API_BASE_URL }`, bookingsRouter);
-app.use(`${ API_BASE_URL }`, cartRouter);
 app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);
