@@ -21,10 +21,10 @@ export const signRefreshToken = (payload: JwtPayload): string => {
     return jwt.sign(payload, SECRET_REFRESH, { expiresIn: REFRESH_EXPIRES_IN });
 }
 
-export const verifyAccessToken = (token: string): any => {
-    return jwt.verify(token, SECRET_ACCESS);
+export const verifyAccessToken = (token: string): JwtPayload => {
+    return jwt.verify(token, SECRET_ACCESS) as JwtPayload;
 }
 
-export const verifyRefreshToken = (token: string): any => {
-    return jwt.verify(token, SECRET_REFRESH);
+export const verifyRefreshToken = (token: string): JwtPayload => {
+    return jwt.verify(token, SECRET_REFRESH) as JwtPayload;
 }
