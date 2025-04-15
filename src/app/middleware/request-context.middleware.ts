@@ -3,7 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 
 export function withRequestContext(req: Request, res: Response, next: NextFunction) {
     MDC.run(() => {
-        MDC.set(MDCKeys.USER_ID, req.user?.email || req.headers['x-request-id']);
+        const email = req.user?.email;
+        let userId = email;
+        const role = req.user?.role;
+        if (email && role) userId += `:${req.user?.role}`
+        MDC.set(MDCKeys.USER_ID, userId || req.headers['x-request-id']);
         next();
     });
 }

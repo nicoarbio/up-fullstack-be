@@ -37,13 +37,13 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
 export async function refreshAccessToken(refreshToken: string) {
     const tokenInvalido = (cause?: any) => new Error('Token inválido o expirado', { cause });
 
-    let jtwPayload;
+    let jtwPayload: JwtPayload;
     try {
         jtwPayload = verifyRefreshToken(refreshToken);
     } catch (error) {
         throw tokenInvalido(error);
     }
-    MDC.set(MDCKeys.USER_ID, jtwPayload.email);
+    MDC.set(MDCKeys.USER_ID, `${jtwPayload.email}:${jtwPayload.role}`);
     const user = await User.findById(jtwPayload.id);
     if (!user) throw tokenInvalido();
 
@@ -112,7 +112,7 @@ async function registerGoogleUser(googlePayload: TokenPayload) {
 }
 
 async function loginGoogleUser(googlePayload: TokenPayload, jwtPayloadRequiredData: JwtPayload) {
-    MDC.set(MDCKeys.USER_ID, googlePayload.email);
+    MDC.set(MDCKeys.USER_ID, `${jwtPayloadRequiredData.email}:${jwtPayloadRequiredData.role}`);
     if (googlePayload.email !== jwtPayloadRequiredData.email)  throw new Error("Unexpected error. Emails do not match.");
 
     const accessToken = signAccessToken(jwtPayloadRequiredData);
