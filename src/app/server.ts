@@ -20,7 +20,7 @@ async function startServer() {
 
 process.on('SIGINT', async () => {
     console.log('Gracefully shutting down...');
-    log4js.shutdown()
+    await log4js.shutdown();
     if (dbConnected) await disconnectDB();
     process.exit(0);
 });
