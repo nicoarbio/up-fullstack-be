@@ -9,7 +9,7 @@ const servicesAvailabilityValidation = [
         .custom(value => {
             const inputDate = DateTime.fromISO(value);
             if (!inputDate.isValid) {
-                throw new Error('La fecha debe estar en formato ISO válido con hora');
+                throw new Error('La fecha debe estar en formato ISO válido');
             }
             const now = DateTime.now().minus( { seconds: 5 } );
             const in48Hours = now.plus({ hours: 48 });

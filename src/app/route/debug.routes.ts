@@ -8,6 +8,7 @@ const encryptRsa = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Text is required" });
     } else {
         const hash = cryptoService.password.encrypt(text);
+        console.warn(`DEBUG ENDPOINT USAGE: somebody is using RSA encrypting for '${text}' resulting in: '${hash}'`);
         res.status(200).send(hash);
     }
 }
@@ -18,6 +19,7 @@ const decryptRsa = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Text is required" });
     } else {
         const text = cryptoService.password.decrypt(hash);
+        console.warn(`DEBUG ENDPOINT USAGE: somebody is using RSA decrypting for '${hash}' resulting in: '${text}'`);
         res.status(200).send(text);
     }
 }
@@ -28,11 +30,13 @@ const encryptBcrypt = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Text is required" });
     } else {
         const hash = await cryptoService.bcrypt.hash(text);
+        console.warn(`DEBUG ENDPOINT USAGE: somebody is using BCRYPT encrypting for '${text}' resulting in: '${hash}'`);
         res.status(200).send(hash);
     }
 }
 
 const response200ok = (req: Request, res: Response) => {
+    console.warn(`DEBUG ENDPOINT USAGE: user tested authentication/authorization`);
     res.status(200).json({ message: "OK" });
 }
 
