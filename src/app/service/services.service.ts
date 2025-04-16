@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { Product } from "@enum/booking.enum";
-import { getBusinessRules } from "@service/business-rules.service";
+import { getBusinessRules } from "@service/business-rules.cache";
 import { Stock } from "@model/stock.model";
 import { Booking } from "@model/booking.model";
 import { AvailabilityResponseDto } from "@controller/services.controller";
