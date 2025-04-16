@@ -1,14 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from "@service/jwt-handler.service";
+import { JwtPayload, verifyAccessToken } from "@service/jwt-handler.service";
 
 declare global {
     namespace Express {
         interface Request {
-            user?: {
-                id: string,
-                email: string,
-                role: string
-            };
+            user?: JwtPayload
         }
     }
 }
