@@ -11,6 +11,8 @@ export type JwtPayload = {
     id: any;
     email: string;
     role: string;
+    iat?: number;
+    exp?: number;
 }
 
 export const signAccessToken = (payload: JwtPayload): string => {
