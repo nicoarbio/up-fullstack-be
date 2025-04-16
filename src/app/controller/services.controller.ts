@@ -15,7 +15,7 @@ export async function getServicesAvailability(req: Request, res: Response) {
         });
 }
 
-export type ProdcutAvailability = {
+export type ProductAvailability = {
     [time: string]: {
         available: number;
         accessories: {
@@ -28,6 +28,6 @@ export type AvailabilityResponseDto = {
     firstSlot?: DateTime;
     lastSlot?: DateTime;
     products: {
-        [key in Product]?: ProdcutAvailability
+        [key in Product]?: ProductAvailability
     }
 };
