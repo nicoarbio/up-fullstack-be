@@ -5,27 +5,54 @@ import { Stock } from "@model/stock.model";
 import { Booking } from "@model/booking.model";
 import { AvailabilityResponseDto } from "@controller/services.controller";
 
-export async function getAvailabilityForDate(date: DateTime, products: Product[]) {
+export async function getAvailabilityForDateTime(date: DateTime, products: Product[]) {
     const businessRules = await getBusinessRules();
     const config = {
         openHour: businessRules?.openHour as string,
+        slotStep: businessRules?.slotStep as number
+    };
+
+    const [ openHour, openMin ] = config?.openHour?.split(':').map(Number) || [];
+    const dateOpenHour = date.set({ hour: openHour, minute: openMin, second: 0, millisecond: 0 });
+
+    const firstSlot = ((date: DateTime): DateTime => {
+        if (date.hasSame(DateTime.now(), 'day')) { // Si es hoy
+            if (date < dateOpenHour) { // Si es antes de la hora de apertura
+                return dateOpenHour; // Devuelvo la hora de apertura
+            } else {
+                const startMinute =  date.minute + 1; // Redondeo para arriba, asumiendo que estamos pasados del minuto en al menos 1 milisegundo
+                const extraMinutes = startMinute % config.slotStep; // Minutos tarde del slot anterior
+
+                return date
+                    .set({ minute: startMinute, second: 0, millisecond: 0 }) // Redondeo para arriba
+                    .plus({ minutes: extraMinutes ? config.slotStep - extraMinutes : 0 }); // Redondeo al slot más cercano
+            }
+        }
+        return dateOpenHour; // Si no es hoy, devuelvo la hora de apertura
+    })(date);
+
+    const result = await getAvailabilityFromFirstSlot(firstSlot, products);
+
+    console.log(`Service availability checked for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(result)}]`);
+
+    return result;
+}
+
+export async function getAvailabilityFromFirstSlot(firstSlot: DateTime, products: Product[]) {
+    const businessRules = await getBusinessRules();
+    const config = {
         closeHour: businessRules?.closeHour as string,
         slotStep: businessRules?.slotStep as number,
         slotDuration: businessRules?.slotDuration as number,
         products: businessRules?.products
     };
 
-    const [ startHour, startMin ] = config?.openHour?.split(':').map(Number) || [];
-    const [ endHour, endMin ] = config?.closeHour?.split(':').map(Number) || [];
-
-    const start = date
-        .plus({ minutes: (config.slotStep - (date.minute % config.slotStep)) })
-        .set({ second: 0, millisecond: 0 });
-    const end = date.set({ hour: endHour, minute: endMin });
+    const [ closeHour, closeMin ] = config?.closeHour?.split(':').map(Number) || [];
+    const dateCloseHour = firstSlot.set({ hour: closeHour, minute: closeMin, second: 0, millisecond: 0 });
 
     const slots: DateTime[] = [];
 
-    for (let t = start; t.plus({ minutes: config?.slotDuration }) <= end; t = t.plus({ minutes: config?.slotStep })) {
+    for (let t = firstSlot; t.plus({ minutes: config?.slotDuration }) <= dateCloseHour; t = t.plus({ minutes: config?.slotStep })) {
         slots.push(t);
     }
     const result = {} as AvailabilityResponseDto;
@@ -49,7 +76,7 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
         const productStockIds = allProductStock.map(s => s._id.toString());
 
         for (const slotStart of slots) {
-            result.products[product][slotStart.toFormat("HH:mm")] = {} as any;
+            result.products[product][slotStart.toISO() as string] = {} as any;
             const slotEnd = slotStart.plus({ minutes: config?.slotDuration });
 
             /**
@@ -60,8 +87,7 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
              *  2. startTime < slotEnd && endTime >= slotEnd
              * mot cancelled
              */
-            const conflictingBookings = await Booking.find({
-                'product.stockId': { $in: productStockIds },
+            const bookingFilter = {
                 status: { $ne: 'cancelled' },
                 $or: [ {
                     startTime: { $lte: slotStart },
@@ -73,12 +99,17 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
                     startTime: { $gte: slotStart },
                     endTime: { $lte: slotEnd }
                 } ]
+            }
+
+            const conflictingBookings = await Booking.find({
+                'product.stockId': { $in: productStockIds },
+                ...bookingFilter
             }).select('product.stockId');
 
             const occupiedProductIds = conflictingBookings.map(b => b.product?.stockId.toString());
             const availableProductIds = productStockIds.filter(id => !occupiedProductIds.includes(id));
 
-            result.products[product][slotStart.toFormat("HH:mm")].available = availableProductIds.length;
+            result.products[product][slotStart.toISO() as string].available = availableProductIds.length;
 
             // ACCESORIOS
             const accesoriesOfProduct = config?.products?.get(product)?.accessories || [];
@@ -104,17 +135,7 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
 
                 const accBooked = await Booking.find({
                     'passengers.accessories.stockId': { $in: accStockIds },
-                    status: { $ne: 'cancelled' },
-                    $or: [ {
-                        startTime: { $lte: slotStart },
-                        endTime: { $gt: slotStart }
-                    }, {
-                        startTime: { $lt: slotEnd },
-                        endTime: { $gte: slotEnd }
-                    }, {
-                        startTime: { $gte: slotStart },
-                        endTime: { $lte: slotEnd }
-                    } ]
+                    ...bookingFilter
                 });
 
                 const usedIds = new Set(
@@ -130,11 +151,9 @@ export async function getAvailabilityForDate(date: DateTime, products: Product[]
                 accessoriesResult.push({ [acc]: available.length });
             }
 
-            result.products[product][slotStart.toFormat("HH:mm")].accessories = accessoriesResult;
+            result.products[product][slotStart.toISO() as string].accessories = accessoriesResult;
         }
     }
-
-    console.log(`Service availability checked for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(result)}]`);
 
     return result;
 }
