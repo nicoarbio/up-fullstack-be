@@ -13,18 +13,18 @@ const cryptoService = {
         }
     },
     password: {
-        encrypt(password: string) {
+        encrypt(text: string) {
             try {
-                return crypto.publicEncrypt(PASSWORD_ENCRYPTION.getPublicKey(), Buffer.from(password)).toString('base64');
+                return crypto.publicEncrypt(PASSWORD_ENCRYPTION.getPublicKey(), Buffer.from(text)).toString('base64');
             } catch (error) {
-                throw new Error('Error al encriptar la contraseña', { cause: error });
+                throw new Error('Error trying to encrypt text with rsa public key', { cause: error });
             }
         },
         decrypt(hash: string) {
             try {
                 return crypto.privateDecrypt(PASSWORD_ENCRYPTION.getPrivateKey(), Buffer.from(hash, 'base64')).toString('utf-8');
             } catch (error) {
-                throw new Error('Error al desencriptar la contraseña', { cause: error });
+                throw new Error('Error trying to decrypt text with rsa private key', { cause: error });
             }
         }
     }

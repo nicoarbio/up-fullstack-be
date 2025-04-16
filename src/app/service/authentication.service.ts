@@ -9,7 +9,7 @@ import { MDC, MDCKeys } from "@config/log4js.config";
 
 export const loginUserWithEmailPassword = async (email: string, encryptedPassword: string) => {
     MDC.set(MDCKeys.USER_ID, email);
-    const error = new Error('Credenciales inválidas');
+    const error = new Error('Invalid credentials');
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -35,17 +35,17 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
 }
 
 export async function refreshAccessToken(refreshToken: string) {
-    const tokenInvalido = (cause?: any) => new Error('Token inválido o expirado', { cause });
+    const invalidToken = (cause?: any) => new Error('Invalid or expired token', { cause });
 
     let jtwPayload: JwtPayload;
     try {
         jtwPayload = verifyRefreshToken(refreshToken);
     } catch (error) {
-        throw tokenInvalido(error);
+        throw invalidToken(error);
     }
     MDC.set(MDCKeys.USER_ID, `${jtwPayload.email}:${jtwPayload.role}`);
     const user = await User.findById(jtwPayload.id);
-    if (!user) throw tokenInvalido();
+    if (!user) throw invalidToken();
 
     console.log(`User refreshed access token using refresh token.`);
     return signAccessToken({ id: user._id, email: user.email, role: user.role });
@@ -53,7 +53,7 @@ export async function refreshAccessToken(refreshToken: string) {
 
 export async function registerUser(newUserInfo: { name: string, lastname: string, email: string, encryptedPassword: string, phoneNumber: string }) {
     MDC.set(MDCKeys.USER_ID, newUserInfo.email);
-    const userAlreadyExists = new Error('El usuario ya existe');
+    const userAlreadyExists = new Error('User already exists');
 
     const existing = await User.findOne({ email: newUserInfo.email });
     if (existing) throw userAlreadyExists;
@@ -75,7 +75,7 @@ export async function registerUser(newUserInfo: { name: string, lastname: string
 }
 
 export async function authenticateGoogleUser(googleJWT: string) {
-    const error = new Error('Error al autenticar el usuario con Google');
+    const error = new Error('Error while trying to authenticate Google user');
 
     if (!googleJWT) throw error;
 

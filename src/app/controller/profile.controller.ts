@@ -6,5 +6,8 @@ export async function getUserProfile(req: Request, res: Response) {
         .then(user => {
             res.status(200).json(user);
             console.log(`User profile retrieved successfully. [${JSON.stringify(user)}]`);
+        }).catch(error => {
+            res.status(500).json({ error: error.message, detail: error.cause });
+            console.error("Error retrieving user profile:", error.message || error);
         })
 }

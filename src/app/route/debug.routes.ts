@@ -4,7 +4,7 @@ import { authenticate, authenticateAdmin, authenticateUser } from "@middleware/a
 
 const encryptRsa = async (req: Request, res: Response) => {
     const text = req.query.text as string;
-    if(!text) {
+    if (!text) {
         res.status(400).json({ message: "Text is required" });
     } else {
         const hash = cryptoService.password.encrypt(text);
@@ -15,7 +15,7 @@ const encryptRsa = async (req: Request, res: Response) => {
 
 const decryptRsa = async (req: Request, res: Response) => {
     const hash = req.query.hash as string;
-    if(!hash) {
+    if (!hash) {
         res.status(400).json({ message: "Text is required" });
     } else {
         const text = cryptoService.password.decrypt(hash);
@@ -26,7 +26,7 @@ const decryptRsa = async (req: Request, res: Response) => {
 
 const encryptBcrypt = async (req: Request, res: Response) => {
     const text = req.query.text as string;
-    if(!text) {
+    if (!text) {
         res.status(400).json({ message: "Text is required" });
     } else {
         const hash = await cryptoService.bcrypt.hash(text);
