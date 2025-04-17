@@ -7,6 +7,9 @@ components:
         - lastname
         - email
       properties:
+        _id:
+          type: string
+          format: uuid
         name:
           type: string
         lastname:
@@ -16,8 +19,6 @@ components:
           format: email
         emailVerified:
           type: boolean
-        passwordHash:
-          type: string
         googleId:
           type: string
         imageUrl:
