@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { Product } from "../../app/model/enum/booking.enum";
-import { getAvailabilityForDateTime } from "../../app/service/services.service";
+import { getAvailabilityForProductFromFirstSlot } from "../../app/service/services.service";
 
 describe('services.service.ts # getAvailabilityForDate', () => {
 
@@ -9,7 +9,7 @@ describe('services.service.ts # getAvailabilityForDate', () => {
         const expectedDate = date.set({ hour: 17, minute: 15, second: 0, millisecond: 0 }).toISO() as string;
         const products = [ Product.jet_sky, Product.quad ];
 
-        const res = await getAvailabilityForDateTime(date, products);
+        const res = await getAvailabilityForProductFromFirstSlot(date, products);
         expect(res.products.jet_sky![expectedDate]).toBeDefined();
         expect(res.products.quad![expectedDate]).toBeDefined();
     });
@@ -18,7 +18,8 @@ describe('services.service.ts # getAvailabilityForDate', () => {
         const date = DateTime.now().set({ hour: 18, minute: 58 });
         const products = [ Product.jet_sky ];
 
-        const res = await getAvailabilityForDateTime(date, products);
+        const res = await getAvailabilityForProductFromFirstSlot(date, products);
+
 
         expect(res.firstSlot).toEqual(undefined);
         expect(res.lastSlot).toEqual(undefined);
@@ -36,7 +37,7 @@ describe('services.service.ts # getAvailabilityForDate', () => {
         }
         const products = [ Product.jet_sky ];
 
-        const res = await getAvailabilityForDateTime(date, products);
+        const res = await getAvailabilityForProductFromFirstSlot(date, products);
 
         expect(res.products?.jet_sky?.[expectedDates['14:30']]?.available).toEqual(2);
         expect(res.products?.jet_sky?.[expectedDates['14:45']]?.available).toEqual(1);
