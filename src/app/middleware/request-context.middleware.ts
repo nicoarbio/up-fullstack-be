@@ -7,7 +7,9 @@ export function withRequestContext(req: Request, res: Response, next: NextFuncti
         let userId = email;
         const role = req.user?.role;
         if (email && role) userId += `:${req.user?.role}`
-        MDC.set(MDCKeys.USER_ID, userId || req.headers['x-request-id']);
+        MDC.set(MDCKeys.USER_ID, userId || req.headers['x-request-id']?.toString() ||
+            req.headers['x-forwarded-for']?.toString().split(',')[0].trim() ||
+            req.ip);
         next();
     });
 }

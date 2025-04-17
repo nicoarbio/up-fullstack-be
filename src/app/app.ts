@@ -20,6 +20,8 @@ import debugRouter from "@route/debug.routes";
 
 const app: Express = express();
 
+app.set('trust proxy', true);
+
 setupHealthCheck(app);
 
 //if (!IS_PROD) setupSwagger(app);
