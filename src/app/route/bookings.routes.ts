@@ -2,6 +2,7 @@ import { Router } from "express";
 import { deleteBooking, getBookings } from "@controller/bookings.controller";
 import { authenticate } from "@middleware/authentication.middleware";
 import { query } from "express-validator";
+import { withValidation } from "@middleware/validateRequest.middleware";
 import { DateTime } from "luxon";
 
 const getBookingsValidation = [
@@ -16,5 +17,5 @@ const getBookingsValidation = [
 ]
 
 export default Router()
-    .get("/bookings", authenticate, getBookingsValidation, getBookings)
+    .get("/bookings", authenticate, withValidation(getBookingsValidation), getBookings)
     .delete("/bookings/:bookingId", authenticate, deleteBooking);

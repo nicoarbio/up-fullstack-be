@@ -8,7 +8,6 @@ import { API_BASE_URL } from "@config/config.properties";
 
 import { extractAuthorizationHeader } from "@middleware/authentication.middleware";
 import { withRequestContext } from "@middleware/request-context.middleware";
-import { validateRequest } from "@middleware/validateRequest.middleware";
 
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
@@ -36,8 +35,6 @@ app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);
 app.use(`${ API_BASE_URL }/debug`, debugRouter);
-
-app.use(validateRequest);
 
 setupHealthCheck(app);
 //if (!IS_PROD) setupSwagger(app);
