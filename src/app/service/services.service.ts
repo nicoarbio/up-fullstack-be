@@ -55,7 +55,7 @@ export async function getAvailabilityForProductFromFirstSlot(date: DateTime, pro
         }
     }
 
-    console.log(`Service availability checked for date ${date.toISO()} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(result)}]`);
+    console.log(`Service availability checked for date ${date.toFormat('yyyy-MM-dd HH:mmZZ')} and products ${products.join(', ')} retrieved successfully. [${JSON.stringify(result)}]`);
 
     return result;
 }
