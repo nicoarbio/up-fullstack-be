@@ -17,9 +17,9 @@ export async function getServicesAvailability(req: Request, res: Response) {
 
 export type ProductAvailability = {
     [time: string]: {
-        available: number;
+        available: string[];
         accessories: {
-            [A in Accessory]?: number;
+            [A in Accessory]?: string[];
         }[];
     };
 };

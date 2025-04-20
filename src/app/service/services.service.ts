@@ -157,7 +157,7 @@ export async function getAvailabilityForProductByDate(firstSlot: DateTime, produ
         const occupiedProductIds = conflictingBookings.map(b => b.product?.stockId.toString());
         const availableProductIds = productStockIds.filter(id => !occupiedProductIds.includes(id));
 
-        result[slotStart.toISO() as string].available = availableProductIds.length;
+        result[slotStart.toISO() as string].available = availableProductIds;
 
         // ACCESORIOS
         const accesoriesOfProduct = config?.products?.get(product)?.accessories || [];
@@ -196,7 +196,7 @@ export async function getAvailabilityForProductByDate(firstSlot: DateTime, produ
             );
 
             const available = accStockIds.filter(id => !usedIds.has(id));
-            accessoriesResult.push({ [acc]: available.length });
+            accessoriesResult.push({ [acc]: available });
         }
 
         result[slotStart.toISO() as string].accessories = accessoriesResult;
