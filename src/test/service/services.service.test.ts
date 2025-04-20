@@ -39,11 +39,11 @@ describe('services.service.ts # getAvailabilityForDate', () => {
 
         const res = await getAvailabilityForProductFromFirstSlot(date, products);
 
-        expect(res.products?.jet_sky?.[expectedDates['14:30']]?.available).toEqual(2);
-        expect(res.products?.jet_sky?.[expectedDates['14:45']]?.available).toEqual(1);
-        expect(res.products?.jet_sky?.[expectedDates['15:00']]?.available).toEqual(1);
-        expect(res.products?.jet_sky?.[expectedDates['15:15']]?.available).toEqual(1);
-        expect(res.products?.jet_sky?.[expectedDates['15:30']]?.available).toEqual(2);
+        expect(res.products?.jet_sky?.[expectedDates['14:30']]?.available.length).toEqual(2);
+        expect(res.products?.jet_sky?.[expectedDates['14:45']]?.available.length).toEqual(1);
+        expect(res.products?.jet_sky?.[expectedDates['15:00']]?.available.length).toEqual(1);
+        expect(res.products?.jet_sky?.[expectedDates['15:15']]?.available.length).toEqual(1);
+        expect(res.products?.jet_sky?.[expectedDates['15:30']]?.available.length).toEqual(2);
     });
 
 });
