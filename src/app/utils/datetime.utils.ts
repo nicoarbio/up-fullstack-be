@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
 
+import '@config/luxon.config' // IMPORTANTE: IMPORTAR CONFIGURACION DE LUXON ANTES DE USAR
+
 const toLuxonDateTime = (date: Date) => DateTime.fromJSDate(date);
 
 const fromLuxonDateTime = (dt: DateTime | string | Date) => {
