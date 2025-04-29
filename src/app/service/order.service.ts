@@ -229,6 +229,7 @@ export async function createOrderAndBookings(
         product: b.product,
         passengersAmount: b.passengers.length
     }));
+    // Paso 1: validar orden
     let orderValidation = await validateOrderContent(orderValidationRequest, extraIds);
     if ("outOfStock" in orderValidation && orderValidation.outOfStock) {
         return orderValidation;
@@ -236,58 +237,58 @@ export async function createOrderAndBookings(
     orderValidation = orderValidation as SuccessOrderValidation;
 
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
-        // Paso 2: crear orden vacía
-        const order = await Order.create({
-            userId: user.id,
-            extras: orderValidation.extras,
-            discounts: orderValidation.discounts,
-            totalPrice: orderValidation.totalPrice,
-            totalExtras: orderValidation.totalExtras,
-            totalDiscount: orderValidation.totalDiscount,
-            finalPrice: orderValidation.finalTotal,
-            bookings: []
+        return await session.withTransaction(async () => {
+            // Paso 2: crear orden vacía
+            const order = new Order({
+                userId: user.id,
+                extras: orderValidation.extras,
+                discounts: orderValidation.discounts,
+                totalPrice: orderValidation.totalPrice,
+                totalExtras: orderValidation.totalExtras,
+                totalDiscount: orderValidation.totalDiscount,
+                finalPrice: orderValidation.finalTotal,
+                bookings: []
+            });
+            await order.save({ session });
+
+            // Paso 3: crear bookings asociados
+            const bookings = await Booking.insertMany(
+                orderValidation.bookings.map((booking, bIdx) => ({
+                    userId: user.id,
+                    orderId: order._id,
+                    product: {
+                        type: booking.product.type,
+                        stockId: booking.product.stockId
+                    },
+                    passengers: requestedBookings[bIdx].passengers.map((passenger, pIdx) => ({
+                        fullName: passenger.fullName,
+                        birthdate: passenger.birthdate,
+                        accessories: booking.accessories
+                            .filter(acc => acc.passengerIndex === pIdx)
+                            .map(acc => ({
+                                type: acc.type,
+                                stockId: acc.stockId
+                            })),
+                    })),
+                    startTime: booking.slotStart,
+                    endTime: booking.slotEnd,
+                    price: booking.price
+                })), { session }
+            );
+
+            // Paso 4: actualizar la orden con los bookings
+            order.bookings = bookings.map(b => b._id);
+            await order.save({ session });
+            console.log(`Order created: ${JSON.stringify(order)}`);
+            return order;
         });
 
-        // Paso 3: crear bookings asociados
-        const bookings = await Booking.insertMany(
-            orderValidation.bookings.map((booking, bIdx) => ({
-                userId: user.id,
-                orderId: order._id,
-                product: {
-                    type: booking.product.type,
-                    stockId: booking.product.stockId
-                },
-                passengers: requestedBookings[bIdx].passengers.map((passenger, pIdx) => ({
-                    fullName: passenger.fullName,
-                    birthdate: passenger.birthdate,
-                    accessories: booking.accessories
-                        .filter(acc => acc.passengerIndex === pIdx)
-                        .map(acc => ({
-                            type: acc.type,
-                            stockId: acc.stockId
-                        })),
-                })),
-                startTime: booking.slotStart,
-                endTime: booking.slotEnd,
-                price: booking.price
-            }))
-        );
-
-        // Paso 4: actualizar la orden con los bookings
-        order.bookings = bookings.map(b => b._id);
-        await order.save();
-        console.log(`Order created: ${JSON.stringify(order)}`);
-        return order;
-
     } catch (error) {
-        // Si algo falla en el proceso, se hace rollback de la transacción
-        await session.abortTransaction();
-        session.endSession();
-
         throw error;
+    } finally {
+        session.endSession();
     }
 
 }

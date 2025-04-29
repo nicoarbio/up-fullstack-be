@@ -66,39 +66,40 @@ export async function processCashPayment(req: Request, res: Response) {
     }
 
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
-        const payment = await Payment.create({
-            userId: order.userId,
-            orderId: order._id,
-            amount,
-            currency,
-            method: PaymentMethod.CASH,
-            status: PaymentStatus.COMPLETED,
-            paidAt: DateTime.now()
+        session.withTransaction(async () => {
+            const payment = new Payment({
+                userId: order.userId,
+                orderId: order._id,
+                amount,
+                currency,
+                method: PaymentMethod.CASH,
+                status: PaymentStatus.COMPLETED,
+                paidAt: DateTime.now()
+            });
+            await payment.save({ session });
+
+            order.paymentId = payment._id;
+            order.status = OrderStatus.PAID;
+
+            await order.save({ session });
+
+            res.status(201).json(payment);
+            console.log(`Payment processed: ${JSON.stringify(payment)}`);
         })
-
-        order.paymentId = payment._id;
-        order.status = OrderStatus.PAID;
-
-        await order.save();
-        await payment.save();
-
-        res.status(201).json(payment);
-        console.log(`Payment processed: ${JSON.stringify(payment)}`);
     } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
         res.status(500).json({ message: "Error processing payment", error });
+    } finally {
+        session.endSession();
     }
 }
 
 export async function getPayment(req: Request, res: Response) {
-    const orderId = req.params.id;
+    const paymentId = req.params.id;
     const user = req.user!;
     const query: any = {
-        _id: orderId
+        _id: paymentId
     };
     if (user.role !== UserRoles.ADMIN) query.userId = user.id;
     const payment = await Payment.findOne(query);
@@ -108,14 +109,6 @@ export async function getPayment(req: Request, res: Response) {
     }
     res.status(200).json(payment);
     console.log(`Payment retrieved: ${JSON.stringify(payment)}`);
-}
-
-export async function processRefund(req: Request, res: Response) {
-    res.status(501).json({ message: "Not implemented" });
-}
-
-export async function processStormRefund(req: Request, res: Response) {
-    res.status(501).json({ message: "Not implemented" });
 }
 
 export async function updateMPPaymentStatus(req: Request, res: Response) {

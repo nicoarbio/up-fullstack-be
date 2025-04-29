@@ -1,6 +1,6 @@
 /api/v1/bookings:
   get:
-    tags: [ Bookings ]
+    tags: [ Turnos ]
     summary: Obtener los bookings del usuario logueado (Todos si es admin)
     security:
       - bearerAuth: []
