@@ -1,17 +1,21 @@
 import { Request, Response } from "express";
-import { BookingValidationRequest, validateOrderContent } from "@service/order.service";
+import { BookingValidationRequest, createOrderAndBookings, validateOrderContent } from "@service/order.service";
 import { ExtraType } from "@enum/business-rules.enum";
 import { DateTime } from "luxon";
 
-export async function validateOrder(req: Request, res: Response) {
-    const bookings = req.body.requestedBookings as BookingValidationRequest[];
-    const orderQuery = {
+const prepareOrderQuery = (body: any) => {
+    const bookings = body.requestedBookings as BookingValidationRequest[];
+    return {
         requestedBookings: bookings.map((b: any) => ({
             ...b,
             slotStart: DateTime.fromISO(b.slotStart)
         })),
-        extraIds: req.body.extraIds as ExtraType[]
+        extraIds: body.extraIds as ExtraType[]
     }
+}
+
+export async function validateOrder(req: Request, res: Response) {
+    const orderQuery = prepareOrderQuery(req.body)
     await validateOrderContent(orderQuery.requestedBookings, orderQuery.extraIds)
         .then(orderStatus => {
             if ("outOfStock" in orderStatus && orderStatus.outOfStock) {
@@ -27,5 +31,17 @@ export async function validateOrder(req: Request, res: Response) {
 }
 
 export async function createOrder(req: Request, res: Response) {
-    res.status(501).json({ message: "Not implemented" }); // TODO: Next step
+    const orderQuery = prepareOrderQuery(req.body)
+    await createOrderAndBookings(req.user!, orderQuery.requestedBookings, orderQuery.extraIds)
+        .then(orderStatus => {
+            if ("outOfStock" in orderStatus && orderStatus.outOfStock) {
+                res.status(409).json(orderStatus);
+            } else {
+                res.status(201).json(orderStatus);
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ error: error.message, detail: error.cause });
+            console.error('Error validating order:', error.message || error);
+        })
 }

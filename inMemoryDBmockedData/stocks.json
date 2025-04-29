@@ -70,5 +70,11 @@
     "type": "surfboard_adult",
     "category": "product",
     "active": true
+  },
+  {
+    "_id": "stk-dg-001",
+    "type": "diving_gear",
+    "category": "product",
+    "active": true
   }
 ]

@@ -51,7 +51,8 @@ export async function getBookingsByDate(bookingQuery: BookingQuery) {
     const bookings = await Booking.find(query.filter)
         .sort({ [query.sortBy]: query.order === 'asc' ? 1 : -1 })
         .skip((query.page - 1) * query.limit)
-        .limit(query.limit);
+        .limit(query.limit)
+        .select("-__v");
 
     return {
         page: query.page,

@@ -1,8 +1,21 @@
+import mongoose from "mongoose";
 import { DateTime } from 'luxon';
+import { Order } from "@model/order.model";
+import { Booking } from "@model/booking.model";
 import { Accessory, DiscountType, ExtraType, Product, RuleType } from "@enum/business-rules.enum";
-import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
 import { ProductAvailability } from "@controller/services.controller";
+import { JwtPayload } from "@service/jwt-handler.service";
 import { getBusinessRules } from "@service/business-rules.cache";
+import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
+
+export type BookingRequest = {
+    slotStart: DateTime;
+    product: Product;
+    passengers: {
+        fullName: string;
+        birthdate: DateTime;
+    }[];
+}
 
 export type BookingValidationRequest = {
     slotStart: DateTime;
@@ -19,10 +32,12 @@ type BookingValidationResult = {
         price: number;
     };
     accessories: {
+        passengerIndex: number;
         type: Accessory;
         stockId: string;
         price: number;
     }[];
+    price: number;
 }
 
 type Rule<T> = {
@@ -125,17 +140,19 @@ export async function validateOrderContent(
         const slotStart = booking.slotStart.toISO() as string;
         const selectedSlot = productAvailability[slotStart];
 
+        const productPrice = businessRules!.products.get(booking.product)!.price;
         const validBooking: BookingValidationResult = {
             slotStart: booking.slotStart,
             slotEnd: booking.slotStart.plus({ minutes: businessRules!.slotDuration! }),
             product: {
                 type: booking.product,
                 stockId: selectedSlot.available[0],
-                price: businessRules!.products.get(booking.product)!.price
+                price: productPrice
             },
+            price: productPrice,
             accessories: []
         }
-        successOrderValidation.totalPrice += validBooking.product.price;
+        successOrderValidation.totalPrice += validBooking.price;
 
         for (const item of selectedSlot.accessories) {
             const accessoryType = Object.keys(item)[0] as Accessory;
@@ -144,10 +161,12 @@ export async function validateOrderContent(
             for (let i = 0; i < booking.passengersAmount; i++) {
                 const stockId = stockList[i];
                 validBooking.accessories.push({
+                    passengerIndex: i,
                     type: accessoryType as Accessory,
                     stockId,
                     price
                 })
+                validBooking.price += price;
                 successOrderValidation.totalPrice += price;
             }
         }
@@ -196,12 +215,74 @@ export async function validateOrderContent(
     return successOrderValidation;
 }
 
-
-export async function createOrder(
-    requestedBookings: BookingValidationRequest[],
+export async function createOrderAndBookings(
+    user: JwtPayload,
+    requestedBookings: BookingRequest[],
     extraIds: ExtraType[]
-): Promise<any> {
+) {
+    const orderValidationRequest = requestedBookings.map((b: BookingRequest) => ({
+        slotStart: b.slotStart,
+        product: b.product,
+        passengersAmount: b.passengers.length
+    }));
+    let orderValidation = await validateOrderContent(orderValidationRequest, extraIds);
+    if ("outOfStock" in orderValidation && orderValidation.outOfStock) {
+        return orderValidation;
+    }
+    orderValidation = orderValidation as SuccessOrderValidation;
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
+    try {
+        // Paso 2: crear orden vacía
+        const order = await Order.create({
+            userId: user.id,
+            extras: orderValidation.extras,
+            discounts: orderValidation.discounts,
+            totalPrice: orderValidation.totalPrice,
+            totalExtras: orderValidation.totalExtras,
+            totalDiscount: orderValidation.totalDiscount,
+            finalPrice: orderValidation.finalTotal,
+            bookings: []
+        });
+
+        // Paso 3: crear bookings asociados
+        const bookings = await Booking.insertMany(
+            orderValidation.bookings.map((booking, bIdx) => ({
+                userId: user.id,
+                orderId: order._id,
+                product: {
+                    type: booking.product.type,
+                    stockId: booking.product.stockId
+                },
+                passengers: requestedBookings[bIdx].passengers.map((passenger, pIdx) => ({
+                    fullName: passenger.fullName,
+                    birthdate: passenger.birthdate,
+                    accessories: booking.accessories
+                        .filter(acc => acc.passengerIndex === pIdx)
+                        .map(acc => ({
+                            type: acc.type,
+                            stockId: acc.stockId
+                        })),
+                })),
+                startTime: booking.slotStart,
+                endTime: booking.slotEnd,
+                price: booking.price
+            }))
+        );
+
+        // Paso 4: actualizar la orden con los bookings
+        order.bookings = bookings.map(b => b._id);
+        await order.save();
+        return order;
+
+    } catch (error) {
+        // Si algo falla en el proceso, se hace rollback de la transacción
+        await session.abortTransaction();
+        session.endSession();
+
+        throw error;
+    }
 
 }

@@ -20,15 +20,22 @@
                     slotStart:
                       type: string
                       format: date-time
-                      example: "2025-04-18T10:00:00.000-03:00"
                     passengersAmount:
                       type: integer
-                      example: 2
-              extras:
+              extraIds:
                 type: array
                 items:
                   type: string
-                example: ["storm_insurance"]
+          example:
+            requestedBookings:
+              - product: jet_sky
+                slotStart: "2025-04-29T11:00:00.000-03:00"
+                passengersAmount: 2
+              - product: diving_gear
+                slotStart: "2025-04-29T11:30:00.000-03:00"
+                passengersAmount: 1
+            extraIds:
+              - storm_insurance
     responses:
       200:
         description: Validación exitosa
@@ -37,7 +44,7 @@
             schema:
               type: object
               properties:
-                bookings:
+                requestedBookings:
                   type: array
                   items:
                     type: object
@@ -126,3 +133,106 @@
                       type: array
                       items:
                         type: string
+
+/api/v1/order/create:
+  post:
+    tags: [ Orden ]
+    summary: Crear una nueva orden y sus bookings asociados
+    description: Valida stock nuevamente, crea la orden, asigna los bookings y retorna la orden creada.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              requestedBookings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: string
+                    slotStart:
+                      type: string
+                      format: date-time
+                    passengersAmount:
+                      type: integer
+              extraIds:
+                type: array
+                items:
+                  type: string
+          example:
+            requestedBookings:
+              - product: jet_sky
+                slotStart: "2025-04-29T11:00:00.000-03:00"
+                passengers:
+                  - fullName: "Juan Perez 1"
+                    birthdate: "1995-04-29T00:00:00.000-03:00"
+                  - fullName: "Juan Perez 2"
+                    birthdate: "1995-04-29T00:00:00.000-03:00"
+              - product: diving_gear
+                slotStart: "2025-04-29T11:30:00.000-03:00"
+                passengers:
+                  - fullName: "Juan Perez 3"
+                    birthdate: "1995-04-29T00:00:00.000-03:00"
+            extraIds:
+              - storm_insurance
+    responses:
+      201:
+        description: Orden creada exitosamente
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                totalPrice:
+                  type: number
+                finalPrice:
+                  type: number
+                bookings:
+                  type: array
+                  items:
+                    type: string
+            example:
+              orderId: "66153ccfeafcb3934b2e4f33"
+              totalPrice: 47000
+              finalPrice: 44150
+              bookings:
+                - "66153ccfeafcb3934b2e4f45"
+                - "66153ccfeafcb3934b2e4f46"
+      409:
+        description: Stock insuficiente para crear la orden
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                outOfStock:
+                  type: object
+                  properties:
+                    productId:
+                      type: array
+                      items:
+                        type: string
+                    accessoryId:
+                      type: array
+                      items:
+                        type: string
+            example:
+              message: "No hay stock suficiente para completar la orden."
+              outOfStock:
+                productId: ["jet_sky"]
+                accessoryId: ["life_jacket"]
+      400:
+        description: Error de validación en el payload
+      401:
+        description: No autenticado
+      500:
+        description: Error interno del servidor
