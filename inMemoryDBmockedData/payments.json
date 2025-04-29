@@ -4,6 +4,7 @@
     "userId": "6612f1f3e13c4f04b8fa0a01",
     "orderId": "67f766127e00f01e1f19d192",
     "amount": 18000,
+    "currency": "ARS",
     "method": "cash",
     "status": "completed",
     "createdAt": "2025-04-08T10:00:00.000-03:00",

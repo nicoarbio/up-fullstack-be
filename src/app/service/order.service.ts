@@ -168,7 +168,7 @@ export async function validateOrderContent(
                     type: accessoryType as Accessory,
                     stockId,
                     price
-                })
+                });
                 validBooking.price += price;
                 successOrderValidation.totalPrice += price;
             }

@@ -9,7 +9,7 @@ import { getBusinessRules } from "@service/business-rules.cache";
 import { authenticate } from "@middleware/authentication.middleware";
 
 function isBookingValidationRequestArray(data: any): boolean  {
-    return Array.isArray(data) && data.every(item =>
+    return Array.isArray(data) && data.length <= 3 && data.every(item =>
         typeof item === "object" &&
         DateTime.fromISO(item.slotStart).isValid &&
         Object.values(Product).includes(item.product) &&
@@ -75,7 +75,7 @@ const orderValidation: ValidationChain[] = [
 
 const validateOrderGetter: ValidationChain[] = [
     param("id")
-        .exists().isMongoId().withMessage("Order id is required")
+        .exists().isMongoId().withMessage("El ID de la orden es requerido")
 ]
 
 export default Router()
