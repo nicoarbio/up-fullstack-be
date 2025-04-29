@@ -54,13 +54,13 @@ export async function processCashPayment(req: Request, res: Response) {
                 return;
             });
         const convertedAmount = amount * usdArs!;
-        if (order.finalPrice < convertedAmount) {
-            res.status(400).json({ message: "El monto no concuerda con el total de la orden" });
+        if (order.finalPrice > convertedAmount) {
+            res.status(400).json({ message: `El monto ($${convertedAmount}) no concuerda con el total de la orden ($${order.finalPrice})` });
             return;
         }
     } else {
         if (order.finalPrice !== amount) {
-            res.status(400).json({ message: "El monto no concuerda con el total de la orden" });
+            res.status(400).json({ message: `El monto ($${amount}) no concuerda con el total de la orden ($${order.finalPrice})` });
             return;
         }
     }
@@ -68,7 +68,7 @@ export async function processCashPayment(req: Request, res: Response) {
     const session = await mongoose.startSession();
 
     try {
-        session.withTransaction(async () => {
+        await session.withTransaction(async () => {
             const payment = new Payment({
                 userId: order.userId,
                 orderId: order._id,

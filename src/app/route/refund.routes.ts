@@ -23,7 +23,7 @@ const validateStormRefundId: ValidationChain[] = [
 ];
 
 export default Router()
-    .post("/refund", authenticate, withValidation(validateRefundIdAndReason), processRefund)
+    .post("/refund/:bookingId", authenticate, withValidation(validateRefundIdAndReason), processRefund)
     .post("/refund/storm", authenticateAdmin, withValidation(validateStormRefundId), processStormRefund)
     .get("/refund/:id", authenticate, withValidation(validateRefundId), getRefund)
     .post("/refund/:id/register-cash", authenticateAdmin, withValidation(validateRefundId), registerCashRefund);

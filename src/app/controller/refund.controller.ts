@@ -69,16 +69,16 @@ export async function processRefund(req: Request, res: Response) {
                 const penaltyPrice = penalty.type === RuleType.PERCENTAGE ? refundAmount * penalty.value / 100 : penalty.value;
                 refundAmount -= penaltyPrice;
             }
-            const bookings = await Booking.find({ _id: { $ne: booking._id }, orderId: order._id, status: BookingStatus.ACTIVE });
             order.refundIds = [...order.refundIds, refund._id];
-            order.totalPrice = order.totalPrice - booking.price;
-            order.finalPrice = order.finalPrice - booking.price;
+            order.totalPrice -= booking.price;
+            order.finalPrice -= booking.price;
+            const bookings = await Booking.find({ _id: { $ne: booking._id }, orderId: order._id, status: BookingStatus.ACTIVE });
             if (bookings.length === 0) {
                 order.status = OrderStatus.CANCELLED;
             } else {
                 if (order.discounts.length) {
                     const discount = order.discounts[0];
-                    if (discount.type?.name === DiscountType.MULTI_BOOKING) {
+                    if (discount.name === DiscountType.MULTI_BOOKING) {
                         if (bookings.length <= 2) {
                             refundAmount -= discount.price;
                             order.finalPrice += discount.price;
@@ -92,6 +92,9 @@ export async function processRefund(req: Request, res: Response) {
             await refund.save({ session })
             await booking.save({ session });
             await order.save({ session });
+            res.status(201).json(refund);
+            console.log(`Refund processed: ${JSON.stringify(refund)}`);
+            return;
         });
     } catch (error) {
         res.status(500).json({ message: "Error processing refund", error });
@@ -120,7 +123,7 @@ export async function processStormRefund(req: Request, res: Response) {
         return;
     }
 
-    const hasStormInsurance = order?.extras.some(extra => extra?.type?.name === ExtraType.STORM_INSURANCE);
+    const hasStormInsurance = order?.extras.some(extra => extra?.name === ExtraType.STORM_INSURANCE);
     if (!hasStormInsurance) {
         res.status(400).json({ message: "No se puede reembolsar, pues no tiene seguro de tormenta" });
         return;
@@ -149,10 +152,10 @@ export async function processStormRefund(req: Request, res: Response) {
             const refundPolicy = businessRules?.refundPolicies.find(p => p.name === ExtraType.STORM_INSURANCE)!
             const penaltyPrice = refundPolicy.type === RuleType.PERCENTAGE ? booking.price * refundPolicy.value / 100 : refundPolicy.value;
 
-            const bookings = await Booking.find({ _id: { $ne: booking._id }, orderId: order._id, status: BookingStatus.ACTIVE });
             order.refundIds = [...order.refundIds, refund._id];
-            order.totalPrice = order.totalPrice - booking.price;
-            order.finalPrice = order.finalPrice - booking.price;
+            order.totalPrice -= booking.price;
+            order.finalPrice -= booking.price;
+            const bookings = await Booking.find({ _id: { $ne: booking._id }, orderId: order._id, status: BookingStatus.ACTIVE });
             if (bookings.length === 0) {
                 order.status = OrderStatus.CANCELLED;
             }
@@ -160,6 +163,8 @@ export async function processStormRefund(req: Request, res: Response) {
             await refund.save({ session })
             await booking.save({ session });
             await order.save({ session });
+            res.status(201).json(refund);
+            console.log(`Storm refund processed: ${JSON.stringify(refund)}`);
         });
     } catch (error) {
         res.status(500).json({ message: "Error processing refund", error });
@@ -195,6 +200,7 @@ export async function registerCashRefund(req: Request, res: Response) {
         res.status(400).json({ message: "El reembolso ya fue procesado" });
         return;
     }
+    await Booking.updateOne({ _id: { $in: refund.bookingIds } }, { refundStatus: ItemRefundStatus.REFUNDED });
     refund.status = RefundStatus.PROCESSED;
     refund.processedAt = DateTime.now().toJSDate();
     await refund.save();
