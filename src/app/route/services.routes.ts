@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { query } from "express-validator";
+import { query, ValidationChain } from "express-validator";
 import { DateTime } from "luxon";
 import { getServicesAvailability } from "@controller/services.controller";
-import { Product } from "@enum/booking.enum";
 import { withValidation } from "@middleware/validateRequest.middleware";
+import { Product } from "@enum/business-rules.enum";
 
-const servicesAvailabilityValidation = [
+const servicesAvailabilityValidation: ValidationChain[] = [
     query('date')
         .custom(value => {
             const inputDate = DateTime.fromISO(value);

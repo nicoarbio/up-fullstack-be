@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
 import { PaymentMethod, PaymentStatus } from "@enum/payment.enum";
-import { mongooseLuxonDateHook } from "@config/luxon.config";
+import { mongooseLuxonDateHook } from "@utils/datetime.utils";
 
 const { ObjectId } = mongoose.Schema.Types;
 

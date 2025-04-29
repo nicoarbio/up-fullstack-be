@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import { DbModelName } from "@enum/db-model-name.enum";
-import { Accessory } from "@enum/booking.enum";
+import { Accessory, RuleType } from "@enum/business-rules.enum";
 
-export enum RuleType {
-    FIXED = 'fixed',
-    PERCENTAGE = 'percentage'
-}
+export const ruleItemSchema = new mongoose.Schema({
+    name:         { type: String, required: true },
+    type:         { type: String, enum: Object.values(RuleType), required: true },
+    value:        { type: Number, required: true }
+}, { _id: false });
 
 const productSchema = new mongoose.Schema({
     price:        { type: Number, required: true },
@@ -17,16 +18,6 @@ const accessorySchema = new mongoose.Schema({
     price:        { type: Number, required: true }
 }, { _id: false });
 
-const extraSchema = new mongoose.Schema({
-    price:        { type: Number, required: true }
-}, { _id: false });
-
-const ruleItemSchema = new mongoose.Schema({
-    name:         { type: String, required: true },
-    type:         { type: String, enum: Object.values(RuleType), required: true },
-    value:        { type: Number, required: true }
-}, { _id: false });
-
 const businessRulesSchema = new mongoose.Schema({
     _id:          { type: String, default: 'default' },
     openHour:     { type: String, required: true },
@@ -35,7 +26,7 @@ const businessRulesSchema = new mongoose.Schema({
     slotStep:     { type: Number, required: true },
     products:     { type: Map, of: productSchema, required: true },
     accessories:  { type: Map, of: accessorySchema, required: true },
-    extras:       { type: Map, of: extraSchema, required: true },
+    extras:         [ ruleItemSchema ],
     penalties:      [ ruleItemSchema ],
     discounts:      [ ruleItemSchema ],
     refundPolicies: [ ruleItemSchema ]

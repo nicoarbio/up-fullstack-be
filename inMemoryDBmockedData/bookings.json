@@ -40,11 +40,8 @@
     "startTime": "2025-04-13T15:00:00.000-03:00",
     "endTime": "2025-04-13T15:30:00.000-03:00",
     "price": 20000,
-    "discount": 2000,
-    "finalPrice": 18000,
     "status": "active",
     "refundStatus": "refunded",
-    "refundAmount": 18000,
     "createdAt": "2025-04-08T10:00:00.000-03:00",
     "updatedAt": "2025-04-08T10:00:00.000-03:00"
   }

@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
-import { Accessory, BookingStatus, Product, RefundStatus } from "@enum/booking.enum";
-import { mongooseLuxonDateHook } from "@config/luxon.config";
+import { Accessory, Product } from "@enum/business-rules.enum";
+import { BookingStatus, ItemRefundStatus } from "@enum/booking.enum";
+import { mongooseLuxonDateHook } from "@utils/datetime.utils";
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -23,11 +24,8 @@ const bookingSchema = new mongoose.Schema({
     startTime:       { type: Date, required: true, mongooseLuxonDateHook },
     endTime:         { type: Date, required: true, mongooseLuxonDateHook },
     price:           { type: Number, required: true },
-    discount:        { type: Number, default: 0 },
-    finalPrice:      { type: Number, required: true },
     status:          { type: String, enum: Object.values(BookingStatus), default: BookingStatus.ACTIVE },
-    refundStatus:    { type: String, enum: Object.values(RefundStatus), default: RefundStatus.NONE },
-    refundAmount:    { type: Number, default: 0 },
+    refundStatus:    { type: String, enum: Object.values(ItemRefundStatus), default: ItemRefundStatus.NONE }
 }, { timestamps: true });
 
 export const Booking = mongoose.model(DbModelName.BOOKING, bookingSchema);

@@ -1,11 +1,11 @@
 import { DateTime } from "luxon";
-import { Product } from "@enum/booking.enum";
 import { getBusinessRules } from "@service/business-rules.cache";
 import { Stock } from "@model/stock.model";
 import { Booking } from "@model/booking.model";
 import { AvailabilityResponseDto, ProductAvailability } from "@controller/services.controller";
 import { getAvailabilityFromCache } from "@service/services.cache";
 import { isObjectEmpty } from "@utils/objects.utils";
+import { Product } from "@enum/business-rules.enum";
 
 /**
  * This method only calculate the first slot and asks the cache for the availability
@@ -75,7 +75,7 @@ export async function getAvailabilityFromSlot(firstSlot: DateTime, products: Pro
     // filtro el resultado sacando los slots anteriores al firstSlot
     for (const [product, slots] of Object.entries(filteredResult.products)) {
 
-        for (const [slotTime, value] of Object.entries(slots)) {
+        for (const [slotTime, value] of Object.entries(slots as ProductAvailability)) {
             const slotDateTime = DateTime.fromISO(slotTime);
 
             if (slotDateTime < firstSlot) {
@@ -131,7 +131,7 @@ export async function getAvailabilityForProductByDate(firstSlot: DateTime, produ
          * Necesito encontrar los bookings donde
          * se usen los stockId filtrados
          * una de las dos:
-         *  1. startTime <= slotStart  && endTime > slotStart
+         *  1. startTime <= slotStart && endTime > slotStart
          *  2. startTime < slotEnd && endTime >= slotEnd
          * mot cancelled
          */
@@ -151,7 +151,7 @@ export async function getAvailabilityForProductByDate(firstSlot: DateTime, produ
 
         const conflictingBookings = await Booking.find({
             'product.stockId': { $in: productStockIds },
-            ...bookingFilter
+            ...bookingFilter // todo here
         }).select('product.stockId');
 
         const occupiedProductIds = conflictingBookings.map(b => b.product?.stockId.toString());

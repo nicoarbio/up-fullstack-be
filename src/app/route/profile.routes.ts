@@ -2,9 +2,9 @@ import { Router } from "express";
 import { getUserProfile, updateUserProfile } from "@controller/profile.controller";
 import { authenticate } from "@middleware/authentication.middleware";
 import { withValidation } from "@middleware/validateRequest.middleware";
-import { body } from 'express-validator';
+import { body, ValidationChain } from 'express-validator';
 
-export const profileUpdateValidation = [
+export const profileUpdateValidation: ValidationChain[] = [
     body('name')
         .optional()
         .isString().withMessage('El nombre debe ser una cadena')

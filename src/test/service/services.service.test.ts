@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Product } from "../../app/model/enum/booking.enum";
+import { Product } from "../../app/model/enum/business-rules.enum";
 import { getAvailabilityForProductFromFirstSlot } from "../../app/service/services.service";
 
 describe('services.service.ts # getAvailabilityForDate', () => {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { DateTime } from 'luxon';
-import { Accessory, Product } from "@model/enum/booking.enum";
 import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
+import { Accessory, Product } from "@enum/business-rules.enum";
 
 export async function getServicesAvailability(req: Request, res: Response) {
     const date = DateTime.fromISO(req.query.date as string);
@@ -28,6 +28,6 @@ export type AvailabilityResponseDto = {
     firstSlot?: DateTime;
     lastSlot?: DateTime;
     products: {
-        [key in Product]?: ProductAvailability
+        [P in Product]?: ProductAvailability
     }
 };

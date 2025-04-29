@@ -47,11 +47,13 @@
       "price": 3500
     }
   },
-  "extras": {
-    "storm_insurance": {
-      "price": 1500
+  "extras": [
+    {
+      "name": "storm_insurance",
+      "type": "fixed",
+      "value": 1500
     }
-  },
+  ],
   "penalties": [
     {
       "name": "late_cancellation",
