@@ -151,7 +151,7 @@ export async function getAvailabilityForProductByDate(firstSlot: DateTime, produ
 
         const conflictingBookings = await Booking.find({
             'product.stockId': { $in: productStockIds },
-            ...bookingFilter // todo here
+            ...bookingFilter
         }).select('product.stockId');
 
         const occupiedProductIds = conflictingBookings.map(b => b.product?.stockId.toString());
