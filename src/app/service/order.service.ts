@@ -7,6 +7,7 @@ import { ProductAvailability } from "@controller/services.controller";
 import { JwtPayload } from "@service/jwt-handler.service";
 import { getBusinessRules } from "@service/business-rules.cache";
 import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
+import { UserRoles } from "@model/user.model";
 
 export type BookingRequest = {
     slotStart: DateTime;
@@ -119,6 +120,8 @@ export async function validateOrderContent(
     }
 
     if (errorOrderValidation.outOfStock) {
+        console.log(`Order validation failed: ${JSON.stringify(errorOrderValidation)} for requestedBookings: ${JSON.stringify(requestedBookings)}`);
+
         return errorOrderValidation;
     }
 
@@ -212,6 +215,7 @@ export async function validateOrderContent(
     // 7. finalTotal
     successOrderValidation.finalTotal = successOrderValidation.totalPrice + successOrderValidation.totalExtras - successOrderValidation.totalDiscount;
 
+    console.log(`Order successfully validated: ${JSON.stringify(successOrderValidation)}`);
     return successOrderValidation;
 }
 
@@ -275,6 +279,7 @@ export async function createOrderAndBookings(
         // Paso 4: actualizar la orden con los bookings
         order.bookings = bookings.map(b => b._id);
         await order.save();
+        console.log(`Order created: ${JSON.stringify(order)}`);
         return order;
 
     } catch (error) {
@@ -285,4 +290,17 @@ export async function createOrderAndBookings(
         throw error;
     }
 
+}
+
+export async function getOrderById(orderId: string, user: JwtPayload) {
+    const query: any = {
+        _id: orderId
+    };
+    if (user.role !== UserRoles.ADMIN) query.userId = user.id;
+    const order = await Order.findOne(query);
+    if (!order) {
+        return null;
+    }
+    console.log(`Order retrieved: ${JSON.stringify(order)}`);
+    return order;
 }

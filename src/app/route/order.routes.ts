@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { body, ValidationChain } from "express-validator";
+import { body, param, ValidationChain } from "express-validator";
 import { withValidation } from "@middleware/validateRequest.middleware";
-import { createOrder, validateOrder } from "@controller/order.controller";
+import { createOrder, getOrder, validateOrder } from "@controller/order.controller";
 import { areAllSameDay } from "@utils/datetime.utils";
-import { BookingValidationRequest } from "@service/order.service";
 import { DateTime } from "luxon";
 import { Product, ExtraType } from "@enum/business-rules.enum";
 import { getBusinessRules } from "@service/business-rules.cache";
@@ -74,6 +73,12 @@ const orderValidation: ValidationChain[] = [
         })
 ]
 
+const validateOrderGetter: ValidationChain[] = [
+    param("id")
+        .exists().isMongoId().withMessage("Order id is required")
+]
+
 export default Router()
     .post("/order/validate", withValidation(orderValidation), validateOrder)
-    .post("/order/create", authenticate, withValidation(orderValidation), createOrder);
+    .post("/order/create", authenticate, withValidation(orderValidation), createOrder)
+    .get("/order/:id", authenticate, withValidation(validateOrderGetter), getOrder);
