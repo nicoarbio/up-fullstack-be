@@ -1,0 +1,128 @@
+/api/v1/order/validate:
+  post:
+    tags: [ Orden ]
+    summary: Validar disponibilidad y precios de una orden
+    description: Verifica stock, calcula precios, aplica descuentos y responde los valores finales o indica falta de stock.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              requestedBookings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      $ref: '#/components/schemas/Product'
+                    slotStart:
+                      type: string
+                      format: date-time
+                      example: "2025-04-18T10:00:00.000Z"
+                    passengersAmount:
+                      type: integer
+                      example: 2
+              extras:
+                type: array
+                items:
+                  type: string
+                example: ["storm_insurance"]
+    responses:
+      200:
+        description: Validación exitosa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bookings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      slotStart:
+                        type: string
+                        format: date-time
+                      slotEnd:
+                        type: string
+                        format: date-time
+                      product:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          stockId:
+                            type: string
+                          price:
+                            type: number
+                      accessories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            stockId:
+                              type: string
+                            price:
+                              type: number
+                extraIds:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      type:
+                        type: string
+                        enum: [fixed, percentage]
+                      value:
+                        type: number
+                      price:
+                        type: number
+                discounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      type:
+                        type: string
+                        enum: [fixed, percentage]
+                      value:
+                        type: number
+                      price:
+                        type: number
+                totalPrice:
+                  type: number
+                  example: 50000
+                totalExtras:
+                  type: number
+                  example: 1500
+                totalDiscount:
+                  type: number
+                  example: 5000
+                finalTotal:
+                  type: number
+                  example: 46500
+      409:
+        description: Error por falta de stock
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                outOfStock:
+                  type: object
+                  properties:
+                    productId:
+                      type: array
+                      items:
+                        type: string
+                    accessoryId:
+                      type: array
+                      items:
+                        type: string

@@ -13,6 +13,7 @@ import { API_BASE_URL } from "@config/config.properties";
 
 import authenticationRouter from "@route/authentication.routes";
 import bookingsRouter from "@route/bookings.routes";
+import orderRouter from "@route/order.routes";
 import paymentRouter from "@route/payment.routes";
 import profileRouter from "@route/profile.routes";
 import servicesRouter from "@route/services.routes";
@@ -35,6 +36,7 @@ app.use(withRequestContext);
 
 app.use(`${ API_BASE_URL }`, authenticationRouter);
 app.use(`${ API_BASE_URL }`, bookingsRouter);
+app.use(`${ API_BASE_URL }`, orderRouter);
 app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);

@@ -1,6 +1,7 @@
 import { AvailabilityResponseDto, ProductAvailability } from "@controller/services.controller";
 import { DateTime } from "luxon";
-import { BookingStatus, Product } from "@enum/booking.enum";
+import { Product } from "@enum/business-rules.enum";
+import { BookingStatus } from "@enum/booking.enum";
 import { Booking } from "@model/booking.model";
 import { Stock } from "@model/stock.model";
 import crypto from "crypto";

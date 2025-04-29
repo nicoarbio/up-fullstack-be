@@ -1,8 +1,9 @@
 # Proyecto Integrador - Fullstack Web Development - Backend
 
 > [!TIP]
-> Ver la [consigna](./consigna.md) del Trabajo Práctico Integrador
-> Ver [desarrollo y preguntas](./desarrollo-y-preguntas.md) de la consigna
+> Ver la [consigna](./consigna.md) del Trabajo Práctico Integrador.
+>
+> Ver [desarrollo y preguntas](./desarrollo-y-preguntas.md) de la consigna.
 
 ## Características y tecnologías
 

@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { deleteBooking, getBookings } from "@controller/bookings.controller";
 import { authenticate } from "@middleware/authentication.middleware";
-import { query } from "express-validator";
+import { query, ValidationChain } from "express-validator";
 import { withValidation } from "@middleware/validateRequest.middleware";
 import { DateTime } from "luxon";
 
-const getBookingsValidation = [
+const getBookingsValidation: ValidationChain[] = [
     query('searchDate')
         .customSanitizer(date => DateTime.fromISO(date).startOf('day'))
         .custom((date: DateTime) => {

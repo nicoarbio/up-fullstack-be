@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
-import { mongooseLuxonDateHook } from "@config/luxon.config";
+import { mongooseLuxonDateHook } from "@utils/datetime.utils";
 
 export enum UserRoles {
     ADMIN = 'admin',

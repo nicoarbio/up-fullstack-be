@@ -3,14 +3,12 @@ components:
     Stock:
       type: object
       required:
-        - serialId
         - type
         - category
       properties:
-        serialId:
-          type: string
-        type:
-          $ref: '#/components/schemas/StockType'
+        _id:
+          type:
+            $ref: '#/components/schemas/StockType'
         category:
           type: string
           enum:
