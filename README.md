@@ -22,6 +22,15 @@
 > Start command: `npm run start`
 
 ## Uso de la API - Endpoints
+
+> [!IMPORTANT]
+> En el .env si se quiere conectar a la base de datos MongoDb Atlas se debe configurar esta propiedad NODE_ENV=production
+>
+> De otra forma se utilizará la base de datos local (mongodb-memory-server) y se debe dejar comentada NODE_ENV
+
+> [!TIP]
+> Se recomienda utilizar Swagger para probar los endpoints en http://localhost:8081/api-docs
+
 | Grupo                | HTTP Action | Path                                             | Uso |
 |----------------------|-------------|--------------------------------------------------|-----|
 | Encriptación Debug   | GET         | /api/v1/debug/auth/encrypt/rsa                  | Permite encriptar utilizando la clave RSA pública el texto plano de la contraseña ya sea para registro como para iniciar sesión |
