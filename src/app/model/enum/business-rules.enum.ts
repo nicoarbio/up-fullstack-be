@@ -12,6 +12,10 @@ export enum Accessory {
     life_jacket = 'life_jacket'
 }
 
+export enum PenaltyType {
+    LATE_CANCELLATION = 'late_cancellation'
+}
+
 export enum ExtraType {
     STORM_INSURANCE = 'storm_insurance'
 }

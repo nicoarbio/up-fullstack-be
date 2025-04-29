@@ -58,7 +58,7 @@
     {
       "name": "late_cancellation",
       "type": "percentage",
-      "value": 50
+      "value": 60
     }
   ],
   "discounts": [
@@ -70,9 +70,9 @@
   ],
   "refundPolicies": [
     {
+      "name": "storm_insurance",
       "type": "percentage",
-      "value": 50,
-      "name": "storm_with_insurance"
+      "value": 50
     }
   ],
   "createdAt": "2025-04-10T12:00:00.000-03:00",

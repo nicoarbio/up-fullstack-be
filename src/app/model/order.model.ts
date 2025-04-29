@@ -23,7 +23,6 @@ const orderSchema = new mongoose.Schema({
     finalPrice:    { type: Number, required: true },
     status:        { type: String, enum: Object.values(OrderStatus), default: OrderStatus.PENDING },
     paymentId:     { type: ObjectId, ref: DbModelName.PAYMENT },
-    refundStatus:    { type: String, enum: Object.values(ItemRefundStatus), default: ItemRefundStatus.NONE },
     refundIds:     [{ type: ObjectId, ref: DbModelName.REFUND }]
 }, { timestamps: true });
 

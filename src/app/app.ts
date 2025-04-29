@@ -16,6 +16,7 @@ import bookingsRouter from "@route/bookings.routes";
 import orderRouter from "@route/order.routes";
 import paymentRouter from "@route/payment.routes";
 import profileRouter from "@route/profile.routes";
+import refundRouter from "@route/refund.routes";
 import servicesRouter from "@route/services.routes";
 import debugRouter from "@route/debug.routes";
 
@@ -39,6 +40,7 @@ app.use(`${ API_BASE_URL }`, bookingsRouter);
 app.use(`${ API_BASE_URL }`, orderRouter);
 app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
+app.use(`${ API_BASE_URL }`, refundRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);
 app.use(`${ API_BASE_URL }/debug`, debugRouter);
 

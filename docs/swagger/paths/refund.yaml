@@ -1,0 +1,122 @@
+/api/v1/refund:
+  post:
+    tags: [ Reembolso ]
+    summary: Solicitar un reembolso de una orden
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [orderId, reason]
+            properties:
+              orderId:
+                type: string
+                description: ID de la orden para solicitar el reembolso
+              reason:
+                type: string
+                description: Motivo de la solicitud
+    responses:
+      201:
+        description: Reembolso solicitado exitosamente
+      400:
+        description: Error de validación en la solicitud
+      401:
+        description: No autenticado
+      404:
+        description: Orden no encontrada
+      409:
+        description: Orden no puede ser reembolsada
+      500:
+        description: Error interno del servidor
+
+/api/v1/refund/{id}:
+  get:
+    tags: [ Reembolso ]
+    summary: Obtener un reembolso por ID
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID del reembolso
+        schema:
+          type: string
+    responses:
+      200:
+        description: Reembolso encontrado exitosamente
+      400:
+        description: ID inválido
+      401:
+        description: No autenticado
+      403:
+        description: No autorizado
+      404:
+        description: Reembolso no encontrado
+      500:
+        description: Error interno del servidor
+
+/api/v1/refund/storm:
+  post:
+    tags: [ Reembolso ]
+    summary: Solicitar un reembolso por seguro de tormenta
+    description: Solicita un reembolso basado en la póliza de seguro de tormenta para una orden ya pagada.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [orderId]
+            properties:
+              orderId:
+                type: string
+                description: ID de la orden para solicitar el reembolso de tormenta
+    responses:
+      201:
+        description: Reembolso de tormenta solicitado exitosamente
+      400:
+        description: Error de validación en la solicitud
+      401:
+        description: No autenticado
+      404:
+        description: Orden no encontrada
+      409:
+        description: Orden no cumple las condiciones para el reembolso
+      500:
+        description: Error interno del servidor
+
+/api/v1/refund/{id}/register-cash:
+  post:
+    tags: [ Reembolso ]
+    summary: Registrar un reembolso en efectivo
+    description: Permite a un administrador registrar manualmente un reembolso pagado en efectivo.
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID del reembolso
+        schema:
+          type: string
+    responses:
+      201:
+        description: Reembolso en efectivo registrado exitosamente
+      400:
+        description: Error de validación en la solicitud
+      401:
+        description: No autenticado
+      403:
+        description: No autorizado (solo admin puede registrar efectivo)
+      404:
+        description: Orden o pago no encontrados
+      409:
+        description: El reembolso ya fue procesado o no es válido
+      500:
+        description: Error interno del servidor
