@@ -43,10 +43,12 @@ type SuccessOrderValidation = {
     finalTotal: number;
 };
 export type ErrorOrderValidation = {
-    outOfStock: {
-        productId: Product[];
-        accessoryId: Accessory[];
-    };
+    outOfStock: [{
+        productId: Product,
+        slotStart: DateTime,
+        missingProduct: Product | null,
+        missingAccessory: Accessory[]
+    }];
 }
 
 export async function validateOrderContent(
@@ -54,12 +56,7 @@ export async function validateOrderContent(
     extraIds: ExtraType[]
 ): Promise<ValidationResult> {
 
-    const errorOrderValidation: ErrorOrderValidation = {
-        outOfStock: {
-            productId: [],
-            accessoryId: []
-        }
-    };
+    const errorOrderValidation = {} as ErrorOrderValidation;
 
     const servicesAvailability = await getAvailabilityForProductFromFirstSlot(
         requestedBookings[0].slotStart.startOf('day'),
@@ -67,20 +64,46 @@ export async function validateOrderContent(
     );
 
     for (const booking of requestedBookings) {
+        let validationError: any;
         const productAvailability = servicesAvailability.products[booking.product] as ProductAvailability;
         const slotStart = booking.slotStart.toISO() as string;
         const selectedSlot = productAvailability[slotStart];
         if (selectedSlot.available.length === 0 ) {
-            errorOrderValidation.outOfStock.productId.push(booking.product);
+            validationError = {
+                productId: booking.product,
+                slotStart: booking.slotStart,
+                missingProduct: booking.product
+            }
         }
-        for (const [accessoryType, stockList] of Object.entries(selectedSlot.accessories) as [Accessory, string[]][]) {
+        for (const item of selectedSlot.accessories) {
+            const accessoryType = Object.keys(item)[0] as Accessory;
+            const stockList = item[accessoryType] as string[];
             if (stockList.length < booking.passengersAmount) {
-                errorOrderValidation.outOfStock.accessoryId.push(accessoryType);
+                if (validationError) {
+                    if (validationError.missingAccessory) {
+                        validationError.missingAccessory.push(accessoryType);
+                    } else {
+                        validationError.missingAccessory = [ accessoryType ];
+                    }
+                } else {
+                    validationError = {
+                        productId: booking.product,
+                        slotStart: booking.slotStart,
+                        missingAccessory: [ accessoryType ]
+                    }
+                }
+            }
+        }
+        if (validationError) {
+            if (!errorOrderValidation.outOfStock) {
+                errorOrderValidation.outOfStock = [ validationError ];
+            } else {
+                errorOrderValidation.outOfStock.push(validationError);
             }
         }
     }
 
-    if (errorOrderValidation.outOfStock.productId.length || errorOrderValidation.outOfStock.accessoryId.length) {
+    if (errorOrderValidation.outOfStock) {
         return errorOrderValidation;
     }
 
@@ -114,7 +137,7 @@ export async function validateOrderContent(
         }
         successOrderValidation.totalPrice += validBooking.product.price;
 
-        for (const item of selectedSlot.accessories) { //  as [string, string[]][]
+        for (const item of selectedSlot.accessories) {
             const accessoryType = Object.keys(item)[0] as Accessory;
             const stockList = item[accessoryType] as string[];
             const price = businessRules!.accessories.get(accessoryType)!.price;
@@ -171,4 +194,14 @@ export async function validateOrderContent(
     successOrderValidation.finalTotal = successOrderValidation.totalPrice + successOrderValidation.totalExtras - successOrderValidation.totalDiscount;
 
     return successOrderValidation;
+}
+
+
+export async function createOrder(
+    requestedBookings: BookingValidationRequest[],
+    extraIds: ExtraType[]
+): Promise<any> {
+
+
+
 }
