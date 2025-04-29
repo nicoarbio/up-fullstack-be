@@ -1,8 +1,22 @@
+import mongoose from "mongoose";
 import { DateTime } from 'luxon';
+import { Order } from "@model/order.model";
+import { Booking } from "@model/booking.model";
 import { Accessory, DiscountType, ExtraType, Product, RuleType } from "@enum/business-rules.enum";
-import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
 import { ProductAvailability } from "@controller/services.controller";
+import { JwtPayload } from "@service/jwt-handler.service";
 import { getBusinessRules } from "@service/business-rules.cache";
+import { getAvailabilityForProductFromFirstSlot } from "@service/services.service";
+import { UserRoles } from "@model/user.model";
+
+export type BookingRequest = {
+    slotStart: DateTime;
+    product: Product;
+    passengers: {
+        fullName: string;
+        birthdate: DateTime;
+    }[];
+}
 
 export type BookingValidationRequest = {
     slotStart: DateTime;
@@ -19,10 +33,12 @@ type BookingValidationResult = {
         price: number;
     };
     accessories: {
+        passengerIndex: number;
         type: Accessory;
         stockId: string;
         price: number;
     }[];
+    price: number;
 }
 
 type Rule<T> = {
@@ -43,10 +59,12 @@ type SuccessOrderValidation = {
     finalTotal: number;
 };
 export type ErrorOrderValidation = {
-    outOfStock: {
-        productId: Product[];
-        accessoryId: Accessory[];
-    };
+    outOfStock: [{
+        productId: Product,
+        slotStart: DateTime,
+        missingProduct: Product | null,
+        missingAccessory: Accessory[]
+    }];
 }
 
 export async function validateOrderContent(
@@ -54,12 +72,7 @@ export async function validateOrderContent(
     extraIds: ExtraType[]
 ): Promise<ValidationResult> {
 
-    const errorOrderValidation: ErrorOrderValidation = {
-        outOfStock: {
-            productId: [],
-            accessoryId: []
-        }
-    };
+    const errorOrderValidation = {} as ErrorOrderValidation;
 
     const servicesAvailability = await getAvailabilityForProductFromFirstSlot(
         requestedBookings[0].slotStart.startOf('day'),
@@ -67,20 +80,48 @@ export async function validateOrderContent(
     );
 
     for (const booking of requestedBookings) {
+        let validationError: any;
         const productAvailability = servicesAvailability.products[booking.product] as ProductAvailability;
         const slotStart = booking.slotStart.toISO() as string;
         const selectedSlot = productAvailability[slotStart];
         if (selectedSlot.available.length === 0 ) {
-            errorOrderValidation.outOfStock.productId.push(booking.product);
+            validationError = {
+                productId: booking.product,
+                slotStart: booking.slotStart,
+                missingProduct: booking.product
+            }
         }
-        for (const [accessoryType, stockList] of Object.entries(selectedSlot.accessories) as [Accessory, string[]][]) {
+        for (const item of selectedSlot.accessories) {
+            const accessoryType = Object.keys(item)[0] as Accessory;
+            const stockList = item[accessoryType] as string[];
             if (stockList.length < booking.passengersAmount) {
-                errorOrderValidation.outOfStock.accessoryId.push(accessoryType);
+                if (validationError) {
+                    if (validationError.missingAccessory) {
+                        validationError.missingAccessory.push(accessoryType);
+                    } else {
+                        validationError.missingAccessory = [ accessoryType ];
+                    }
+                } else {
+                    validationError = {
+                        productId: booking.product,
+                        slotStart: booking.slotStart,
+                        missingAccessory: [ accessoryType ]
+                    }
+                }
+            }
+        }
+        if (validationError) {
+            if (!errorOrderValidation.outOfStock) {
+                errorOrderValidation.outOfStock = [ validationError ];
+            } else {
+                errorOrderValidation.outOfStock.push(validationError);
             }
         }
     }
 
-    if (errorOrderValidation.outOfStock.productId.length || errorOrderValidation.outOfStock.accessoryId.length) {
+    if (errorOrderValidation.outOfStock) {
+        console.log(`Order validation failed: ${JSON.stringify(errorOrderValidation)} for requestedBookings: ${JSON.stringify(requestedBookings)}`);
+
         return errorOrderValidation;
     }
 
@@ -102,29 +143,33 @@ export async function validateOrderContent(
         const slotStart = booking.slotStart.toISO() as string;
         const selectedSlot = productAvailability[slotStart];
 
+        const productPrice = businessRules!.products.get(booking.product)!.price;
         const validBooking: BookingValidationResult = {
             slotStart: booking.slotStart,
             slotEnd: booking.slotStart.plus({ minutes: businessRules!.slotDuration! }),
             product: {
                 type: booking.product,
                 stockId: selectedSlot.available[0],
-                price: businessRules!.products.get(booking.product)!.price
+                price: productPrice
             },
+            price: productPrice,
             accessories: []
         }
-        successOrderValidation.totalPrice += validBooking.product.price;
+        successOrderValidation.totalPrice += validBooking.price;
 
-        for (const item of selectedSlot.accessories) { //  as [string, string[]][]
+        for (const item of selectedSlot.accessories) {
             const accessoryType = Object.keys(item)[0] as Accessory;
             const stockList = item[accessoryType] as string[];
             const price = businessRules!.accessories.get(accessoryType)!.price;
             for (let i = 0; i < booking.passengersAmount; i++) {
                 const stockId = stockList[i];
                 validBooking.accessories.push({
+                    passengerIndex: i,
                     type: accessoryType as Accessory,
                     stockId,
                     price
                 })
+                validBooking.price += price;
                 successOrderValidation.totalPrice += price;
             }
         }
@@ -170,5 +215,92 @@ export async function validateOrderContent(
     // 7. finalTotal
     successOrderValidation.finalTotal = successOrderValidation.totalPrice + successOrderValidation.totalExtras - successOrderValidation.totalDiscount;
 
+    console.log(`Order successfully validated: ${JSON.stringify(successOrderValidation)}`);
     return successOrderValidation;
+}
+
+export async function createOrderAndBookings(
+    user: JwtPayload,
+    requestedBookings: BookingRequest[],
+    extraIds: ExtraType[]
+) {
+    const orderValidationRequest = requestedBookings.map((b: BookingRequest) => ({
+        slotStart: b.slotStart,
+        product: b.product,
+        passengersAmount: b.passengers.length
+    }));
+    let orderValidation = await validateOrderContent(orderValidationRequest, extraIds);
+    if ("outOfStock" in orderValidation && orderValidation.outOfStock) {
+        return orderValidation;
+    }
+    orderValidation = orderValidation as SuccessOrderValidation;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        // Paso 2: crear orden vacía
+        const order = await Order.create({
+            userId: user.id,
+            extras: orderValidation.extras,
+            discounts: orderValidation.discounts,
+            totalPrice: orderValidation.totalPrice,
+            totalExtras: orderValidation.totalExtras,
+            totalDiscount: orderValidation.totalDiscount,
+            finalPrice: orderValidation.finalTotal,
+            bookings: []
+        });
+
+        // Paso 3: crear bookings asociados
+        const bookings = await Booking.insertMany(
+            orderValidation.bookings.map((booking, bIdx) => ({
+                userId: user.id,
+                orderId: order._id,
+                product: {
+                    type: booking.product.type,
+                    stockId: booking.product.stockId
+                },
+                passengers: requestedBookings[bIdx].passengers.map((passenger, pIdx) => ({
+                    fullName: passenger.fullName,
+                    birthdate: passenger.birthdate,
+                    accessories: booking.accessories
+                        .filter(acc => acc.passengerIndex === pIdx)
+                        .map(acc => ({
+                            type: acc.type,
+                            stockId: acc.stockId
+                        })),
+                })),
+                startTime: booking.slotStart,
+                endTime: booking.slotEnd,
+                price: booking.price
+            }))
+        );
+
+        // Paso 4: actualizar la orden con los bookings
+        order.bookings = bookings.map(b => b._id);
+        await order.save();
+        console.log(`Order created: ${JSON.stringify(order)}`);
+        return order;
+
+    } catch (error) {
+        // Si algo falla en el proceso, se hace rollback de la transacción
+        await session.abortTransaction();
+        session.endSession();
+
+        throw error;
+    }
+
+}
+
+export async function getOrderById(orderId: string, user: JwtPayload) {
+    const query: any = {
+        _id: orderId
+    };
+    if (user.role !== UserRoles.ADMIN) query.userId = user.id;
+    const order = await Order.findOne(query);
+    if (!order) {
+        return null;
+    }
+    console.log(`Order retrieved: ${JSON.stringify(order)}`);
+    return order;
 }

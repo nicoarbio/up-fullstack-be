@@ -1,19 +1,25 @@
 import { Router } from "express";
-import { body, ValidationChain } from "express-validator";
+import { body, param, ValidationChain } from "express-validator";
 import { withValidation } from "@middleware/validateRequest.middleware";
-import { createOrder, validateOrder } from "@controller/order.controller";
+import { createOrder, getOrder, validateOrder } from "@controller/order.controller";
 import { areAllSameDay } from "@utils/datetime.utils";
-import { BookingValidationRequest } from "@service/order.service";
 import { DateTime } from "luxon";
 import { Product, ExtraType } from "@enum/business-rules.enum";
 import { getBusinessRules } from "@service/business-rules.cache";
+import { authenticate } from "@middleware/authentication.middleware";
 
-function isBookingValidationRequestArray(data: any): data is BookingValidationRequest[] {
+function isBookingValidationRequestArray(data: any): boolean  {
     return Array.isArray(data) && data.every(item =>
         typeof item === "object" &&
         DateTime.fromISO(item.slotStart).isValid &&
         Object.values(Product).includes(item.product) &&
-        typeof item.passengersAmount === "number"
+        (typeof item.passengersAmount === "number" || (
+            Array.isArray(item.passengers) &&
+            item.passengers.every((passenger: any) =>
+                typeof passenger.fullName === "string" &&
+                DateTime.fromISO(passenger.birthdate).isValid
+            )
+        ))
     );
 }
 
@@ -67,6 +73,12 @@ const orderValidation: ValidationChain[] = [
         })
 ]
 
+const validateOrderGetter: ValidationChain[] = [
+    param("id")
+        .exists().isMongoId().withMessage("Order id is required")
+]
+
 export default Router()
     .post("/order/validate", withValidation(orderValidation), validateOrder)
-    .post("/order", withValidation(orderValidation), createOrder);
+    .post("/order/create", authenticate, withValidation(orderValidation), createOrder)
+    .get("/order/:id", authenticate, withValidation(validateOrderGetter), getOrder);
