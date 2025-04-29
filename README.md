@@ -72,10 +72,9 @@
 
 ### Pendiente
 - [ ] Implementar cron que verifique cada 30 minutos que las reservas activas impagas que tienen menos de dos horas para que comiencen, se den por vencidas  
-
+- [ ] Implementar pagos con MercadoPago https://github.com/mercadopago/checkout-payment-sample
 
 ## Características y tecnologías
-
 - API RESTful
 - Node.js
 - Typescript
@@ -83,7 +82,7 @@
 - MongoDB (+ mongodb-memory-server para entorno local. Ver [inmemory.connection.ts](src/app/config/mongodb/inmemory.connection.ts))
 - Mongoose
 - Swagger (ver /docs/swagger/** y [swagger.config.ts](src/app/config/swagger.config.ts))
-- Vitest
+- Jest (Tests unitarios y de integración)
 - Autenticación (via JTW jsonwebtoken)
   - user & password
   - google
