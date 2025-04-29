@@ -20,5 +20,20 @@
     "imageUrl": "https://avatars.githubusercontent.com/u/25025508?v=4",
     "createdAt": "2025-04-07T14:45:00.000-03:00",
     "updatedAt": "2025-04-07T14:45:00.000-03:00"
+  },
+  {
+    "_id": "6612f1f3e13c4f04b8fa0a03",
+    "name": "Nicolás",
+    "lastname": "Arbio",
+    "email": "niqo99@gmail.com",
+    "emailVerified": true,
+    "googleId": "117957660195718330771",
+    "phoneNumber": null,
+    "imageUrl": "https://lh3.googleusercontent.com/a/ACg8ocJpZND5Ry1wQ51kBIPn-C_EiTgYuNkU5_0wMZlKYrMEMF_1Zh_ROw=s96-c",
+    "role": "admin",
+    "status": "active",
+    "lastLogin": "2025-04-14T07:16:40.744Z",
+    "createdAt": "2025-04-14T07:16:40.731Z",
+    "updatedAt": "2025-04-14T07:16:40.745Z"
   }
 ]

@@ -4,7 +4,8 @@
     "docs",
     ".env",
     "tsconfig.json",
-    "package.json"
+    "package.json",
+    "inMemoryDBmockedData"
   ],
   "ext": "ts,json,yml,yaml",
   "exec": "npm run dev"

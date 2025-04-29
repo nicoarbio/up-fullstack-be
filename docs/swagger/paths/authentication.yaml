@@ -108,3 +108,34 @@
               properties:
                 error:
                   type: string
+
+/api/v1/oauth/google:
+  post:
+    tags: [ Autenticación ]
+    summary: Iniciar sesión (generar tokens) y/o registrarse con Google
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - googleJWT
+            properties:
+              googleJWT:
+                type: string
+                required: true
+    responses:
+      200:
+        description: Usuario creado y/o tokens generado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                refreshToken:
+                  type: string
+      401:
+        description: Google JWT erróneo

@@ -1,0 +1,30 @@
+components:
+  parameters:
+    page:
+      in: query
+      name: page
+      description: Número de página
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    limit:
+      in: query
+      name: limit
+      description: Número máximo de resultados por página
+      required: true
+      schema:
+        type: integer
+        minimum: 5
+        maximum: 25
+        default: 5
+    order:
+      in: query
+      name: order
+      required: false
+      description: Dirección de ordenamiento
+      schema:
+        type: string
+        enum: [ asc, desc ]
+        example: desc

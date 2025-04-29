@@ -6,10 +6,13 @@
       "67f766f5c45576b02c813261"
     ],
     "extras": [{
-      "type": "storm_insurance",
+      "name": "storm_insurance",
+      "type": "fixed",
+      "value": 1500,
       "price": 1500
     }],
     "totalPrice": 21500,
+    "totalExtras": 1500,
     "totalDiscount": 2000,
     "finalPrice": 18000,
     "status": "paid",

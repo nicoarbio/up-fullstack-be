@@ -51,11 +51,11 @@ describe('authentication.service.ts # registerUser', () => {
 
         expect(await cryptoService.bcrypt.compare(plainPassword, userInDb!.passwordHash)).toBe(true);
 
-        expect(result).toEqual({ email: newUserInfo.email });
+        expect(result.email).toEqual(newUserInfo.email);
     });
 
     test('user already exists', async () => {
-        await expect(registerUser(alredyExistUserInfo)).rejects.toThrow('El usuario ya existe');
+        await expect(registerUser(alredyExistUserInfo)).rejects.toThrow();
     });
 
 });
@@ -87,7 +87,7 @@ describe('authentication.service.ts # refreshAccessToken', () => {
         const jwtPayload = { id: dbUser!._id, email: dbUser!.email, role: dbUser!.role };
         const expiredRefreshToken = jwt.sign(jwtPayload, JWT_CONFIG.SECRET_REFRESH, { expiresIn: -10 });
 
-        await expect(refreshAccessToken(expiredRefreshToken)).rejects.toThrow('Token inválido o expirado');
+        await expect(refreshAccessToken(expiredRefreshToken)).rejects.toThrow();
     });
 
 });

@@ -14,18 +14,37 @@
       401:
         description: Credenciales inválidas
   put:
-    tags: [ Perfil de usuario ]
-    summary: Actualizar el perfil del usuario actual
+    tags: [Perfil de usuario]
+    summary: Actualiza los datos del usuario autenticado
     security:
-      - bearerAuth: [ ]
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Nicolás
+              lastname:
+                type: string
+                example: Arbio
+              phoneNumber:
+                type: string
+                example: "+54 9 11 1234 5678"
+            required: []
     responses:
       200:
-        description: Perfil actualizado
+        description: Perfil actualizado correctamente
         content:
           application/json:
             schema:
-              $ref: '#components/schemas/User'
-      400:
-        description: Error de validación
+              $ref: '#/components/schemas/User'
       401:
-        description: Credenciales inválidas
+        description: Usuario no autenticado
+      422:
+        description: Parámetros inválidos
+      500:
+        description: Error interno del servidor

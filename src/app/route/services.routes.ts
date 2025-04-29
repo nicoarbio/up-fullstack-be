@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { query } from "express-validator";
+import { query, ValidationChain } from "express-validator";
 import { DateTime } from "luxon";
 import { getServicesAvailability } from "@controller/services.controller";
-import { Product } from "@enum/booking.enum";
-import { validateRequest } from "@middleware/validateRequest.middleware";
+import { withValidation } from "@middleware/validateRequest.middleware";
+import { Product } from "@enum/business-rules.enum";
 
-const servicesAvailabilityValidation = [
+const servicesAvailabilityValidation: ValidationChain[] = [
     query('date')
         .custom(value => {
             const inputDate = DateTime.fromISO(value);
             if (!inputDate.isValid) {
-                throw new Error('La fecha debe estar en formato ISO válido con hora');
+                throw new Error('La fecha debe estar en formato ISO válido');
             }
             const now = DateTime.now().minus( { seconds: 5 } );
             const in48Hours = now.plus({ hours: 48 });
@@ -40,4 +40,4 @@ const servicesAvailabilityValidation = [
 ]
 
 export default Router()
-    .get("/services/availability", servicesAvailabilityValidation, validateRequest, getServicesAvailability);
+    .get("/services/availability", withValidation(servicesAvailabilityValidation), getServicesAvailability);

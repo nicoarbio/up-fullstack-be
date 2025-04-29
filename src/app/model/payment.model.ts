@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { DbModelName } from "@enum/db-model-name.enum";
 import { PaymentMethod, PaymentStatus } from "@enum/payment.enum";
-import { fromLuxonDateTime, toLuxonDateTime } from "@config/luxon.config";
+import { mongooseLuxonDateHook } from "@utils/datetime.utils";
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -12,7 +12,7 @@ const paymentSchema = new mongoose.Schema({
     method:    { type: String,   enum: Object.values(PaymentMethod), required: true, },
     status:    { type: String,   enum: Object.values(PaymentStatus), required: true },
     reference: { type: String,   default: null },
-    paidAt:    { type: Date,     default: null, get: toLuxonDateTime, set: fromLuxonDateTime }
+    paidAt:    { type: Date,     default: null, mongooseLuxonDateHook }
 }, { timestamps: true });
 
 export const Payment = mongoose.model(DbModelName.PAYMENT, paymentSchema);
