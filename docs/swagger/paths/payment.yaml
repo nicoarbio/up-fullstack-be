@@ -1,0 +1,70 @@
+/api/v1/payment/cash:
+  post:
+    tags: [ Pago ]
+    summary: Registrar pago en efectivo [Solo disponible para usuario con rol admin]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+             - orderId
+             - amount
+             - currency
+            properties:
+              orderId:
+                type: string
+                description: ID de la orden a pagar
+              amount:
+                type: number
+                description: Monto a pagar
+              currency:
+                type: string
+                description: Moneda de pago
+          example:
+            orderId: "6810939c5ede6955d29acb36"
+            amount: 43440
+            currency: "ARS"
+    responses:
+      201:
+        description: Pago registrado correctamente
+      400:
+        description: Error en la request
+      401:
+        description: Usuario no autenticado
+      404:
+        description: Orden no encontrada
+      409:
+        description: La orden ya fue pagada
+      422:
+        description: El cuerpo del request es inválido
+      500:
+        description: Error inesperado del servidor
+
+/api/v1/payment/{id}:
+    get:
+      tags: [ Pago ]
+      summary: Obtener información de un pago por ID
+      description: Retorna un pago si existe y pertenece al usuario autenticado. Los administradores pueden acceder a cualquier pago.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del pago
+          schema:
+            type: string
+            example: "662a70bdbf8b29c1e4c8312f"
+      responses:
+        200:
+          description: Pago encontrado
+        401:
+          description: No autenticado
+        422:
+          description: ID inválido
+        404:
+          description: Pago no encontrado

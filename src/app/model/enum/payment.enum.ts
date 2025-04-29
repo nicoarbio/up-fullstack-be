@@ -8,3 +8,8 @@ export enum PaymentStatus {
     IN_PROGRESS = 'in_progress',
     FAILED = 'failed',
 }
+
+export enum Currency {
+    ARS = 'ARS',
+    USD = 'USD'
+}
