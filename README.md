@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/nicoarbio/up-fullstack-be)
+
 # Proyecto Integrador - Fullstack Web Development - Backend
 
 > [!TIP]
