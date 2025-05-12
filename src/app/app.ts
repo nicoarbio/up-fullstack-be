@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import cors from 'cors';
 import bodyParser from "body-parser";
 
 import "@config/log4js.config";
@@ -22,6 +23,10 @@ import debugRouter from "@route/debug.routes";
 
 const app: Express = express();
 
+app.use(cors({
+    origin: [ 'http://localhost:4200', 'https://up-fullstack-fe.onrender.com' ],
+    credentials: true
+}));
 app.set('trust proxy', true);
 
 setupHealthCheck(app);
