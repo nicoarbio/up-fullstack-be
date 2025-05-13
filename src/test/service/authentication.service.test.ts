@@ -9,7 +9,8 @@ import { verifyAccessToken, verifyRefreshToken } from "../../app/service/jwt-han
 describe('authentication.service.ts # loginUserWithEmailPassword', () => {
 
     test('happy path', async () => {
-        const res = await loginUserWithEmailPassword('nico@outlook.com', cryptoService.password.encrypt("123456"));
+        // const res = await loginUserWithEmailPassword('nico@outlook.com', cryptoService.password.encrypt("123456"));
+        const res = await loginUserWithEmailPassword('nico@outlook.com', "123456");
 
         expect(res).toBeDefined();
         expect(res.accessToken).toBeDefined();
@@ -25,14 +26,16 @@ describe('authentication.service.ts # registerUser', () => {
         name: "Nicolás",
         lastname: "Arbio",
         email: "nico@up.com",
-        encryptedPassword: cryptoService.password.encrypt("123456"),
+        // encryptedPassword: cryptoService.password.encrypt("123456"),
+        encryptedPassword: "123456",
         phoneNumber: "+5491113245678"
     }
     const alredyExistUserInfo = {
         name: "Nicolás",
         lastname: "Arbio",
         email: "nico@outlook.com",
-        encryptedPassword: cryptoService.password.encrypt("123456"),
+        // encryptedPassword: cryptoService.password.encrypt("123456"),
+        encryptedPassword: "123456",
         phoneNumber: "+5491113245678"
     }
 
@@ -47,7 +50,8 @@ describe('authentication.service.ts # registerUser', () => {
         expect(userInDb).not.toBeNull();
         expect(userInDb?.passwordHash).not.toBe(newUserInfo.encryptedPassword);
 
-        const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+        // const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+        const plainPassword = newUserInfo.encryptedPassword;
 
         expect(await cryptoService.bcrypt.compare(plainPassword, userInDb!.passwordHash)).toBe(true);
 
@@ -63,7 +67,8 @@ describe('authentication.service.ts # registerUser', () => {
 describe('authentication.service.ts # refreshAccessToken', () => {
     const user = {
         email: "nico@outlook.com",
-        password: cryptoService.password.encrypt("123456")
+        // password: cryptoService.password.encrypt("123456")
+        password: "123456"
     };
     let refreshToken: string;
     let accessToken: string;
