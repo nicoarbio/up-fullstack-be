@@ -16,7 +16,9 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
         throw error;
     }
 
-    const plainPassword = cryptoService.password.decrypt(encryptedPassword);
+    // const plainPassword = cryptoService.password.decrypt(encryptedPassword);
+    const plainPassword = encryptedPassword;
+
     const passwordMatch = await cryptoService.bcrypt.compare(plainPassword, user.passwordHash);
     if (!passwordMatch) {
         throw error;
