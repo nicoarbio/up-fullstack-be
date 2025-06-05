@@ -1,0 +1,7 @@
+/api/v1/business-rules:
+  get:
+    tags: [ Business Rules ]
+    summary: Obtener todas las reglas de negocio
+    responses:
+      200:
+        description: Reglas de negocio obtenidas exitosamente
