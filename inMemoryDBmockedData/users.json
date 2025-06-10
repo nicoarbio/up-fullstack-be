@@ -5,6 +5,7 @@
     "lastname": "Arbio",
     "email": "nico@outlook.com",
     "passwordHash": "$2b$10$YvMdmvlQ3QXJFhZyuh60W.s2fyOoW81TAqLfce8N/lZouiE.O2DlK",
+    "role": "user",
     "googleId": null,
     "imageUrl": "https://avatars.githubusercontent.com/u/25025508?v=4",
     "createdAt": "2025-04-07T14:45:00.000-03:00",
