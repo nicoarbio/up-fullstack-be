@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import cors from 'cors';
 import bodyParser from "body-parser";
 
 import "@config/log4js.config";
@@ -19,9 +20,14 @@ import profileRouter from "@route/profile.routes";
 import refundRouter from "@route/refund.routes";
 import servicesRouter from "@route/services.routes";
 import debugRouter from "@route/debug.routes";
+import businessRulesRoutes from "@route/business-rules.routes";
 
 const app: Express = express();
 
+app.use(cors({
+    origin: [ 'http://localhost:4200', 'https://up-fullstack-fe.onrender.com' ],
+    credentials: true
+}));
 app.set('trust proxy', true);
 
 setupHealthCheck(app);
@@ -42,6 +48,7 @@ app.use(`${ API_BASE_URL }`, paymentRouter);
 app.use(`${ API_BASE_URL }`, profileRouter);
 app.use(`${ API_BASE_URL }`, refundRouter);
 app.use(`${ API_BASE_URL }`, servicesRouter);
+app.use(`${ API_BASE_URL }`, businessRulesRoutes);
 app.use(`${ API_BASE_URL }/debug`, debugRouter);
 
 export default app;

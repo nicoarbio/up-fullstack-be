@@ -1,20 +1,25 @@
-/api/v1/refund:
+/api/v1/refund/{bookingId}:
   post:
     tags: [ Reembolso ]
-    summary: Solicitar un reembolso de una orden
+    summary: Solicitar un reembolso de un turno (booking)
     security:
       - bearerAuth: []
+
+    parameters:
+      - in: path
+        name: bookingId
+        required: true
+        description: ID del turno para solicitar el reembolso
+        schema:
+          type: string
     requestBody:
       required: true
       content:
         application/json:
           schema:
             type: object
-            required: [orderId, reason]
+            required: [reason]
             properties:
-              orderId:
-                type: string
-                description: ID de la orden para solicitar el reembolso
               reason:
                 type: string
                 description: Motivo de la solicitud

@@ -16,7 +16,9 @@ export const loginUserWithEmailPassword = async (email: string, encryptedPasswor
         throw error;
     }
 
-    const plainPassword = cryptoService.password.decrypt(encryptedPassword);
+    // const plainPassword = cryptoService.password.decrypt(encryptedPassword);
+    const plainPassword = encryptedPassword;
+
     const passwordMatch = await cryptoService.bcrypt.compare(plainPassword, user.passwordHash);
     if (!passwordMatch) {
         throw error;
@@ -58,7 +60,8 @@ export async function registerUser(newUserInfo: { name: string, lastname: string
     const existing = await User.findOne({ email: newUserInfo.email });
     if (existing) throw userAlreadyExists;
 
-    const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+    // const plainPassword = cryptoService.password.decrypt(newUserInfo.encryptedPassword);
+    const plainPassword = newUserInfo.encryptedPassword;
     const passwordHash = await cryptoService.bcrypt.hash(plainPassword);
     const newUser = await User.create({ ...newUserInfo, passwordHash }).then((user) => {
         console.log(`User registered successfully. [${JSON.stringify(user)}]`);

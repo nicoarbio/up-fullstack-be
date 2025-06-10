@@ -3,7 +3,7 @@ import { UserRoles } from "@model/user.model";
 import { Booking } from "@model/booking.model";
 import { JwtPayload } from "@service/jwt-handler.service";
 
-const allowedSortFields = ['createdAt', 'startTime', 'price', 'status', 'finalPrice'];
+const allowedSortFields = ['createdAt', 'startTime', 'price', 'status'];
 const allowedSortOrders = ['asc', 'desc'];
 
 export type BookingQuery = {
@@ -52,7 +52,23 @@ export async function getBookingsByDate(bookingQuery: BookingQuery) {
         .sort({ [query.sortBy]: query.order === 'asc' ? 1 : -1 })
         .skip((query.page - 1) * query.limit)
         .limit(query.limit)
-        .select("-__v");
+        .select("-__v")
+        .populate('userId', 'name lastname')
+        .populate('orderId', 'status extras')
+        .lean();
+
+    const bookingsFormatted = bookings.map(b => {
+        const user = b.userId as unknown as { _id: string; name: string; lastname: string };
+        const order = b.orderId as unknown as { _id: string; status: string, extras: any };
+
+        return {
+            ...b,
+            userFullName: `${user.name} ${user.lastname}`,
+            userId: user._id,
+            orderStatus: order.status,
+            stormInsurance: order.extras.length > 0
+        };
+    });
 
     return {
         page: query.page,
@@ -62,6 +78,6 @@ export async function getBookingsByDate(bookingQuery: BookingQuery) {
         sortBy: query.sortBy,
         order: query.order,
         date: bookingQuery.searchDate,
-        data: bookings
+        data: bookingsFormatted
     }
 }

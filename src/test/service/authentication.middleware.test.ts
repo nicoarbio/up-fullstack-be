@@ -16,12 +16,14 @@ describe('authentication.middleware.test.ts', () => {
     const users = {
         user: {
             tokens: { },
-            loginData: { email: "nico@outlook.com", password: cryptoService.password.encrypt("123456") },
+            // loginData: { email: "nico@outlook.com", password: cryptoService.password.encrypt("123456") },
+            loginData: { email: "nico@outlook.com", password: "123456" },
             req: { headers: { } } as Request
         },
         admin: {
             tokens: { },
-            loginData: { email: "nico@tropicalhub.com", password: cryptoService.password.encrypt("123456") },
+            // loginData: { email: "nico@tropicalhub.com", password: cryptoService.password.encrypt("123456") },
+            loginData: { email: "nico@tropicalhub.com", password: "123456" },
             req: { headers: { } } as Request
         }
     }

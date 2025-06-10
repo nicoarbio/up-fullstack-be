@@ -37,9 +37,144 @@
         ]
       }
     ],
-    "startTime": "2025-04-29T15:00:00.000-03:00",
-    "endTime": "2025-04-29T15:30:00.000-03:00",
+    "startTime": "2025-06-10T15:00:00.000-03:00",
+    "endTime": "2025-06-10T15:30:00.000-03:00",
     "price": 21500,
+    "status": "active",
+    "createdAt": "2025-04-08T10:00:00.000-03:00",
+    "updatedAt": "2025-04-08T10:00:00.000-03:00"
+  },
+  {
+    "_id": "67f766f5c45576b02c813262",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "orderId": "67f766127e00f01e1f19d192",
+    "product": {
+      "type": "jet_sky",
+      "stockId": "stk-js-001"
+    },
+    "passengers": [
+      {
+        "fullName": "Nicolás Arbio",
+        "birthdate": "1990-05-20",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-001"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-001"
+          }
+        ]
+      },
+      {
+        "fullName": "Mariana Lopez",
+        "birthdate": "1992-11-02",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-002"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-002"
+          }
+        ]
+      }
+    ],
+    "startTime": "2025-06-10T15:30:00.000-03:00",
+    "endTime": "2025-06-10T16:00:00.000-03:00",
+    "price": 21549,
+    "status": "cancelled",
+    "createdAt": "2025-04-08T10:00:00.000-03:00",
+    "updatedAt": "2025-04-08T10:00:00.000-03:00"
+  },
+  {
+    "_id": "67f766f5c45576b02c813263",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "orderId": "67f766127e00f01e1f19d192",
+    "product": {
+      "type": "jet_sky",
+      "stockId": "stk-js-001"
+    },
+    "passengers": [
+      {
+        "fullName": "Nicolás Arbio",
+        "birthdate": "1990-05-20",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-001"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-001"
+          }
+        ]
+      },
+      {
+        "fullName": "Mariana Lopez",
+        "birthdate": "1992-11-02",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-002"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-002"
+          }
+        ]
+      }
+    ],
+    "startTime": "2025-06-10T17:00:00.000-03:00",
+    "endTime": "2025-06-10T17:30:00.000-03:00",
+    "price": 21501,
+    "status": "active",
+    "createdAt": "2025-04-08T10:00:00.000-03:00",
+    "updatedAt": "2025-04-08T10:00:00.000-03:00"
+  },
+  {
+    "_id": "67f766f5c45576b02c813265",
+    "userId": "6612f1f3e13c4f04b8fa0a01",
+    "orderId": "67f766127e00f01e1f19d193",
+    "product": {
+      "type": "jet_sky",
+      "stockId": "stk-js-001"
+    },
+    "passengers": [
+      {
+        "fullName": "Nicolás Arbio",
+        "birthdate": "1990-05-20",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-001"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-001"
+          }
+        ]
+      },
+      {
+        "fullName": "Mariana Lopez",
+        "birthdate": "1992-11-02",
+        "accessories": [
+          {
+            "type": "aqua_helmet",
+            "stockId": "stk-h-002"
+          },
+          {
+            "type": "life_jacket",
+            "stockId": "stk-lj-002"
+          }
+        ]
+      }
+    ],
+    "startTime": "2025-06-12T17:00:00.000-03:00",
+    "endTime": "2025-06-12T17:30:00.000-03:00",
+    "price": 21501,
     "status": "active",
     "createdAt": "2025-04-08T10:00:00.000-03:00",
     "updatedAt": "2025-04-08T10:00:00.000-03:00"
