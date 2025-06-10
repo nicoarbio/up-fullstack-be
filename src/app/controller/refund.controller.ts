@@ -31,10 +31,10 @@ export async function processRefund(req: Request, res: Response) {
         return;
     }
 
-    if (order.status === OrderStatus.PENDING || order.status === OrderStatus.CANCELLED) {
-        res.status(400).json({ message: "No se puede reembolsar, pues la orden está impaga o cancelada" });
-        return;
-    }
+    // if (order.status === OrderStatus.PENDING || order.status === OrderStatus.CANCELLED) {
+    //     res.status(400).json({ message: "No se puede reembolsar, pues la orden está impaga o cancelada" });
+    //     return;
+    // }
 
     let refundPenalty = false;
     const now = DateTime.now();

@@ -54,18 +54,19 @@ export async function getBookingsByDate(bookingQuery: BookingQuery) {
         .limit(query.limit)
         .select("-__v")
         .populate('userId', 'name lastname')
-        .populate('orderId', 'status')
+        .populate('orderId', 'status, extras')
         .lean();
 
     const bookingsFormatted = bookings.map(b => {
         const user = b.userId as unknown as { _id: string; name: string; lastname: string };
-        const order = b.orderId as unknown as { _id: string; status: string };
+        const order = b.orderId as unknown as { _id: string; status: string, extras: any };
 
         return {
             ...b,
             userFullName: `${user.name} ${user.lastname}`,
             userId: user._id,
             orderStatus: order.status,
+            stormInsurance: order.extras.length > 0
         };
     });
 
