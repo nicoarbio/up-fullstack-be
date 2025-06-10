@@ -54,7 +54,7 @@ export async function getBookingsByDate(bookingQuery: BookingQuery) {
         .limit(query.limit)
         .select("-__v")
         .populate('userId', 'name lastname')
-        .populate('orderId', 'status, extras')
+        .populate('orderId', 'status extras')
         .lean();
 
     const bookingsFormatted = bookings.map(b => {
