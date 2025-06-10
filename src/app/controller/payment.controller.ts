@@ -65,33 +65,27 @@ export async function processCashPayment(req: Request, res: Response) {
         }
     }
 
-    const session = await mongoose.startSession();
-
     try {
-        await session.withTransaction(async () => {
-            const payment = new Payment({
-                userId: order.userId,
-                orderId: order._id,
-                amount,
-                currency,
-                method: PaymentMethod.CASH,
-                status: PaymentStatus.COMPLETED,
-                paidAt: DateTime.now()
-            });
-            await payment.save({ session });
+        const payment = new Payment({
+            userId: order.userId,
+            orderId: order._id,
+            amount,
+            currency,
+            method: PaymentMethod.CASH,
+            status: PaymentStatus.COMPLETED,
+            paidAt: DateTime.now()
+        });
+        await payment.save();
 
-            order.paymentId = payment._id;
-            order.status = OrderStatus.PAID;
+        order.paymentId = payment._id;
+        order.status = OrderStatus.PAID;
 
-            await order.save({ session });
+        await order.save();
 
-            res.status(201).json(payment);
-            console.log(`Payment processed: ${JSON.stringify(payment)}`);
-        })
+        res.status(201).json(payment);
+        console.log(`Payment processed: ${JSON.stringify(payment)}`);
     } catch (error) {
         res.status(500).json({ message: "Error processing payment", error });
-    } finally {
-        session.endSession();
     }
 }
 
